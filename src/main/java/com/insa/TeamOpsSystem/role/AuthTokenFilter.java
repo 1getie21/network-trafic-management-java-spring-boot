@@ -1,6 +1,7 @@
-package com.insa.TeamOpsSystem.jwt;
+package com.insa.TeamOpsSystem.role;
 
-import lombok.RequiredArgsConstructor;
+import com.insa.TeamOpsSystem.jwt.JwtUtils;
+import com.insa.TeamOpsSystem.jwt.UserDetailsServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,19 +10,19 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import jakarta.servlet.FilterChain;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-@RequiredArgsConstructor
-public class AuthTokenFilter extends OncePerRequestFilter {
-  private final JwtUtils jwtUtils;
 
-  private final UserDetailsServiceImpl userDetailsService;
+public class AuthTokenFilter extends OncePerRequestFilter {
+  @Autowired
+  private JwtUtils jwtUtils;
+  @Autowired
+  private UserDetailsServiceImpl userDetailsService;
 
   private static final Logger logger = LoggerFactory.getLogger(AuthTokenFilter.class);
 

@@ -23,8 +23,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.validation.Valid;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -53,9 +53,7 @@ public class UsersController implements UserApi {
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = jwtUtils.generateJwtToken(authentication);
-        UserDetailsImpl userDetails = (
-
-                UserDetailsImpl) authentication.getPrincipal();
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
         List<String> roles = userDetails.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());
@@ -77,7 +75,6 @@ public class UsersController implements UserApi {
 
 
 
-
     @Override
     public UserDto updateStudents(long id, UserDto userDto, UsernamePasswordAuthenticationToken token) throws IllegalAccessException {
         return userMapper.toUsersDto(userService.updateStudents(id, userMapper.toUsers(userDto),token));
@@ -86,8 +83,7 @@ public class UsersController implements UserApi {
 
     @Override
     public ResponseEntity<PagedModel<UserDto>> getAllStudents(Pageable pageable, PagedResourcesAssembler assembler, UriComponentsBuilder uriBuilder, HttpServletResponse response) {
-        eventPublisher.publishEvent(new
-                PaginatedResultsRetrievedEvent<>(
+        eventPublisher.publishEvent(new PaginatedResultsRetrievedEvent<>(
                 UserDto.class, uriBuilder, response, pageable.getPageNumber(), userService.getAllStudents(pageable).getTotalPages(), pageable.getPageSize()));
         return new ResponseEntity<PagedModel<UserDto>>(assembler.toModel(userService.getAllStudents(pageable).map(userMapper::toUsersDto)), HttpStatus.OK);
     }
