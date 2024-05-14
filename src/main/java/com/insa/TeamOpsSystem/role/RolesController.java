@@ -1,15 +1,14 @@
 package com.insa.TeamOpsSystem.role;
 
-import org.springframework.hateoas.CollectionModel;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
-
 @RestController
-@RequestMapping("/api/v1/role")
+@RequestMapping("/role")
 public class RolesController   {
 
     RolesService rolesService;
@@ -25,25 +24,18 @@ public class RolesController   {
     }
 
     @GetMapping
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> findAll(
-            @RequestParam(required = false, defaultValue = "0") Integer page,
-            @RequestParam(required = false, defaultValue = "10") Integer size) {
-        CollectionModel<RolesDTO> rolesDTOS = rolesService.findAll(page, size);
-        if (rolesDTOS != null) {
-            return ResponseEntity.ok(rolesDTOS);
-        }
-        return ResponseEntity.noContent().build();
+    public Page<Roles> findAll(Pageable pageable) {
+        return    rolesService.findAll(pageable);
+    }
+    @PutMapping("/{roleId}")
+    public Roles updateRoles(@RequestBody Roles roles,@PathVariable long roleId) {
+        return    rolesService.updateRoles(roles,roleId);
     }
 
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> findRolesById(@PathVariable Long id) {
-        RolesDTO rolesDTO = rolesService.findRolesById(id);
-        if (rolesDTO != null) {
-            return ResponseEntity.ok(rolesDTO);
-        }
-        return ResponseEntity.noContent().build();
+    public Roles findRolesById(@PathVariable Long id) {
+      return rolesService.findRolesById(id);
     }
     @DeleteMapping(value = "/{id}")
     @PreAuthorize("hasRole('ADMIN')")

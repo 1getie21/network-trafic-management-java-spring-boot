@@ -1,13 +1,14 @@
 package com.insa.TeamOpsSystem.role;
 import com.insa.TeamOpsSystem.exceptions.ResourceNotFoundException;
+import com.insa.TeamOpsSystem.traffics.Traffics;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.web.PagedResourcesAssembler;
-import org.springframework.hateoas.PagedModel;
+import org.springframework.data.domain.Pageable;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 
+import static com.insa.TeamOpsSystem.until.Util.getNullPropertyNames;
 
 @Service
 @AllArgsConstructor
@@ -15,17 +16,9 @@ public class RolesServiceImpl implements RolesService {
 
     RolesRepository rolesRepository;
     RolesAssembler rolesAssembler;
-    PagedResourcesAssembler pagedResourcesAssembler;
 
-    @Override
-    public PagedModel findAll(int page, int size) {
-        PageRequest pageRequest;
-        pageRequest = PageRequest.of(page, size);
-        Page<Roles> roles = rolesRepository.findAll(pageRequest);
-        if (!CollectionUtils.isEmpty(roles.getContent()))
-            return pagedResourcesAssembler.toModel(roles, rolesAssembler);
-
-        return null;
+    public Page<Roles> findAll(Pageable pageable) {
+       return   rolesRepository.findAll(pageable);
     }
 
     @Override
@@ -36,12 +29,16 @@ public class RolesServiceImpl implements RolesService {
     }
 
     @Override
-    public RolesDTO findRolesById(Long id) {
-        Roles roles = rolesRepository.findById(id).orElseThrow(
-                () -> new ResourceNotFoundException(
-                        "Role with ID :" + id + " Not Found!")
-        );
-        return rolesAssembler.toModel(roles);
+    public Roles findRolesById(Long id) {
+        try {
+            return rolesRepository.findById(id).orElseThrow(
+                    () -> new ResourceNotFoundException(
+                            "Role with ID :" + id + " Not Found!")
+            );
+        }
+        catch (Exception e){
+            throw new ResourceNotFoundException(e.getMessage());
+        }
 
     }
 
@@ -53,6 +50,14 @@ public class RolesServiceImpl implements RolesService {
         );
         rolesRepository.deleteById(roles.getId());
         return rolesAssembler.toModel(roles);
+    }
+
+    @Override
+    public Roles updateRoles( Roles roles,long roleId)     {
+        var ro = findRolesById(roleId);
+
+        BeanUtils.copyProperties(roles, ro, getNullPropertyNames(roles));
+        return rolesRepository.save(ro);
     }
 }
 

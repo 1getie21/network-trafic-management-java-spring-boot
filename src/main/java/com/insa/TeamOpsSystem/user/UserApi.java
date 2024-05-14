@@ -1,5 +1,6 @@
 package com.insa.TeamOpsSystem.user;
 
+import com.insa.TeamOpsSystem.role.RolesService;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.data.domain.Pageable;
@@ -19,18 +20,22 @@ public interface UserApi {
     @PostMapping("/signup")
     @ResponseStatus(HttpStatus.CREATED)
 //    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-    UserDto createStudents(@RequestBody @Valid UserDto userDto) throws IllegalAccessException;
+    UserDto createTeamMembers(@RequestBody @Valid UserDto userDto) throws IllegalAccessException;
      @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    UserDto getStudentsById(@PathVariable("id") long id);
+    UserDto getTeamMembersById(@PathVariable("id") long id);
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    UserDto updateStudents(@PathVariable("id") long expenseId, @RequestBody @Valid UserDto userDto, UsernamePasswordAuthenticationToken token ) throws IllegalAccessException;
-
+    UserDto updateTeamMembers(@PathVariable("id") long expenseId, @RequestBody @Valid UserDto userDto, UsernamePasswordAuthenticationToken token ) throws IllegalAccessException;
+    @DeleteMapping("/{id}")
+    public default void deleteUsersById(@PathVariable("id") Long id) throws IllegalAccessException {
+        RolesService userRepository = null;
+        userRepository.deleteById(id);
+    }
     @GetMapping()
     @ResponseStatus(HttpStatus.OK)
-    ResponseEntity<PagedModel<UserDto>> getAllStudents(@Parameter(description = "pagination object", schema = @Schema(implementation = Pageable.class))
+    ResponseEntity<PagedModel<UserDto>> getAllTeamMembers(@Parameter(description = "pagination object", schema = @Schema(implementation = Pageable.class))
                                                        @Valid Pageable pageable,
                                                        PagedResourcesAssembler assembler,
                                                        UriComponentsBuilder uriBuilder,

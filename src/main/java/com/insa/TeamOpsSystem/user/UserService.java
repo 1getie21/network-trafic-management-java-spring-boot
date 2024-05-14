@@ -10,13 +10,13 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface UserService {
-    SystemUsers createStudents(SystemUsers students ) throws IllegalAccessException;
+    SystemUsers createTeamMembers(SystemUsers TeamMembers ) throws IllegalAccessException;
 
-     SystemUsers getStudentsById(long id);
+     SystemUsers getTeamMembersById(long id);
 
-    Page<SystemUsers> getAllStudents(Pageable pageable);
-     SystemUsers updateStudents(long id, SystemUsers systemUsers , UsernamePasswordAuthenticationToken token) throws IllegalAccessException;
-    void deleteStudents(long id, JwtAuthenticationToken token);
+    Page<SystemUsers> getAllTeamMembers(Pageable pageable);
+     SystemUsers updateTeamMembers(long id, SystemUsers systemUsers , UsernamePasswordAuthenticationToken token) throws IllegalAccessException;
+    void deleteTeamMembers(long id, JwtAuthenticationToken token);
 
 }
 

@@ -35,7 +35,7 @@ public abstract class Auditable implements Serializable {
     @Schema(hidden = true)
     @Column(name = "created_by")
     @CreatedBy
-    private String created_by;
+    private String createdBy;
     @Schema(hidden = true)
     @Column(name = "updated_by")
     @LastModifiedBy

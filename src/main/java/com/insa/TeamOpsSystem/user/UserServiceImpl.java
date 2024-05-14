@@ -29,7 +29,7 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder encoder;
 
     @Override
-    public SystemUsers createStudents(SystemUsers signupRequest) throws IllegalAccessException {
+    public SystemUsers createTeamMembers(SystemUsers signupRequest) throws IllegalAccessException {
         if (userRepository.existsByUsername(signupRequest.getUsername())) {
             throw new AlreadyExistException("User name '" + signupRequest.getUsername() + "' is already exist");
         }
@@ -54,25 +54,26 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public SystemUsers getStudentsById(long id) {
+    public SystemUsers getTeamMembersById(long id) {
         return userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(SystemUsers.class, "  Type with an id: " + id + " was not found!"));
     }
 
 
     @Override
-    public Page<SystemUsers> getAllStudents(Pageable pageable ) {
+    public Page<SystemUsers> getAllTeamMembers(Pageable pageable ) {
         return userRepository.findAllByOrderByCreatedAtDesc(pageable);
     }
 
     @Override
-    public SystemUsers updateStudents(long id, SystemUsers systemUsers, UsernamePasswordAuthenticationToken token ) throws IllegalAccessException {
-        var et = getStudentsById(id);
+    public SystemUsers updateTeamMembers(long id, SystemUsers systemUsers, UsernamePasswordAuthenticationToken token ) throws IllegalAccessException {
+        var et = getTeamMembersById(id);
+        systemUsers.setPassword(encoder.encode(systemUsers.getPassword()));
         BeanUtils.copyProperties(systemUsers, et, getNullPropertyNames(systemUsers));
         return userRepository.save(et);
     }
 
     @Override
-    public void deleteStudents(long id, JwtAuthenticationToken token) {
+    public void deleteTeamMembers(long id, JwtAuthenticationToken token) {
         userRepository.deleteById(id);
     }
 
