@@ -7,7 +7,6 @@ import lombok.Data;
 @Data
 public class SixMCListDtos extends Auditable {
     private Long id;
-    private  String date;
     private  String datacenter;
     private  String fiber;
     private  String rack;
@@ -17,5 +16,4 @@ public class SixMCListDtos extends Auditable {
     private String server;
     private String routine;
     private Sites sites;
-
 }

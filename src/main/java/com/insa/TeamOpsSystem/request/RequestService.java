@@ -34,7 +34,6 @@ public class RequestService {
         return requestRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(Request.class, "  Type with an id: " + id + " was not found!"));
     }
 
-
     public Page<Request> getAllTraffics(Pageable pageable, UsernamePasswordAuthenticationToken token) {
         UserDetailsImpl userDetails = (UserDetailsImpl) token.getPrincipal();
         if (userDetails.getAuthorities().stream().anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"))) {
@@ -45,7 +44,6 @@ public class RequestService {
             return requestRepository.findAllByCreatedByOrderByCreatedAtDesc(userDetails.getUsername(), pageable);
         }
     }
-
 
     public Request updateTrafficById(long id, Request request, UsernamePasswordAuthenticationToken token) throws IllegalAccessException {
         var et = getTrafficById(id);

@@ -34,14 +34,15 @@ public class SixMCListService {
 
 
     public Page<SixMCList> getAllTraffics(Pageable pageable, UsernamePasswordAuthenticationToken token) {
-        return sixmclistRepository.findAll(pageable);
+        return sixmclistRepository.findAllBySitesDeletedIsFalse(pageable);
+
     }
 
     public SixMCList updateTrafficById(long id, SixMCList sixmclist, UsernamePasswordAuthenticationToken token) throws IllegalAccessException {
         var et = getTrafficById(id);
 
         BeanUtils.copyProperties(sixmclist, et, getNullPropertyNames(sixmclist));
-
+        System.out.println("eewwew");
 
         return sixmclistRepository.save(et);
 

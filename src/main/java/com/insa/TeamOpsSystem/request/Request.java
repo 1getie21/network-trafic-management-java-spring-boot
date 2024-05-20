@@ -26,10 +26,10 @@ public class Request extends Auditable {
     private String requester;
     @Column(nullable = false)
     private String organization;
-    private String scategories;
+    private String categories;
     private String contact;
-    private String sdescription;
-    private String rdetail;
+    private String description;
+    private String detail;
     @ManyToOne
     private Sites sites;
 }

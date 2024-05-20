@@ -17,16 +17,16 @@ public class CheckList extends Auditable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(nullable = false)
-    private  String LinkType;
+    private  String linkType;
     @Column(nullable = false)
-    private  String Download;
+    private  String download;
     @Column(nullable = false)
-    private  String Upload;
+    private  String upload;
     @Column(nullable = false)
     private String createdBy;
     @Column(nullable = false)
-    private String NPB;
-    private String AvgNBP;
+    private String npb;
+    private String avgNBP;
     @ManyToOne
     private Sites sites;
 }

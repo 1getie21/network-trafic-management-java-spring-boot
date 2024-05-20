@@ -15,4 +15,5 @@ public interface TrafficRepository extends PagingAndSortingRepository<Traffics, 
     Page<Traffics> findAllByCreatedByAndSitesDeletedIsFalseOrderByCreatedAtDesc(String username, Pageable pageable);
 
     Page<Traffics> findAllBySitesDeletedIsFalse(Pageable pageable);
+
 }

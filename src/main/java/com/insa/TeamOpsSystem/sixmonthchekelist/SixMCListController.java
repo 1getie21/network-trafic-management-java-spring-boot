@@ -12,34 +12,33 @@ import org.springframework.web.bind.annotation.*;
 import static com.insa.TeamOpsSystem.until.Util.getNullPropertyNames;
 
 @RestController
-@RequestMapping("/SixMCList")
+@RequestMapping("/sixmclist")
 @RequiredArgsConstructor
 public class SixMCListController {
-    private final SixMCListService sixMCListService;
+    private final SixMCListService sixmclistService;
 
     @PostMapping
     public SixMCList createTraffics(@RequestBody SixMCList sixmclist, UsernamePasswordAuthenticationToken token) throws IllegalAccessException {
-        return sixMCListService.createTraffics(sixmclist,token);
+        return sixmclistService.createTraffics(sixmclist,token);
     }
 
     @GetMapping("/{id}")
     public SixMCList getTrafficById(@PathVariable("id") long id) {
-        return sixMCListService.getTrafficById(id);}
+        return sixmclistService.getTrafficById(id);}
 
     @GetMapping
     public Page<SixMCList> getAllTraffics(Pageable pageable, UsernamePasswordAuthenticationToken token) {
-        return sixMCListService.getAllTraffics(pageable,token);
+        return sixmclistService.getAllTraffics(pageable,token);
     }
 
     @PutMapping("/{id}")
-    public SixMCList updateTrafficById(@PathVariable("id") long id, SixMCList sixmclist, UsernamePasswordAuthenticationToken token) throws IllegalAccessException {
+    public SixMCList updateTrafficById(@PathVariable("id") long id,@RequestBody SixMCList sixmclist, UsernamePasswordAuthenticationToken token) throws IllegalAccessException {
 
-        return sixMCListService.updateTrafficById(id,sixmclist,token);
-
+        return sixmclistService.updateTrafficById(id,sixmclist,token);
     }
 
     @DeleteMapping("/{id}")
     public void deleteTrafficById(@PathVariable("id") long id, UsernamePasswordAuthenticationToken token) {
-        sixMCListService.deleteTrafficById(id,token);
+        sixmclistService.deleteTrafficById(id,token);
     }
 }

@@ -13,7 +13,7 @@ import javax.persistence.*;
 @Table(name = "traffics")
 @Data
 @Where(clause = "deleted=0")
-@SQLDelete(sql = "UPDATE traffics SET deleted = 1 WHERE id=? and version=?")
+@SQLDelete(sql = "UPDATE traffics SET deleted = 1,deleted_at= LocalDateTime.now() WHERE id=? and version=?")
 public class Traffics extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,7 +27,7 @@ public class Traffics extends Auditable {
     @Column(nullable = false, updatable = false)
     private  Times eighteenTime;
     private  String eighteenTimeTraffic;
-    private  String description;
+    private  String remark;
     @ManyToOne
     private Sites sites;
 }

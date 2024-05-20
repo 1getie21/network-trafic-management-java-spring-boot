@@ -20,9 +20,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/CheckList")
+@RequestMapping("/check_list")
 @RequiredArgsConstructor
-public abstract class CheckListController {
+public   class CheckListController {
     private final CheckListMapper checkListMapper;
     private final CheckListService checkListService;
     private final ApplicationEventPublisher eventPublisher;
@@ -56,12 +56,12 @@ public abstract class CheckListController {
 
     @GetMapping()
     @ResponseStatus(HttpStatus.OK)
-    ResponseEntity<PagedModel<FailedTrafficDtos>> getAllCheckLists(Pageable pageable, UsernamePasswordAuthenticationToken token,
+    ResponseEntity<PagedModel<CheckListDtos>> getAllCheckLists(Pageable pageable,
                                                                    PagedResourcesAssembler assembler,
                                                                    UriComponentsBuilder uriBuilder,
                                                                    final HttpServletResponse response) {
         eventPublisher.publishEvent(new PaginatedResultsRetrievedEvent<>(
-                FailedTrafficDtos.class, uriBuilder, response, pageable.getPageNumber(), checkListService.getAllCheckLists(pageable, token).getTotalPages(), pageable.getPageSize()));
-        return new ResponseEntity<PagedModel<FailedTrafficDtos>>(assembler.toModel(checkListService.getAllCheckLists(pageable, token).map(checkListMapper::toTrafficsDto)), HttpStatus.OK);
+                CheckListDtos.class, uriBuilder, response, pageable.getPageNumber(), checkListService.getAllCheckLists(pageable).getTotalPages(), pageable.getPageSize()));
+        return new ResponseEntity<PagedModel<CheckListDtos>>(assembler.toModel(checkListService.getAllCheckLists(pageable).map(checkListMapper::toTrafficsDto)), HttpStatus.OK);
     }
 }

@@ -35,8 +35,9 @@ public class CheckListService {
 
 
 
-    public Page<CheckList> getAllCheckLists(Pageable pageable, UsernamePasswordAuthenticationToken token) {
-       return checkListRepository.findAll(pageable);
+    public Page<CheckList> getAllCheckLists(Pageable pageable) {
+       return checkListRepository.findAllBySitesDeletedIsFalse(pageable);
+
     }
 
     public CheckList updateCheckListById(long id, CheckList failedTraffics, UsernamePasswordAuthenticationToken token) throws IllegalAccessException {

@@ -12,10 +12,10 @@ public class RequestDtos extends Auditable {
     private  String email;
     private  String requester;
     private   String organization;
-    private   String scategories;
+    private   String categories;
     private   String contact;
-    private String sdescription;
-    private String rdetail;
+    private String description;
+    private String detail;
     private Sites sites;
 
 }

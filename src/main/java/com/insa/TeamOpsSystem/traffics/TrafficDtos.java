@@ -15,6 +15,6 @@ public class TrafficDtos extends Auditable {
     private  String fortiethTimeTraffic;
     private  Times eighteenTime;
     private  String eighteenTimeTraffic;
-    private  String description;
+    private  String remark;
     private Sites sites;
 }
