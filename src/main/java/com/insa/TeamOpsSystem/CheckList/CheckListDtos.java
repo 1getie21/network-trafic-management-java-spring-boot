@@ -13,7 +13,10 @@ public class CheckListDtos extends Auditable {
     private String download;
     private String upload;
     private String createdBy;
-    private String npb;
     private String avgNBP;
+    private String npbone;
+    private String npbtwo;
+    private String npbthree;
     private Sites sites;
+    private  float nbpTotal;
 }
