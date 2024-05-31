@@ -39,7 +39,11 @@ import static org.springframework.http.HttpStatus.*;
 @Log4j2
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
-
+    @ResponseStatus(BAD_REQUEST)
+    @ExceptionHandler(FileNotExistsException.class)
+    protected ResponseEntity<Object> handleFileExistException(FileNotExistsException ex) {
+        return buildResponseEntity(new ApiError(CONFLICT, ex.getMessage(),ex));
+    }
     @ResponseStatus(CONFLICT)
     @ExceptionHandler(EntityExistsException.class)
     protected ResponseEntity<Object> handleEntityExistException(EntityExistsException ex) {

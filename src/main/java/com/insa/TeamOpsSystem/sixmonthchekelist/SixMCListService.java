@@ -42,7 +42,7 @@ public class SixMCListService {
         var et = getTrafficById(id);
 
         BeanUtils.copyProperties(sixmclist, et, getNullPropertyNames(sixmclist));
-        System.out.println("eewwew");
+
 
         return sixmclistRepository.save(et);
 

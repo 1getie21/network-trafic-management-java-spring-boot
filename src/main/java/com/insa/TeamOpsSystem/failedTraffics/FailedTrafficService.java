@@ -45,10 +45,10 @@ public class FailedTrafficService {
     public Page<FailedTraffics> getAllTraffics(Pageable pageable,UsernamePasswordAuthenticationToken token) {
         UserDetailsImpl userDetails = (UserDetailsImpl) token.getPrincipal();
         if (userDetails.getAuthorities().stream().anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"))) {
-            System.out.println("x");
+
             return failedTrafficRepository.findAllBySitesDeletedIsFalse(pageable);
         } else {
-            System.out.println("y");
+
             return failedTrafficRepository.findAllByCreatedByAndSitesDeletedIsFalseOrderByCreatedAtDesc(userDetails.getUsername(), pageable);
         }
     }

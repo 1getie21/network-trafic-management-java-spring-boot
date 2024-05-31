@@ -16,6 +16,8 @@ public class RequestDtos extends Auditable {
     private   String contact;
     private String description;
     private String detail;
+    private String detailFile;
+    private String descriptionFile;
     private Sites sites;
 
 }
