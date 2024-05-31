@@ -17,16 +17,16 @@ import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Controller
+@RestController
 @RequestMapping("/files")
 @RequiredArgsConstructor
+@CrossOrigin(origins = {"http://localhost:3000","http://10.10.10.112:8088"})
 public class FilesController {
     private final FilesStorageService storageService;
 
     @PostMapping()
-    @ResponseBody
     public Object uploadFile(@RequestParam("file") MultipartFile file
-            , @RequestParam("file2") MultipartFile file2 ) {
+            , @RequestParam("file2") MultipartFile file2) {
         try {
             return storageService.save(file, file2);
         } catch (Exception e) {
@@ -35,10 +35,7 @@ public class FilesController {
     }
 
 
-
-
     @GetMapping("/{filename:.+}")
-    @ResponseBody
     public ResponseEntity<Resource> downloadFile(@PathVariable String filename, HttpServletRequest request) {
         try {
             Resource resource = storageService.load(filename);
