@@ -37,10 +37,9 @@ public class RequestService {
     public Page<Request> getAllTraffics(Pageable pageable, UsernamePasswordAuthenticationToken token) {
         UserDetailsImpl userDetails = (UserDetailsImpl) token.getPrincipal();
         if (userDetails.getAuthorities().stream().anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"))) {
-            System.out.println("x");
+
             return requestRepository.findAll(pageable);
         } else {
-            System.out.println("y");
             return requestRepository.findAllByCreatedByOrderByCreatedAtDesc(userDetails.getUsername(), pageable);
         }
     }

@@ -25,8 +25,12 @@ public class CheckList extends Auditable {
     @Column(nullable = false)
     private String createdBy;
     @Column(nullable = false)
-    private String npb;
+
     private String avgNBP;
+    private String npbone;
+    private String npbtwo;
+    private String npbthree;
+    private  float nbpTotal;
     @ManyToOne
     private Sites sites;
 }

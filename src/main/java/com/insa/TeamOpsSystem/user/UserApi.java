@@ -19,7 +19,6 @@ import javax.validation.Valid;
 public interface UserApi {
     @PostMapping("/signup")
     @ResponseStatus(HttpStatus.CREATED)
-//    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     UserDto createTeamMembers(@RequestBody @Valid UserDto userDto) throws IllegalAccessException;
      @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)

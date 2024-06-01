@@ -24,6 +24,11 @@ public class CheckListService {
         UserDetails userDetails = (UserDetails) token.getPrincipal();
         failedTraffics.setCreatedBy(userDetails.getUsername());
         failedTraffics.setUpdated_by(userDetails.getUsername());
+        failedTraffics.setNbpTotal(
+                Float.parseFloat(failedTraffics.getNpbone())+
+                        Float.parseFloat(failedTraffics.getNpbtwo())+
+                        Float.parseFloat(failedTraffics.getNpbthree()));
+        failedTraffics.setAvgNBP(String.valueOf(failedTraffics.getNbpTotal()/3));
 
         return checkListRepository.save(failedTraffics);
     }
@@ -42,7 +47,11 @@ public class CheckListService {
 
     public CheckList updateCheckListById(long id, CheckList failedTraffics, UsernamePasswordAuthenticationToken token) throws IllegalAccessException {
         var et = getTrafficById(id);
-
+        failedTraffics.setNbpTotal(
+                Float.parseFloat(failedTraffics.getNpbone())+
+                        Float.parseFloat(failedTraffics.getNpbtwo())+
+                        Float.parseFloat(failedTraffics.getNpbthree()));
+        failedTraffics.setAvgNBP(String.valueOf(failedTraffics.getNbpTotal()/3));
         BeanUtils.copyProperties(failedTraffics, et, getNullPropertyNames(failedTraffics));
 
 
