@@ -33,24 +33,20 @@ public class UserServiceImpl implements UserService {
         if (userRepository.existsByUsername(signupRequest.getUsername())) {
             throw new AlreadyExistException("User name '" + signupRequest.getUsername() + "' is already exist");
         }
-
         if (userRepository.existsByEmail(signupRequest.getEmail())) {
             throw new AlreadyExistException("Email '" + signupRequest.getEmail() + "' is already exist");
         }
-
         Set<Roles> strRoles = signupRequest.getRole();
         Set<Roles> roles = new HashSet<>();
-            strRoles.forEach(role -> {
-                        Roles adminRole =  roleRepository.findById(role.getId())
-                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                        roles.add(adminRole);
-
-            });
+        strRoles.forEach(role -> {
+            Roles adminRole = roleRepository.findById(role.getId())
+                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+            roles.add(adminRole);
+        });
         signupRequest.setPassword(encoder.encode(signupRequest.getPassword()));
         signupRequest.setRole(roles);
-     return    userRepository.save(signupRequest);
+        return userRepository.save(signupRequest);
     }
-
 
 
     @Override
@@ -60,12 +56,12 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public Page<SystemUsers> getAllTeamMembers(Pageable pageable ) {
+    public Page<SystemUsers> getAllTeamMembers(Pageable pageable) {
         return userRepository.findAllByOrderByCreatedAtDesc(pageable);
     }
 
     @Override
-    public SystemUsers updateTeamMembers(long id, SystemUsers systemUsers, UsernamePasswordAuthenticationToken token ) throws IllegalAccessException {
+    public SystemUsers updateTeamMembers(long id, SystemUsers systemUsers, UsernamePasswordAuthenticationToken token) throws IllegalAccessException {
         var et = getTeamMembersById(id);
         systemUsers.setPassword(encoder.encode(systemUsers.getPassword()));
         BeanUtils.copyProperties(systemUsers, et, getNullPropertyNames(systemUsers));
@@ -76,7 +72,6 @@ public class UserServiceImpl implements UserService {
     public void deleteTeamMembers(long id, JwtAuthenticationToken token) {
         userRepository.deleteById(id);
     }
-
 
 
 }
