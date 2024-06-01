@@ -1,4 +1,4 @@
-package com.insa.TeamOpsSystem.until;
+package com.insa.TeamOpsSystem.jwt.until;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

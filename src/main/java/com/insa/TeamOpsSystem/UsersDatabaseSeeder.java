@@ -30,9 +30,14 @@ public class UsersDatabaseSeeder implements CommandLineRunner {
             roles.setName("ROLE_ADMIN");
             rolesRepository.save(roles);
         }
-        if (rolesRepository.findByName("ROLE_T.Member").isEmpty()) {
+        if (rolesRepository.findByName("ROLE_MANAGER").isEmpty()) {
             Roles roles = new Roles();
-            roles.setName("ROLE_T.Member");
+            roles.setName("ROLE_MANAGER");
+            rolesRepository.save(roles);
+        }
+        if (rolesRepository.findByName("ROLE_MEMBER").isEmpty()) {
+            Roles roles = new Roles();
+            roles.setName("ROLE_MEMBER");
             rolesRepository.save(roles);
         }
         if (rolesRepository.findByName("ROLE_USER").isEmpty()) {

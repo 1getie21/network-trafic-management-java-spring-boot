@@ -1,4 +1,4 @@
-package com.insa.TeamOpsSystem.until;
+package com.insa.TeamOpsSystem.jwt.until;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.jsontype.impl.TypeIdResolverBase;

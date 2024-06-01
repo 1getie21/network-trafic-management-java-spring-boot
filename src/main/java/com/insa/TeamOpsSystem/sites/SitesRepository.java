@@ -10,6 +10,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 @RepositoryRestResource
 public interface SitesRepository extends PagingAndSortingRepository<Sites, Long>, JpaSpecificationExecutor<Sites> {
-    Page<Sites> findAllByOrderByCreatedAtDesc(Pageable pageable);
+    Page<Sites> findAllByOrderByNameAsc(Pageable pageable);
 
 }

@@ -15,6 +15,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.time.LocalDate;
 
 @RestController
 @RequestMapping("/f-traffics")
@@ -62,13 +63,27 @@ public class FTrafficController {
 
     @GetMapping("/tr/{timeTraffic}")
     @ResponseStatus(HttpStatus.OK)
-    ResponseEntity<PagedModel<FTrafficDtos>> getAllTrafficsByTrafficTime( @PathVariable("timeTraffic") String timeTraffic,Pageable pageable,
-                                                            PagedResourcesAssembler assembler,
-                                                            UriComponentsBuilder uriBuilder,
-                                                            final HttpServletResponse response) {
+    ResponseEntity<PagedModel<FTrafficDtos>> getAllTrafficsByTrafficTime(@PathVariable("timeTraffic") String timeTraffic, Pageable pageable,
+                                                                         PagedResourcesAssembler assembler,
+                                                                         UriComponentsBuilder uriBuilder,
+                                                                         final HttpServletResponse response) {
         eventPublisher.publishEvent(new PaginatedResultsRetrievedEvent<>(
-                FTrafficDtos.class, uriBuilder, response, pageable.getPageNumber(), fTrafficService.getAllTrafficsByTrafficTime(timeTraffic,pageable).getTotalPages(), pageable.getPageSize()));
-        return new ResponseEntity<PagedModel<FTrafficDtos>>(assembler.toModel(fTrafficService.getAllTrafficsByTrafficTime(timeTraffic,pageable).map(fTrafficMapper::toTrafficsDto)), HttpStatus.OK);
+                FTrafficDtos.class, uriBuilder, response, pageable.getPageNumber(), fTrafficService.getAllTrafficsByTrafficTime(timeTraffic, pageable).getTotalPages(), pageable.getPageSize()));
+        return new ResponseEntity<PagedModel<FTrafficDtos>>(assembler.toModel(fTrafficService.getAllTrafficsByTrafficTime(timeTraffic, pageable).map(fTrafficMapper::toTrafficsDto)), HttpStatus.OK);
+    }
+
+    @GetMapping("/{from}/{to}")
+    @ResponseStatus(HttpStatus.OK)
+    ResponseEntity<PagedModel<FTrafficDtos>> findAllByCreatedAtBetween(
+            @PathVariable("from") LocalDate from
+            , @PathVariable("from") LocalDate to
+            , Pageable pageable,
+            PagedResourcesAssembler assembler,
+            UriComponentsBuilder uriBuilder,
+            final HttpServletResponse response) {
+        eventPublisher.publishEvent(new PaginatedResultsRetrievedEvent<>(
+                FTrafficDtos.class, uriBuilder, response, pageable.getPageNumber(), fTrafficService.findAllByCreatedAtBetween(from,to, pageable).getTotalPages(), pageable.getPageSize()));
+        return new ResponseEntity<PagedModel<FTrafficDtos>>(assembler.toModel(fTrafficService.findAllByCreatedAtBetween(from,to, pageable).map(fTrafficMapper::toTrafficsDto)), HttpStatus.OK);
     }
 
 }

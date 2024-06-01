@@ -10,7 +10,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import static com.insa.TeamOpsSystem.until.Util.getNullPropertyNames;
+import static com.insa.TeamOpsSystem.jwt.until.Util.getNullPropertyNames;
 
 @Service
 @RequiredArgsConstructor
@@ -33,8 +33,9 @@ public class SitesServiceImpl implements SitesService {
 
     @Override
     public Page<Sites> getAllTraffics(Pageable pageable) {
-        return sitesRepository.findAllByOrderByCreatedAtDesc(pageable);
+        return sitesRepository.findAllByOrderByNameAsc(pageable);
     }
+
 
     @Override
     public Sites updateTrafficById(long id, Sites sites, UsernamePasswordAuthenticationToken token) throws IllegalAccessException {

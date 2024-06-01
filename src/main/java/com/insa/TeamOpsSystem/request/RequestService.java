@@ -11,7 +11,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import static com.insa.TeamOpsSystem.until.Util.getNullPropertyNames;
+import static com.insa.TeamOpsSystem.jwt.until.Util.getNullPropertyNames;
 
 
 @Service
@@ -36,12 +36,11 @@ public class RequestService {
 
     public Page<Request> getAllTraffics(Pageable pageable, UsernamePasswordAuthenticationToken token) {
         UserDetailsImpl userDetails = (UserDetailsImpl) token.getPrincipal();
-        if (userDetails.getAuthorities().stream().anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"))) {
-
+//        if (userDetails.getAuthorities().stream().anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"))) {
             return requestRepository.findAll(pageable);
-        } else {
-            return requestRepository.findAllByCreatedByOrderByCreatedAtDesc(userDetails.getUsername(), pageable);
-        }
+//        } else {
+//            return requestRepository.findAllByCreatedByOrderByCreatedAtDesc(userDetails.getUsername(), pageable);
+//        }
     }
 
     public Request updateTrafficById(long id, Request request, UsernamePasswordAuthenticationToken token) throws IllegalAccessException {

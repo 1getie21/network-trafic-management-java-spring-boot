@@ -11,14 +11,12 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import static com.insa.TeamOpsSystem.until.Util.getNullPropertyNames;
-
+import static com.insa.TeamOpsSystem.jwt.until.Util.getNullPropertyNames;
 
 @Service
 @RequiredArgsConstructor
-public class TrafficService    {
+public class TrafficService {
     private final TrafficRepository trafficRepository;
-
 
     public Traffics createTraffics(Traffics traffics, UsernamePasswordAuthenticationToken token) throws IllegalAccessException {
         traffics.setEightTime(Times.EIGHT);
@@ -35,7 +33,7 @@ public class TrafficService    {
     }
 
 
-    public Page<Traffics> getAllTraffics(Pageable pageable,UsernamePasswordAuthenticationToken token) {
+    public Page<Traffics> getAllTraffics(Pageable pageable, UsernamePasswordAuthenticationToken token) {
         UserDetailsImpl userDetails = (UserDetailsImpl) token.getPrincipal();
         if (userDetails.getAuthorities().stream().anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"))) {
             return trafficRepository.findAllBySitesDeletedIsFalse(pageable);

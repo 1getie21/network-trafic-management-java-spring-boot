@@ -1,7 +1,7 @@
 package com.insa.TeamOpsSystem.jwt;
 
 import com.insa.TeamOpsSystem.role.AuthTokenFilter;
-import com.insa.TeamOpsSystem.until.ApplicationProps;
+import com.insa.TeamOpsSystem.jwt.until.ApplicationProps;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

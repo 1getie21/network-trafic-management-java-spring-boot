@@ -1,6 +1,6 @@
 package com.insa.TeamOpsSystem.CheckList;
 import com.insa.TeamOpsSystem.sites.Sites;
-import com.insa.TeamOpsSystem.until.Auditable;
+import com.insa.TeamOpsSystem.jwt.until.Auditable;
 import lombok.Data;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;

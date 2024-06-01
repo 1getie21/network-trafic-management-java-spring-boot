@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 
-import static com.insa.TeamOpsSystem.until.Util.getNullPropertyNames;
+import static com.insa.TeamOpsSystem.jwt.until.Util.getNullPropertyNames;
 
 
 @Service
@@ -45,10 +45,8 @@ public class FailedTrafficService {
     public Page<FailedTraffics> getAllTraffics(Pageable pageable,UsernamePasswordAuthenticationToken token) {
         UserDetailsImpl userDetails = (UserDetailsImpl) token.getPrincipal();
         if (userDetails.getAuthorities().stream().anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"))) {
-
             return failedTrafficRepository.findAllBySitesDeletedIsFalse(pageable);
         } else {
-
             return failedTrafficRepository.findAllByCreatedByAndSitesDeletedIsFalseOrderByCreatedAtDesc(userDetails.getUsername(), pageable);
         }
     }
@@ -63,10 +61,7 @@ public class FailedTrafficService {
         String durationString=days+" Days,"+hours+" hrs, "+minutes+" min, "+remainingSeconds+" scs";
 
         failedTraffics.setFailureLength(durationString);
-
         BeanUtils.copyProperties(failedTraffics, et, getNullPropertyNames(failedTraffics));
-
-
         return failedTrafficRepository.save(et);
     }
 

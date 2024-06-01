@@ -1,10 +1,7 @@
 package com.insa.TeamOpsSystem.CheckList;
 
 
-import com.insa.TeamOpsSystem.failedTraffics.FailedTrafficDtos;
 import com.insa.TeamOpsSystem.jwt.PaginatedResultsRetrievedEvent;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Pageable;
@@ -22,7 +19,7 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/check_list")
 @RequiredArgsConstructor
-public   class CheckListController {
+public class CheckListController {
     private final CheckListMapper checkListMapper;
     private final CheckListService checkListService;
     private final ApplicationEventPublisher eventPublisher;
@@ -56,12 +53,18 @@ public   class CheckListController {
 
     @GetMapping()
     @ResponseStatus(HttpStatus.OK)
-    ResponseEntity<PagedModel<CheckListDtos>> getAllCheckLists(Pageable pageable,
-                                                                   PagedResourcesAssembler assembler,
-                                                                   UriComponentsBuilder uriBuilder,
-                                                                   final HttpServletResponse response) {
+    ResponseEntity<PagedModel<CheckListDtos>> getAllCheckLists(
+            UsernamePasswordAuthenticationToken token
+            , Pageable pageable
+            , PagedResourcesAssembler assembler
+            , UriComponentsBuilder uriBuilder
+            , final HttpServletResponse response) {
         eventPublisher.publishEvent(new PaginatedResultsRetrievedEvent<>(
-                CheckListDtos.class, uriBuilder, response, pageable.getPageNumber(), checkListService.getAllCheckLists(pageable).getTotalPages(), pageable.getPageSize()));
-        return new ResponseEntity<PagedModel<CheckListDtos>>(assembler.toModel(checkListService.getAllCheckLists(pageable).map(checkListMapper::toTrafficsDto)), HttpStatus.OK);
+                CheckListDtos.class
+                , uriBuilder
+                , response
+                , pageable.getPageNumber()
+                , checkListService.getAllCheckLists(token, pageable).getTotalPages(), pageable.getPageSize()));
+        return new ResponseEntity<PagedModel<CheckListDtos>>(assembler.toModel(checkListService.getAllCheckLists(token, pageable).map(checkListMapper::toTrafficsDto)), HttpStatus.OK);
     }
 }

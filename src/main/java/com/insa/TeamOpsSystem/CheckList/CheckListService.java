@@ -11,7 +11,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import static com.insa.TeamOpsSystem.until.Util.getNullPropertyNames;
+import static com.insa.TeamOpsSystem.jwt.until.Util.getNullPropertyNames;
 
 
 @Service
@@ -25,10 +25,10 @@ public class CheckListService {
         failedTraffics.setCreatedBy(userDetails.getUsername());
         failedTraffics.setUpdated_by(userDetails.getUsername());
         failedTraffics.setNbpTotal(
-                Float.parseFloat(failedTraffics.getNpbone())+
-                        Float.parseFloat(failedTraffics.getNpbtwo())+
+                Float.parseFloat(failedTraffics.getNpbone()) +
+                        Float.parseFloat(failedTraffics.getNpbtwo()) +
                         Float.parseFloat(failedTraffics.getNpbthree()));
-        failedTraffics.setAvgNBP(String.valueOf(failedTraffics.getNbpTotal()/3));
+        failedTraffics.setAvgNBP(String.valueOf(failedTraffics.getNbpTotal() / 3));
 
         return checkListRepository.save(failedTraffics);
     }
@@ -38,30 +38,27 @@ public class CheckListService {
         return checkListRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(CheckList.class, "  Type with an id: " + id + " was not found!"));
     }
 
-
-
-    public Page<CheckList> getAllCheckLists(Pageable pageable) {
-       return checkListRepository.findAllBySitesDeletedIsFalse(pageable);
-
+    public Page<CheckList> getAllCheckLists(UsernamePasswordAuthenticationToken token,Pageable pageable) {
+        UserDetailsImpl userDetails = (UserDetailsImpl) token.getPrincipal();
+        if (userDetails.getAuthorities().stream().anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"))) {
+            return checkListRepository.findAllBySitesDeletedIsFalse(pageable);
+        } else {
+            return checkListRepository.findAllByCreatedByAndSitesDeletedIsFalseOrderByCreatedAtDesc(userDetails.getUsername(), pageable);
+        }
     }
 
     public CheckList updateCheckListById(long id, CheckList failedTraffics, UsernamePasswordAuthenticationToken token) throws IllegalAccessException {
         var et = getTrafficById(id);
         failedTraffics.setNbpTotal(
-                Float.parseFloat(failedTraffics.getNpbone())+
-                        Float.parseFloat(failedTraffics.getNpbtwo())+
+                Float.parseFloat(failedTraffics.getNpbone()) +
+                        Float.parseFloat(failedTraffics.getNpbtwo()) +
                         Float.parseFloat(failedTraffics.getNpbthree()));
-        failedTraffics.setAvgNBP(String.valueOf(failedTraffics.getNbpTotal()/3));
+        failedTraffics.setAvgNBP(String.valueOf(failedTraffics.getNbpTotal() / 3));
         BeanUtils.copyProperties(failedTraffics, et, getNullPropertyNames(failedTraffics));
-
-
         return checkListRepository.save(et);
     }
-
 
     public void deleteCheckListById(long id, UsernamePasswordAuthenticationToken token) {
         checkListRepository.deleteById(id);
     }
-
-
 }

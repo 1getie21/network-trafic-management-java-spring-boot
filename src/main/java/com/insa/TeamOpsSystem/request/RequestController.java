@@ -1,7 +1,6 @@
 package com.insa.TeamOpsSystem.request;
 
 
-import com.insa.TeamOpsSystem.failedTraffics.FailedTrafficDtos;
 import com.insa.TeamOpsSystem.jwt.PaginatedResultsRetrievedEvent;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;

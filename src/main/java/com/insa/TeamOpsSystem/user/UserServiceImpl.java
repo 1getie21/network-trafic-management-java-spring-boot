@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashSet;
 import java.util.Set;
 
-import static com.insa.TeamOpsSystem.until.Util.getNullPropertyNames;
+import static com.insa.TeamOpsSystem.jwt.until.Util.getNullPropertyNames;
 
 
 @Service

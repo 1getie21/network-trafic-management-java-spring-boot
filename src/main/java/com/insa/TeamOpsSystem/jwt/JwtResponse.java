@@ -1,6 +1,7 @@
 package com.insa.TeamOpsSystem.jwt;
 
 import lombok.Data;
+
 import java.util.List;
 @Data
 public class JwtResponse {

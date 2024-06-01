@@ -9,7 +9,7 @@ package com.insa.TeamOpsSystem.exceptions;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.annotation.JsonTypeIdResolver;
-import com.insa.TeamOpsSystem.until.LowerCaseClassNameResolver;
+import com.insa.TeamOpsSystem.jwt.until.LowerCaseClassNameResolver;
 import lombok.Data;
 import org.hibernate.validator.internal.engine.path.PathImpl;
 import org.springframework.http.HttpStatus;

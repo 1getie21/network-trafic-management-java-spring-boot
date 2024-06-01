@@ -11,4 +11,6 @@ import org.springframework.stereotype.Repository;
 @RepositoryRestResource
 public interface SixMCListRepository extends PagingAndSortingRepository<SixMCList, Long>, JpaSpecificationExecutor<SixMCList> {
     Page<SixMCList> findAllBySitesDeletedIsFalse(Pageable pageable);
+
+    Page<SixMCList> findAllByCreatedByAndSitesDeletedIsFalseOrderByCreatedAtDesc(String username, Pageable pageable);
 }

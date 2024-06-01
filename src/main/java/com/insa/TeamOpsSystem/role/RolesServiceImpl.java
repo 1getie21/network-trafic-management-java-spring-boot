@@ -1,14 +1,13 @@
 package com.insa.TeamOpsSystem.role;
+
 import com.insa.TeamOpsSystem.exceptions.ResourceNotFoundException;
-import com.insa.TeamOpsSystem.traffics.Traffics;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
 
-import static com.insa.TeamOpsSystem.until.Util.getNullPropertyNames;
+import static com.insa.TeamOpsSystem.jwt.until.Util.getNullPropertyNames;
 
 @Service
 @AllArgsConstructor

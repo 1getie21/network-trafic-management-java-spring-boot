@@ -1,7 +1,7 @@
 package com.insa.TeamOpsSystem.user;
 
 import com.insa.TeamOpsSystem.role.Roles;
-import com.insa.TeamOpsSystem.until.Auditable;
+import com.insa.TeamOpsSystem.jwt.until.Auditable;
 import lombok.Data;
 
 import java.util.Set;

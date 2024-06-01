@@ -1,4 +1,4 @@
-package com.insa.TeamOpsSystem.until;
+package com.insa.TeamOpsSystem.jwt.until;
 
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;

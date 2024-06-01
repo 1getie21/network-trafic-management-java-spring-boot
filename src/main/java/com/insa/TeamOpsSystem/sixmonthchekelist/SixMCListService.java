@@ -11,7 +11,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import static com.insa.TeamOpsSystem.until.Util.getNullPropertyNames;
+import static com.insa.TeamOpsSystem.jwt.until.Util.getNullPropertyNames;
 
 
 @Service
@@ -34,8 +34,13 @@ public class SixMCListService {
 
 
     public Page<SixMCList> getAllTraffics(Pageable pageable, UsernamePasswordAuthenticationToken token) {
-        return sixmclistRepository.findAllBySitesDeletedIsFalse(pageable);
 
+        UserDetailsImpl userDetails = (UserDetailsImpl) token.getPrincipal();
+        if (userDetails.getAuthorities().stream().anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"))) {
+            return sixmclistRepository.findAllBySitesDeletedIsFalse(pageable);
+        } else {
+            return sixmclistRepository.findAllByCreatedByAndSitesDeletedIsFalseOrderByCreatedAtDesc(userDetails.getUsername(), pageable);
+        }
     }
 
     public SixMCList updateTrafficById(long id, SixMCList sixmclist, UsernamePasswordAuthenticationToken token) throws IllegalAccessException {

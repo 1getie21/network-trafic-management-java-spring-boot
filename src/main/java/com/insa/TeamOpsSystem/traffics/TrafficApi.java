@@ -1,8 +1,5 @@
 package com.insa.TeamOpsSystem.traffics;
 
-import com.insa.TeamOpsSystem.failedTraffics.FailedTrafficDtos;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedModel;
