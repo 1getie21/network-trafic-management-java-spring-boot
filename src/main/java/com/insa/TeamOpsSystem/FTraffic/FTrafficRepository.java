@@ -16,8 +16,8 @@ public interface FTrafficRepository extends PagingAndSortingRepository<Ftraffics
     Page<Ftraffics> findAllByOrderByCreatedAtDesc(Pageable pageable);
 
     Page<Ftraffics> findAllByCreatedByAndSitesDeletedIsFalseOrderByCreatedAtDesc(String username, Pageable pageable);
-    List<Ftraffics> findAllByCreatedAtIsGreaterThanEqualAndTrafficTimeNameAndSitesId(LocalDateTime cratedAt, String ttNAme, long siteId);
-    Page<Ftraffics> findAllByCreatedAtBetween(LocalDateTime from, LocalDateTime to,Pageable pageable);
+    List<Ftraffics> findAllByCreatedAtIsGreaterThanEqualAndTrafficTimeNameAndSitesIdAndSitesDeletedIsFalse(LocalDateTime cratedAt, String ttNAme, long siteId);
+    Page<Ftraffics> findAllByCreatedAtBetweenAndSitesDeletedIsFalse(LocalDateTime from, LocalDateTime to,Pageable pageable);
 
     Page<Ftraffics> findAllBySitesDeletedIsFalse(Pageable pageable);
     Page<Ftraffics> findAllBySitesDeletedIsFalseAndTrafficTimeName(String trafficTime,Pageable pageable);

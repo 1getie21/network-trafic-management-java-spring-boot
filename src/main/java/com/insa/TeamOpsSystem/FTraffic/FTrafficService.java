@@ -28,7 +28,7 @@ public class FTrafficService {
         UserDetails userDetails = (UserDetails) token.getPrincipal();
         fTraffics.setCreatedBy(userDetails.getUsername());
         fTraffics.setUpdated_by(userDetails.getUsername());
-        List<Ftraffics> traffics= fTrafficRepository.findAllByCreatedAtIsGreaterThanEqualAndTrafficTimeNameAndSitesId(LocalDate.now().atStartOfDay(), fTraffics.getTrafficTimeName(), fTraffics.getSites().getId());
+        List<Ftraffics> traffics= fTrafficRepository.findAllByCreatedAtIsGreaterThanEqualAndTrafficTimeNameAndSitesIdAndSitesDeletedIsFalse(LocalDate.now().atStartOfDay(), fTraffics.getTrafficTimeName(), fTraffics.getSites().getId());
        if (traffics.isEmpty()) {
            return fTrafficRepository.save(fTraffics);
        }
@@ -53,7 +53,7 @@ public class FTrafficService {
         return fTrafficRepository.findAllBySitesDeletedIsFalseAndTrafficTimeName(trafficTime, pageable);
     }
     public Page<Ftraffics> findAllByCreatedAtBetween(LocalDate from, LocalDate to, Pageable pageable) {
-        return fTrafficRepository.findAllByCreatedAtBetween(from.atStartOfDay(), LocalDateTime.from(to),pageable);
+        return fTrafficRepository.findAllByCreatedAtBetweenAndSitesDeletedIsFalse(from.atStartOfDay(), to.plusDays(1).atStartOfDay(),pageable);
     }
 
     public Ftraffics updateTrafficById(long id, Ftraffics fTraffics, UsernamePasswordAuthenticationToken token) throws IllegalAccessException {

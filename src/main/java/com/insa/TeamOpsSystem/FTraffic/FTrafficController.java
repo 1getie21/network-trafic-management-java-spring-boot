@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -75,8 +76,8 @@ public class FTrafficController {
     @GetMapping("/{from}/{to}")
     @ResponseStatus(HttpStatus.OK)
     ResponseEntity<PagedModel<FTrafficDtos>> findAllByCreatedAtBetween(
-            @PathVariable("from") LocalDate from
-            , @PathVariable("from") LocalDate to
+            @PathVariable("from")  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from
+            , @PathVariable("to")  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to
             , Pageable pageable,
             PagedResourcesAssembler assembler,
             UriComponentsBuilder uriBuilder,
