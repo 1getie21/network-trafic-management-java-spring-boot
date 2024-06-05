@@ -54,6 +54,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 "/resource/**",
                 "/files/**",
                 "/webjars/**",
+                "/api/pdf/*/**",
+                "/api/pdf",
                 "/swagger-resources/**",
                 "/users/sign-in"
         );
