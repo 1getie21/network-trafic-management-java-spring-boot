@@ -1,6 +1,7 @@
 package com.insa.TeamOpsSystem.request;
 
 
+import com.insa.TeamOpsSystem.exceptions.AlreadyExistException;
 import com.insa.TeamOpsSystem.exceptions.EntityNotFoundException;
 import com.insa.TeamOpsSystem.jwt.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +25,7 @@ public class RequestService {
         UserDetails userDetails = (UserDetails) token.getPrincipal();
         request.setCreatedBy(userDetails.getUsername());
         request.setUpdated_by(userDetails.getUsername());
+        request.setStatus("Pending");
         Request save;
         save = requestRepository.<Request>save(request);
         return save;
@@ -37,8 +39,8 @@ public class RequestService {
     public Page<Request> getAllTraffics(Pageable pageable, UsernamePasswordAuthenticationToken token) {
         UserDetailsImpl userDetails = (UserDetailsImpl) token.getPrincipal();
         //if (userDetails.getAuthorities().stream().anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"))) {
-            return requestRepository.findAll(pageable);
-       // } else {
+        return requestRepository.findAll(pageable);
+        // } else {
 //            return requestRepository.findAllByCreatedByOrderByCreatedAtDesc(userDetails.getUsername(), pageable);
 //        }
     }
@@ -56,6 +58,19 @@ public class RequestService {
 
     public void deleteTrafficById(long id, UsernamePasswordAuthenticationToken token) {
         requestRepository.deleteById(id);
+    }
+
+
+    public Request acceptRequest(long id, UsernamePasswordAuthenticationToken token) {
+        var et = getTrafficById(id);
+        if (et.getStatus().equals("Pending")) {
+            et.setStatus("Accepted");
+            UserDetails userDetails = (UserDetails) token.getPrincipal();
+            et.setUpdated_by(userDetails.getUsername());
+            return requestRepository.save(et);
+        } else {
+            throw new AlreadyExistException("Request is already accepted");
+        }
     }
 
 

@@ -37,6 +37,11 @@ public class RequestController {
     Request getTrafficById(@PathVariable("id") long id) {
         return requestService.getTrafficById(id);
     }
+    @GetMapping("/accept/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    Request acceptRequest(@PathVariable("id") long id,UsernamePasswordAuthenticationToken token) {
+        return requestService.acceptRequest(id,token);
+    }
 
 
     @PutMapping("/{id}")

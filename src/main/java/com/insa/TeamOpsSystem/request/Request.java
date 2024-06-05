@@ -30,6 +30,7 @@ public class Request extends Auditable {
     private String contact;
     private String description;
     private String status;
+    private String priority;
     private String descriptionFile;
     @ManyToOne
     private Sites sites;
