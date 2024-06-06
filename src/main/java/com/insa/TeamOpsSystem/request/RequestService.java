@@ -26,9 +26,7 @@ public class RequestService {
         request.setCreatedBy(userDetails.getUsername());
         request.setUpdated_by(userDetails.getUsername());
         request.setStatus("Pending");
-        Request save;
-        save = requestRepository.<Request>save(request);
-        return save;
+        return requestRepository.save(request);
     }
 
 
@@ -47,10 +45,8 @@ public class RequestService {
 
     public Request updateTrafficById(long id, Request request, UsernamePasswordAuthenticationToken token) throws IllegalAccessException {
         var et = getTrafficById(id);
-
         BeanUtils.copyProperties(request, et, getNullPropertyNames(request));
-
-
+        et.setStatus("Pending");
         return requestRepository.save(et);
 
     }

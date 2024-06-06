@@ -1,5 +1,6 @@
 package com.insa.TeamOpsSystem.user;
 
+import com.insa.TeamOpsSystem.exceptions.AlreadyExistException;
 import com.insa.TeamOpsSystem.jwt.JwtResponse;
 import com.insa.TeamOpsSystem.jwt.JwtUtils;
 import com.insa.TeamOpsSystem.jwt.PaginatedResultsRetrievedEvent;
@@ -26,7 +27,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/users")
 @RequiredArgsConstructor
-@CrossOrigin(origins = {"http://localhost:3000","http://10.10.10.112:8088"})
+@CrossOrigin(origins = {"http://localhost:3000", "http://10.10.10.112:8088"})
 public class UsersController implements UserApi {
     private final UserService userService;
     private final UserMapper userMapper;
@@ -48,28 +49,28 @@ public class UsersController implements UserApi {
 
     @PostMapping("/sign-in")
     public JwtResponse authenticateUser(@RequestBody LoginRequest loginRequest) {
-try {
-    Authentication authentication = authenticationManager
-            .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+        try {
+            Authentication authentication = authenticationManager
+                    .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
 
-    SecurityContextHolder.getContext().setAuthentication(authentication);
-    String jwt = jwtUtils.generateJwtToken(authentication);
-    UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-    List<String> roles = userDetails.getAuthorities().stream()
-            .map(GrantedAuthority::getAuthority)
-            .collect(Collectors.toList());
-    JwtResponse jwtResponse = new JwtResponse();
-    jwtResponse.setToken(jwt);
-    jwtResponse.setId(userDetails.getId());
-    jwtResponse.setUsername(userDetails.getUsername());
-    jwtResponse.setFirstName(userDetails.getFirstName());
-    jwtResponse.setLastName(userDetails.getLastName());
-    jwtResponse.setEmail(userDetails.getEmail());
-    jwtResponse.setRoles(roles);
-    return jwtResponse;
-}catch (Exception exception){
-    throw new RuntimeException(exception.getMessage());
-}
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            String jwt = jwtUtils.generateJwtToken(authentication);
+            UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+            List<String> roles = userDetails.getAuthorities().stream()
+                    .map(GrantedAuthority::getAuthority)
+                    .collect(Collectors.toList());
+            JwtResponse jwtResponse = new JwtResponse();
+            jwtResponse.setToken(jwt);
+            jwtResponse.setId(userDetails.getId());
+            jwtResponse.setUsername(userDetails.getUsername());
+            jwtResponse.setFirstName(userDetails.getFirstName());
+            jwtResponse.setLastName(userDetails.getLastName());
+            jwtResponse.setEmail(userDetails.getEmail());
+            jwtResponse.setRoles(roles);
+            return jwtResponse;
+        } catch (Exception exception) {
+            throw new AlreadyExistException(exception.getMessage());
+        }
     }
 
     @Override
