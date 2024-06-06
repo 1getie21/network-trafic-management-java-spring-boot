@@ -49,8 +49,7 @@ public class RequestService {
         var et = getTrafficById(id);
 
         BeanUtils.copyProperties(request, et, getNullPropertyNames(request));
-
-
+        et.setStatus("Pending");
         return requestRepository.save(et);
 
     }
