@@ -2,6 +2,7 @@ package com.insa.TeamOpsSystem.report;
 
 import com.insa.TeamOpsSystem.FTraffic.FTrafficRepository;
 import com.insa.TeamOpsSystem.FTraffic.Ftraffics;
+import com.insa.TeamOpsSystem.exceptions.AlreadyExistException;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.Paragraph;
@@ -27,9 +28,9 @@ public class PdfService {
     private final FTrafficRepository trafficRepository;
 
     public ByteArrayInputStream generatePdf() {
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
 
         try {
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
             // Initialize PDF writer
             PdfWriter writer = new PdfWriter(out);
 
@@ -39,7 +40,7 @@ public class PdfService {
             // Initialize document
             Document document = new Document(pdf);
 
-            // Add image
+            // Add image    please not to remove this one
             String imagePath = "\\\\10.10.10.112\\home\\img.png";
             Image img = new Image(ImageDataFactory.create(imagePath));
             img.setHorizontalAlignment(HorizontalAlignment.CENTER);
@@ -90,16 +91,16 @@ public class PdfService {
 
             // Close document
             document.close();
+            return new ByteArrayInputStream(out.toByteArray());
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new AlreadyExistException(e.getMessage());
         }
 
-        return new ByteArrayInputStream(out.toByteArray());
     }
 
     public ByteArrayInputStream generatePdfByDateRAnge(LocalDate from, LocalDate to) {
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
         try {
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
             // Initialize PDF writer
             PdfWriter writer = new PdfWriter(out);
 
@@ -162,10 +163,10 @@ public class PdfService {
 
             // Close document
             document.close();
+            return new ByteArrayInputStream(out.toByteArray());
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new AlreadyExistException(e.getMessage());
         }
 
-        return new ByteArrayInputStream(out.toByteArray());
     }
 }
