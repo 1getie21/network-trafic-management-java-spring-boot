@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import java.io.ByteArrayInputStream;
 import java.time.LocalDate;
 
-
 @RestController
 @RequiredArgsConstructor
 
@@ -38,7 +37,21 @@ public class PdfController {
     public ResponseEntity<InputStreamResource> generatePdfReportByDateRAnge(
             @PathVariable("from")  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from
             , @PathVariable("to")  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to) {
-        ByteArrayInputStream bis = pdfService.generatePdfByDateRAnge(from,to);
+        ByteArrayInputStream bis = pdfService.generatePdfByDateRange(from,to);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Disposition", "inline; filename=report.pdf");
+
+        return ResponseEntity.ok()
+                .headers(headers)
+                .contentType(MediaType.APPLICATION_PDF)
+                .body(new InputStreamResource(bis));
+    }
+
+    @GetMapping(value = "/{trafficTimeName}", produces = MediaType.APPLICATION_PDF_VALUE)
+    public ResponseEntity<InputStreamResource> generatePdfReportByTrafficTimeName(
+            @PathVariable("trafficTimeName") String trafficTimeName) {
+        ByteArrayInputStream bis = pdfService.generatePdfByTrafficTimeName(trafficTimeName);
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Disposition", "inline; filename=report.pdf");
@@ -49,3 +62,4 @@ public class PdfController {
                 .body(new InputStreamResource(bis));
     }
 }
+

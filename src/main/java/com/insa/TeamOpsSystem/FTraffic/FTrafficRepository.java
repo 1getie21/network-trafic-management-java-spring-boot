@@ -24,4 +24,5 @@ public interface FTrafficRepository extends PagingAndSortingRepository<Ftraffics
     Page<Ftraffics> findAllBySitesDeletedIsFalse(Pageable pageable);
     Page<Ftraffics> findAllBySitesDeletedIsFalseAndTrafficTimeName(String trafficTime,Pageable pageable);
 
+    List<Ftraffics> findAllByTrafficTimeName(String trafficTimeName);
 }
