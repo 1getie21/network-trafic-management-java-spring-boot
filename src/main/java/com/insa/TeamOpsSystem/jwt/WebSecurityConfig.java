@@ -55,10 +55,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 "/files/**",
                 "/webjars/**",
                 "/api/pdf/*/**",
+                "/api/pdf/request/*/**",
+                "/api/pdf/check_list/*/**",
                 "/api/pdf",
                 "/swagger-resources/**",
                 "/users/sign-in"
         );
+
     }
 
     @Bean

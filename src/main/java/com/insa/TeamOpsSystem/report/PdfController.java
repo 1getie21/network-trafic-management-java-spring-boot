@@ -1,5 +1,6 @@
 package com.insa.TeamOpsSystem.report;
 
+import com.insa.TeamOpsSystem.request.Request;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
@@ -7,10 +8,12 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.ByteArrayInputStream;
 import java.time.LocalDate;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -21,11 +24,10 @@ public class PdfController {
     private final PdfService pdfService;
 
     @GetMapping(produces = MediaType.APPLICATION_PDF_VALUE)
-    public ResponseEntity<InputStreamResource> generatePdfReport() {
-        ByteArrayInputStream bis = pdfService.generatePdf();
-
+    public ResponseEntity<InputStreamResource> generatePdf(@RequestParam ("userName") String username  ) {
+        ByteArrayInputStream bis = pdfService.generatePdf(username);
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Disposition", "inline; filename=report.pdf");
+        headers.add("Content-Disposition", "inline; filename=requests_report.pdf");
 
         return ResponseEntity.ok()
                 .headers(headers)
@@ -34,10 +36,11 @@ public class PdfController {
     }
 
     @GetMapping(value = "/{from}/{to}", produces = MediaType.APPLICATION_PDF_VALUE)
-    public ResponseEntity<InputStreamResource> generatePdfReportByDateRAnge(
-            @PathVariable("from")  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from
-            , @PathVariable("to")  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to) {
-        ByteArrayInputStream bis = pdfService.generatePdfByDateRange(from,to);
+    public ResponseEntity<InputStreamResource>
+    generatePdfReportByDateRAnge(
+            @PathVariable("from") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
+            @PathVariable("to") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to,@RequestParam ("userName") String username) {
+        ByteArrayInputStream bis = pdfService.generatePdfByDateRange(from, to,username);
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Disposition", "inline; filename=report.pdf");
@@ -49,8 +52,7 @@ public class PdfController {
     }
 
     @GetMapping(value = "/{trafficTimeName}", produces = MediaType.APPLICATION_PDF_VALUE)
-    public ResponseEntity<InputStreamResource> generatePdfReportByTrafficTimeName(
-            @PathVariable("trafficTimeName") String trafficTimeName) {
+    public ResponseEntity<InputStreamResource> generatePdfReportByTrafficTimeName(@PathVariable("trafficTimeName") String trafficTimeName) {
         ByteArrayInputStream bis = pdfService.generatePdfByTrafficTimeName(trafficTimeName);
 
         HttpHeaders headers = new HttpHeaders();
@@ -61,5 +63,67 @@ public class PdfController {
                 .contentType(MediaType.APPLICATION_PDF)
                 .body(new InputStreamResource(bis));
     }
+
+
+    @GetMapping(value = "/request/{from}/{to}", produces = MediaType.APPLICATION_PDF_VALUE)
+    public ResponseEntity<InputStreamResource> generatePdfRequestsByDateRange(@PathVariable("from") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
+                                                                              @PathVariable("to") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to) {
+        ByteArrayInputStream bis = pdfService.generatePdfRequestsByDateRange(from, to);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Disposition", "inline; filename=report.pdf");
+
+        return ResponseEntity.ok()
+                .headers(headers)
+                .contentType(MediaType.APPLICATION_PDF)
+                .body(new InputStreamResource(bis));
+    }
+
+
+    @GetMapping(value = "/requests", produces = MediaType.APPLICATION_PDF_VALUE)
+    public ResponseEntity<InputStreamResource> generatePdfReportByRequesters(@RequestParam ("userName") String username ) {
+        ByteArrayInputStream bis = pdfService.generatePdfReportByRequesters(username);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Disposition", "inline; filename=requests_report.pdf");
+
+        return ResponseEntity.ok()
+                .headers(headers)
+                .contentType(MediaType.APPLICATION_PDF)
+                .body(new InputStreamResource(bis));
+    }
+
+
+
+    @GetMapping(value = "/check_list/{from}/{to}", produces = MediaType.APPLICATION_PDF_VALUE)
+    public ResponseEntity<InputStreamResource> generatePdfChecklistByDateRange(
+            @PathVariable("from") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
+            @PathVariable("to") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to,
+            @RequestParam ("userName") String username ) {
+        ByteArrayInputStream bis = pdfService.generatePdfChecklistByDateRange(from, to,username);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Disposition", "inline; filename=report.pdf");
+
+        return ResponseEntity.ok()
+                .headers(headers)
+                .contentType(MediaType.APPLICATION_PDF)
+                .body(new InputStreamResource(bis));
+    }
+
+
+    @GetMapping(value = "/check_list", produces = MediaType.APPLICATION_PDF_VALUE)
+    public ResponseEntity<InputStreamResource> generatePdfByCheckLists(@RequestParam ("userName") String username ) {
+        ByteArrayInputStream bis = pdfService.generatePdfByCheckLists(username);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Disposition", "inline; filename=checklist_report.pdf");
+
+        return ResponseEntity.ok()
+                .headers(headers)
+                .contentType(MediaType.APPLICATION_PDF)
+                .body(new InputStreamResource(bis));
+    }
+
 }
+
+
+
+
 

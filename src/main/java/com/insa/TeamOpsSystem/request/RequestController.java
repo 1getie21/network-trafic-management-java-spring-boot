@@ -1,6 +1,5 @@
 package com.insa.TeamOpsSystem.request;
 
-
 import com.insa.TeamOpsSystem.jwt.PaginatedResultsRetrievedEvent;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -8,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +17,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.time.LocalDate;
 
 @RestController
 @RequestMapping("/request")
@@ -66,5 +67,19 @@ public class RequestController {
         eventPublisher.publishEvent(new PaginatedResultsRetrievedEvent<>(
                 RequestDtos.class, uriBuilder, response, pageable.getPageNumber(), requestService.getAllTraffics(pageable,token).getTotalPages(), pageable.getPageSize()));
         return new ResponseEntity<PagedModel<RequestDtos>>(assembler.toModel(requestService.getAllTraffics(pageable,token).map(requestMapper::toTrafficsDto)), HttpStatus.OK);
+    }
+
+    @GetMapping("/{from}/{to}")
+    @ResponseStatus(HttpStatus.OK)
+    ResponseEntity<PagedModel<RequestDtos>> findAllByCreatedAtBetween(
+            @PathVariable("from")  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from
+            , @PathVariable("to")  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to
+            , Pageable pageable,
+            PagedResourcesAssembler assembler,
+            UriComponentsBuilder uriBuilder,
+            final HttpServletResponse response) {
+        eventPublisher.publishEvent(new PaginatedResultsRetrievedEvent<>(
+                RequestDtos.class, uriBuilder, response, pageable.getPageNumber(), requestService.findAllByCreatedAtBetween(from,to, pageable).getTotalPages(), pageable.getPageSize()));
+        return new ResponseEntity<PagedModel<RequestDtos>>(assembler.toModel(requestService.findAllByCreatedAtBetween(from,to, pageable).map(requestMapper::toTrafficsDto)), HttpStatus.OK);
     }
 }

@@ -17,8 +17,8 @@ public class Request extends Auditable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(nullable = false)
-    private  String fname;
-    @Column(nullable = false)
+//    private  String fname;
+//    @Column(nullable = false)
     private  String phone;
     @Column(nullable = false)
     private  String email;
@@ -32,6 +32,4 @@ public class Request extends Auditable {
     private String status;
     private String priority;
     private String descriptionFile;
-    @ManyToOne
-    private Sites sites;
 }

@@ -11,6 +11,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+
 import static com.insa.TeamOpsSystem.jwt.until.Util.getNullPropertyNames;
 
 
@@ -60,5 +62,15 @@ public class CheckListService {
 
     public void deleteCheckListById(long id, UsernamePasswordAuthenticationToken token) {
         checkListRepository.deleteById(id);
+    }
+
+//    public Page<checkListRepository> findAllByCreatedAtBetween(LocalDate from, LocalDate to, Pageable pageable) {
+//        return checkListRepository.findAllByCreatedAtBetween(from.atStartOfDay(), to.plusDays(1).atStartOfDay());
+//    }
+
+    public Page<CheckList> findAllByCreatedAtBetween(LocalDate from, LocalDate to, Pageable pageable) {
+        return checkListRepository.findAllByCreatedAtBetweenAndSitesDeletedIsFalse(
+                from.atStartOfDay(),
+                to.plusDays(1).atStartOfDay(),pageable);
     }
 }

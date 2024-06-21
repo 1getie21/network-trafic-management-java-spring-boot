@@ -20,10 +20,9 @@ public class FilesController {
     private final FilesStorageService storageService;
 
     @PostMapping()
-    public Object uploadFile(@RequestParam("file") MultipartFile file
-            , @RequestParam("file2") MultipartFile file2) {
+    public Object uploadFile(@RequestParam("file") MultipartFile file ) {
         try {
-            return storageService.save(file, file2);
+            return storageService.save(file);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ResponseMessage(e.getMessage()));
         }

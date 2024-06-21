@@ -30,12 +30,10 @@ public class SitesServiceImpl implements SitesService {
         return sitesRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(Sites.class, "  Type with an id: " + id + " was not found!"));
     }
 
-
     @Override
     public Page<Sites> getAllTraffics(Pageable pageable) {
         return sitesRepository.findAllByOrderByNameAsc(pageable);
     }
-
 
     @Override
     public Sites updateTrafficById(long id, Sites sites, UsernamePasswordAuthenticationToken token) throws IllegalAccessException {

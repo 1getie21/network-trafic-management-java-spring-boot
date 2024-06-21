@@ -37,15 +37,13 @@ public class FilesStorageServiceImpl implements FilesStorageService {
     }
 
     @Override
-    public Object save(MultipartFile file, MultipartFile file2) {
+    public Object save(MultipartFile file) {
         try {
             String lastFileName = file.getOriginalFilename();
-            String lastFileName2 = file2.getOriginalFilename();
 
             java.nio.file.Files.copy(file.getInputStream(), this.root.resolve(Objects.requireNonNull(lastFileName)), StandardCopyOption.REPLACE_EXISTING);
 
-            java.nio.file.Files.copy(file2.getInputStream(), this.root.resolve(Objects.requireNonNull(lastFileName2)), StandardCopyOption.REPLACE_EXISTING);
-        } catch (Exception e) {
+         } catch (Exception e) {
             throw new FileNotExistsException(e.getMessage());
         }
         return null;

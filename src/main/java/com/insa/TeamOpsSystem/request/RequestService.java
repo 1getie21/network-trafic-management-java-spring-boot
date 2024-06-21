@@ -1,6 +1,7 @@
 package com.insa.TeamOpsSystem.request;
 
 
+import com.insa.TeamOpsSystem.FTraffic.Ftraffics;
 import com.insa.TeamOpsSystem.exceptions.AlreadyExistException;
 import com.insa.TeamOpsSystem.exceptions.EntityNotFoundException;
 import com.insa.TeamOpsSystem.jwt.UserDetailsImpl;
@@ -11,6 +12,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
 
 import static com.insa.TeamOpsSystem.jwt.until.Util.getNullPropertyNames;
 
@@ -68,6 +71,8 @@ public class RequestService {
             throw new AlreadyExistException("Request is already accepted");
         }
     }
-
+    public Page<Request> findAllByCreatedAtBetween(LocalDate from, LocalDate to, Pageable pageable) {
+        return requestRepository.findAllByCreatedAtBetween(from.atStartOfDay(), to.plusDays(1).atStartOfDay(),pageable);
+    }
 
 }

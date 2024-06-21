@@ -52,8 +52,11 @@ public class FTrafficService {
     public Page<Ftraffics> getAllTrafficsByTrafficTime(String trafficTime, Pageable pageable) {
         return fTrafficRepository.findAllBySitesDeletedIsFalseAndTrafficTimeName(trafficTime, pageable);
     }
-    public Page<Ftraffics> findAllByCreatedAtBetween(LocalDate from, LocalDate to, Pageable pageable) {
-        return fTrafficRepository.findAllByCreatedAtBetweenAndSitesDeletedIsFalse(from.atStartOfDay(), to.plusDays(1).atStartOfDay(),pageable);
+    public Page<Ftraffics> findAllByCreatedAtBetween(LocalDate from, LocalDate to,UsernamePasswordAuthenticationToken token, Pageable pageable) {
+
+        UserDetails userDetails = (UserDetails) token.getPrincipal();
+        String createdBy= userDetails.getUsername();
+        return fTrafficRepository.findAllByCreatedAtBetweenAndSitesDeletedIsFalseAndCreatedBy(from.atStartOfDay(), to.plusDays(1).atStartOfDay(),createdBy,pageable);
     }
 
     public Ftraffics updateTrafficById(long id, Ftraffics fTraffics, UsernamePasswordAuthenticationToken token) throws IllegalAccessException {

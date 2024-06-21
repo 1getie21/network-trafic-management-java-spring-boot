@@ -10,15 +10,15 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 @RepositoryRestResource
-public interface SitesRepository extends PagingAndSortingRepository<Sites, Long>, JpaSpecificationExecutor<Sites> {
-    @Query("SELECT s FROM Sites s ORDER BY s.name ASC")
-    Page<Sites> findAllByOrderByNameAsc(Pageable pageable);
-
-
+//public interface SitesRepository extends PagingAndSortingRepository<Sites, Long>, JpaSpecificationExecutor<Sites> {
+//    @Query("SELECT s FROM Sites s ORDER BY s.name ASC")
+//    Page<Sites> findAllByOrderByNameAsc(Pageable pageable);
+    public interface SitesRepository extends PagingAndSortingRepository<Sites, Long> {
+        Page<Sites> findAllByOrderByNameAsc(Pageable pageable);
 }
 
 
-//    look me
+//    look me  this is correct
 //    how to deploye backend
 //        1 click m from ritht top side which is maven
 //                2 make visible dropdown of lifecycle
