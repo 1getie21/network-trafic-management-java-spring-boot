@@ -57,21 +57,11 @@ public class SixMCListController {
 
     @GetMapping("/{from}/{to}")
     @ResponseStatus(HttpStatus.OK)
-    ResponseEntity<PagedModel<SixMCListDtos>> findAllByCreatedAtBetween(
+    Page<SixMCList>findAllByCreatedAtBetween(
             @PathVariable("from") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from
-            , @PathVariable("to") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to
-            , Pageable pageable,
-            PagedResourcesAssembler assembler,
-            UriComponentsBuilder uriBuilder,
-            final HttpServletResponse response) {
-        eventPublisher.publishEvent(new PaginatedResultsRetrievedEvent<>(
-                SixMCListDtos.class, uriBuilder, response, pageable.getPageNumber(), sixmclistService.findAllByCreatedAtBetween(from, to, pageable).getTotalPages(), pageable.getPageSize()));
-        try {
-            return new ResponseEntity<PagedModel<SixMCListDtos>>(
-                    assembler.toModel(sixmclistService.findAllByCreatedAtBetween(from, to, pageable).map(sixmclistMapper::toSixMCListDtos))
-                    , HttpStatus.OK);
-        } catch (Exception exception) {
-            throw new AlreadyExistException(exception.getMessage());
-        }
+            , @PathVariable("to") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to ,Pageable pageable ) {
+
+            return sixmclistService.findAllByCreatedAtBetween(from, to,pageable);
+
     }
 }

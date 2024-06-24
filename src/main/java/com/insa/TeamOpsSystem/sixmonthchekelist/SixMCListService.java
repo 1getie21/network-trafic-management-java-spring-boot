@@ -62,12 +62,10 @@ public class SixMCListService {
 
     public Page<SixMCList> findAllByCreatedAtBetween(LocalDate from, LocalDate to, Pageable pageable) {
         try {
-           return sixmclistRepository.findAllByCreatedAtBetweenAndSitesDeletedIsFalse(
-                    from.atStartOfDay(),
-                    to.plusDays(1).atStartOfDay(), pageable);
+           return sixmclistRepository.findAllByCreatedAtBetweenAndCreatedByAndSitesDeletedIsFalse(from.atStartOfDay(), to.plusDays(1).atStartOfDay(), "Admin",pageable);
         }
         catch (Exception exception){
-            throw new AlreadyExistException(exception.getMessage());
+            throw new RuntimeException(exception.getMessage());
         }
     }
 
