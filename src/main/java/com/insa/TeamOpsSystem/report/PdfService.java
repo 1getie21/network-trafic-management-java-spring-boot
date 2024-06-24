@@ -36,43 +36,40 @@ public class PdfService {
     private final CheckListRepository checkListRepository;
     private final FailedTrafficRepository failedTrafficRepository;
     private final SixMCListRepository sixMCListRepository;
+
+    ByteArrayOutputStream out = new ByteArrayOutputStream();
+    // Initialize PDF writer
+    PdfWriter writer = new PdfWriter(out);
+
+    // Initialize PDF document
+    PdfDocument pdf = new PdfDocument(writer);
+
+    // Initialize document
+    Document document = new Document(pdf);
+
+    // Add image
+    String imagePath = "\\\\10.10.10.112\\home\\img.png";
+
     public ByteArrayInputStream generatePdf(String userName) {
         try {
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
-            // Initialize PDF writer
-            PdfWriter writer = new PdfWriter(out);
-
-            // Initialize PDF document
-            PdfDocument pdf = new PdfDocument(writer);
-
-            // Initialize document
-            Document document = new Document(pdf);
-
-            // Add image
-            String imagePath = "\\\\10.10.10.112\\home\\img.png";
+            Paragraph date = new Paragraph("Date: All")
+                    .setTextAlignment(TextAlignment.RIGHT)
+                    .setUnderline(1.5f, -1);
             Image img = new Image(ImageDataFactory.create(imagePath));
             img.setHorizontalAlignment(HorizontalAlignment.CENTER);
             document.add(img);
-
-            // Add date (initially for "Date: All")
-            Paragraph date = new Paragraph("Date: All")
-                    .setTextAlignment(TextAlignment.RIGHT)
-                    .setUnderline(1.5f, -1); // This will add an underline with a thickness of 1.5 points
-
             document.add(date);
+            Table table = new Table(new float[]{1, 3, 3, 3, 3});
+            table.setWidth(UnitValue.createPercentValue(100));
+            table.setHorizontalAlignment(HorizontalAlignment.CENTER);
 
-            // Add table for traffic data
-            Table trafficTable = new Table(new float[]{1, 3, 3, 3, 3});
-            trafficTable.setWidth(UnitValue.createPercentValue(100));
-            trafficTable.setHorizontalAlignment(HorizontalAlignment.CENTER);
-
-            trafficTable.addCell("No");
-            trafficTable.addCell("Site");
-            trafficTable.addCell("Time");
-            trafficTable.addCell("Total Time Traffic");
+            table.addCell("No");
+            table.addCell("Site");
+            table.addCell("Time");
+            table.addCell("Total Time Traffic");
 //            trafficTable.addCell("CreatedBy");
 //            trafficTable.addCell("CreatedAt");
-            trafficTable.addCell("Remark");
+            table.addCell("Remark");
 
             // Fetch all traffic data (example data)
             List<Ftraffics> ftraffics = trafficRepository.findAllBySitesDeletedIsFalseAndCreatedBy(userName);
@@ -80,19 +77,19 @@ public class PdfService {
             // Add rows
 
             for (Ftraffics traffics : ftraffics) {
-                trafficTable.addCell(String.valueOf(index++));
-                trafficTable.addCell(traffics.getSites() != null ? traffics.getSites().getName() : "");
-                trafficTable.addCell(traffics.getTrafficTimeName() != null ? traffics.getTrafficTimeName() : "");
-                trafficTable.addCell(traffics.getTimeValues() != null ? traffics.getTimeValues() : "");
+                table.addCell(String.valueOf(index++));
+                table.addCell(traffics.getSites() != null ? traffics.getSites().getName() : "");
+                table.addCell(traffics.getTrafficTimeName() != null ? traffics.getTrafficTimeName() : "");
+                table.addCell(traffics.getTimeValues() != null ? traffics.getTimeValues() : "");
 //                trafficTable.addCell(traffics.getCreatedBy() != null ? traffics.getCreatedBy() : "");
 //                trafficTable.addCell((Cell) (traffics.getCreatedAt() != null ? traffics.getCreatedAt() : ""));
-                trafficTable.addCell(traffics.getRemark() != null ? traffics.getRemark() : "");
+                table.addCell(traffics.getRemark() != null ? traffics.getRemark() : "");
             }
 
             // Add table to document
             Div tableDiv = new Div();
             tableDiv.setHorizontalAlignment(HorizontalAlignment.CENTER);
-            tableDiv.add(trafficTable);
+            tableDiv.add(table);
             document.add(tableDiv);
 
             // Close document
@@ -106,18 +103,7 @@ public class PdfService {
 
     public ByteArrayInputStream generatePdfByDateRange(LocalDate from, LocalDate to, String token) {
         try {
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
-            // Initialize PDF writer
-            PdfWriter writer = new PdfWriter(out);
 
-            // Initialize PDF document
-            PdfDocument pdf = new PdfDocument(writer);
-
-            // Initialize document
-            Document document = new Document(pdf);
-
-            // Add image
-            String imagePath = "\\\\10.10.10.112\\home\\img.png";
             Image img = new Image(ImageDataFactory.create(imagePath));
             img.setHorizontalAlignment(HorizontalAlignment.CENTER);
             document.add(img);
@@ -174,18 +160,7 @@ public class PdfService {
 
     public ByteArrayInputStream generatePdfByTrafficTimeName(String trafficTimeName) {
         try {
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
-            // Initialize PDF writer
-            PdfWriter writer = new PdfWriter(out);
 
-            // Initialize PDF document
-            PdfDocument pdf = new PdfDocument(writer);
-
-            // Initialize document
-            Document document = new Document(pdf);
-
-            // Add image
-            String imagePath = "\\\\10.10.10.112\\home\\img.png";
             Image img = new Image(ImageDataFactory.create(imagePath));
             img.setHorizontalAlignment(HorizontalAlignment.CENTER);
             document.add(img);
@@ -235,20 +210,6 @@ public class PdfService {
 
     public ByteArrayInputStream generatePdfReportByRequesters(String createdBy) {
         try {
-            // Create a ByteArrayOutputStream to hold the PDF content
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
-
-            // Initialize PDF writer
-            PdfWriter writer = new PdfWriter(out);
-
-            // Initialize PDF document
-            PdfDocument pdf = new PdfDocument(writer);
-
-            // Initialize document
-            Document document = new Document(pdf);
-
-            // Add image
-            String imagePath = "\\\\10.10.10.112\\home\\img.png";
             Image img = new Image(ImageDataFactory.create(imagePath));
             img.setHorizontalAlignment(HorizontalAlignment.CENTER);
             document.add(img);
@@ -307,15 +268,7 @@ public class PdfService {
 
     public ByteArrayInputStream generatePdfRequestsByDateRange(LocalDate from, LocalDate to, String username) {
         try {
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
-            // Initialize PDF writer
-            PdfWriter writer = new PdfWriter(out);
 
-            // Initialize PDF document
-            Document document = new Document(new PdfDocument(writer));
-
-            // Add image
-            String imagePath = "\\\\10.10.10.112\\home\\img.png";
             Image img = new Image(ImageDataFactory.create(imagePath));
             img.setHorizontalAlignment(HorizontalAlignment.CENTER);
             document.add(img);
@@ -340,7 +293,6 @@ public class PdfService {
             requestTable.addCell("Description");
             requestTable.addCell("Priority");
 
-            // Fetch requests data within specified date range
 
             List<Request> requests = requestRepository.findAllByCreatedAtBetweenAndCreatedBy(from.atStartOfDay(), to.plusDays(1).atStartOfDay(), username);
             int index = 1; // Reset index counter
@@ -378,17 +330,6 @@ public class PdfService {
     //Check List
     public ByteArrayInputStream generatePdfByCheckLists(String createdBy) {
         try {
-
-            // Create a ByteArrayOutputStream to hold the PDF content
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
-
-            // Initialize PDF writer and document
-            PdfWriter writer = new PdfWriter(out);
-            PdfDocument pdf = new PdfDocument(writer);
-            Document document = new Document(pdf);
-
-            // Add image to the document (optional)
-            String imagePath = "\\\\10.10.10.112\\home\\img.png";
             Image img = new Image(ImageDataFactory.create(imagePath));
             img.setHorizontalAlignment(HorizontalAlignment.CENTER);
             document.add(img);
@@ -445,14 +386,7 @@ public class PdfService {
 
     public ByteArrayInputStream generatePdfChecklistByDateRange(LocalDate from, LocalDate to, String username) {
         try {
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
 
-            // Initialize PDF writer and document
-            PdfWriter writer = new PdfWriter(out);
-            Document document = new Document(new PdfDocument(writer));
-
-            // Add image to the document (optional)
-            String imagePath = "\\\\10.10.10.112\\home\\img.png";
             Image img = new Image(ImageDataFactory.create(imagePath));
             img.setHorizontalAlignment(HorizontalAlignment.CENTER);
             document.add(img);
@@ -509,16 +443,11 @@ public class PdfService {
             throw new AlreadyExistException(e.getMessage());
         }
     }
+
     //failed traffic
     public ByteArrayInputStream generatePdfByFailedTraffics(String createdBy) {
         try {
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
-            PdfWriter writer = new PdfWriter(out);
-            PdfDocument pdf = new PdfDocument(writer);
-            Document document = new Document(pdf);
 
-            // Add image to the document (optional)
-            String imagePath = "\\\\10.10.10.112\\home\\img.png";
             Image img = new Image(ImageDataFactory.create(imagePath));
             img.setHorizontalAlignment(HorizontalAlignment.CENTER);
             document.add(img);
@@ -576,83 +505,73 @@ public class PdfService {
             throw new AlreadyExistException(e.getMessage());
         }
     }
-//Date Range
-public ByteArrayInputStream generatePdfFailedTrafficByDateRange(LocalDate from, LocalDate to, String username) {
-    try {
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        PdfWriter writer = new PdfWriter(out);
-        PdfDocument pdf = new PdfDocument(writer);
-        Document document = new Document(pdf);
 
-        // Add image to the document (optional)
-        String imagePath = "\\\\10.10.10.112\\home\\img.png";
-        Image img = new Image(ImageDataFactory.create(imagePath));
-        img.setHorizontalAlignment(HorizontalAlignment.CENTER);
-        document.add(img);
+    //Date Range
+    public ByteArrayInputStream generatePdfFailedTrafficByDateRange(LocalDate from, LocalDate to, String username) {
+        try {
 
-        // Add title for the report
-        Paragraph title = new Paragraph("Failed Traffic Reports")
-                .setTextAlignment(TextAlignment.RIGHT)
-                .setFontSize(16);
-        document.add(title);
+            Image img = new Image(ImageDataFactory.create(imagePath));
+            img.setHorizontalAlignment(HorizontalAlignment.CENTER);
+            document.add(img);
 
-        // Add table headers for failed traffic reports
-        Table failedTrafficTable = new Table(new float[]{1, 3, 3, 3, 3, 3, 3, 3, 3, 3});
-        failedTrafficTable.setWidth(UnitValue.createPercentValue(100));
-        failedTrafficTable.setHorizontalAlignment(HorizontalAlignment.CENTER);
+            // Add title for the report
+            Paragraph title = new Paragraph("Failed Traffic Reports")
+                    .setTextAlignment(TextAlignment.RIGHT)
+                    .setFontSize(16);
+            document.add(title);
 
-        failedTrafficTable.addCell(new Cell().add(new Paragraph("No")));
-        failedTrafficTable.addCell(new Cell().add(new Paragraph("Sites")));
-        failedTrafficTable.addHeaderCell(new Cell().add(new Paragraph("Failed Link Type")));
-        failedTrafficTable.addCell(new Cell().add(new Paragraph("Created At")));
-        failedTrafficTable.addCell(new Cell().add(new Paragraph("Created By")));
-        failedTrafficTable.addCell(new Cell().add(new Paragraph("Reported To")));
-        failedTrafficTable.addCell(new Cell().add(new Paragraph("Fixed At")));
-        failedTrafficTable.addCell(new Cell().add(new Paragraph("Failed At")));
-        failedTrafficTable.addCell(new Cell().add(new Paragraph("Failure Length")));
-        failedTrafficTable.addCell(new Cell().add(new Paragraph("Failed Reason")));
+            // Add table headers for failed traffic reports
+            Table failedTrafficTable = new Table(new float[]{1, 3, 3, 3, 3, 3, 3, 3, 3, 3});
+            failedTrafficTable.setWidth(UnitValue.createPercentValue(100));
+            failedTrafficTable.setHorizontalAlignment(HorizontalAlignment.CENTER);
 
-        List<FailedTraffics> failedTraffics = failedTrafficRepository.findAllByCreatedAtBetweenAndCreatedByAndSitesDeletedIsFalse(from.atStartOfDay(), to.plusDays(1).atStartOfDay(), username);
-        int index = 1;
-        for (FailedTraffics failedTraffic : failedTraffics) {
-            failedTrafficTable.addCell(String.valueOf(index++));
-            failedTrafficTable.addCell(failedTraffic.getSites() != null ? failedTraffic.getSites().getName() : "");
-            failedTrafficTable.addCell(failedTraffic.getFailedLinkType() != null ? failedTraffic.getFailedLinkType() : "");
-            failedTrafficTable.addCell(failedTraffic.getCreatedAt() != null ? failedTraffic.getCreatedAt().toString() : "");
-            failedTrafficTable.addCell(failedTraffic.getCreatedBy() != null ? failedTraffic.getCreatedBy() : "");
-            failedTrafficTable.addCell(failedTraffic.getReportedTo() != null ? failedTraffic.getReportedTo().toString() : "");
-            failedTrafficTable.addCell(failedTraffic.getFixedAt() != null ? failedTraffic.getFixedAt().toString() : "");
-            failedTrafficTable.addCell(failedTraffic.getDisConnectedAt() != null ? failedTraffic.getDisConnectedAt().toString() : "");
-            failedTrafficTable.addCell(failedTraffic.getFailureLength() != null ? failedTraffic.getFailureLength().toString() : "");
-            failedTrafficTable.addCell(failedTraffic.getFailedReason() != null ? failedTraffic.getFailedReason() : "");
+            failedTrafficTable.addCell(new Cell().add(new Paragraph("No")));
+            failedTrafficTable.addCell(new Cell().add(new Paragraph("Sites")));
+            failedTrafficTable.addHeaderCell(new Cell().add(new Paragraph("Failed Link Type")));
+            failedTrafficTable.addCell(new Cell().add(new Paragraph("Created At")));
+            failedTrafficTable.addCell(new Cell().add(new Paragraph("Created By")));
+            failedTrafficTable.addCell(new Cell().add(new Paragraph("Reported To")));
+            failedTrafficTable.addCell(new Cell().add(new Paragraph("Fixed At")));
+            failedTrafficTable.addCell(new Cell().add(new Paragraph("Failed At")));
+            failedTrafficTable.addCell(new Cell().add(new Paragraph("Failure Length")));
+            failedTrafficTable.addCell(new Cell().add(new Paragraph("Failed Reason")));
+
+            List<FailedTraffics> failedTraffics = failedTrafficRepository.findAllByCreatedAtBetweenAndCreatedByAndSitesDeletedIsFalse(from.atStartOfDay(), to.plusDays(1).atStartOfDay(), username);
+            int index = 1;
+            for (FailedTraffics failedTraffic : failedTraffics) {
+                failedTrafficTable.addCell(String.valueOf(index++));
+                failedTrafficTable.addCell(failedTraffic.getSites() != null ? failedTraffic.getSites().getName() : "");
+                failedTrafficTable.addCell(failedTraffic.getFailedLinkType() != null ? failedTraffic.getFailedLinkType() : "");
+                failedTrafficTable.addCell(failedTraffic.getCreatedAt() != null ? failedTraffic.getCreatedAt().toString() : "");
+                failedTrafficTable.addCell(failedTraffic.getCreatedBy() != null ? failedTraffic.getCreatedBy() : "");
+                failedTrafficTable.addCell(failedTraffic.getReportedTo() != null ? failedTraffic.getReportedTo().toString() : "");
+                failedTrafficTable.addCell(failedTraffic.getFixedAt() != null ? failedTraffic.getFixedAt().toString() : "");
+                failedTrafficTable.addCell(failedTraffic.getDisConnectedAt() != null ? failedTraffic.getDisConnectedAt().toString() : "");
+                failedTrafficTable.addCell(failedTraffic.getFailureLength() != null ? failedTraffic.getFailureLength().toString() : "");
+                failedTrafficTable.addCell(failedTraffic.getFailedReason() != null ? failedTraffic.getFailedReason() : "");
+            }
+
+            // Add table to document
+            Div tableDiv = new Div();
+            tableDiv.setHorizontalAlignment(HorizontalAlignment.CENTER);
+            tableDiv.add(failedTrafficTable);
+            document.add(tableDiv);
+
+            // Close the document
+            document.close();
+
+            // Return the PDF as a ByteArrayInputStream
+            return new ByteArrayInputStream(out.toByteArray());
+
+        } catch (Exception e) {
+            throw new AlreadyExistException(e.getMessage());
         }
-
-        // Add table to document
-        Div tableDiv = new Div();
-        tableDiv.setHorizontalAlignment(HorizontalAlignment.CENTER);
-        tableDiv.add(failedTrafficTable);
-        document.add(tableDiv);
-
-        // Close the document
-        document.close();
-
-        // Return the PDF as a ByteArrayInputStream
-        return new ByteArrayInputStream(out.toByteArray());
-
-    } catch (Exception e) {
-        throw new AlreadyExistException(e.getMessage());
     }
-}
+
     // SixMCList
     public ByteArrayInputStream generatePdfBySixCList(String createdBy) {
         try {
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
-            PdfWriter writer = new PdfWriter(out);
-            PdfDocument pdf = new PdfDocument(writer);
-            Document document = new Document(pdf);
 
-            // Add image to the document (optional)
-            String imagePath = "\\\\10.10.10.112\\home\\img.png";
             Image img = new Image(ImageDataFactory.create(imagePath));
             img.setHorizontalAlignment(HorizontalAlignment.CENTER);
             document.add(img);
@@ -679,7 +598,7 @@ public ByteArrayInputStream generatePdfFailedTrafficByDateRange(LocalDate from, 
             sixMListTable.addCell("Server");
             sixMListTable.addCell("Routine");
 
-            List<SixMCList> sixMList = sixMCListRepository.findAllByCreatedBy(createdBy);
+            List<SixMCList> sixMList = sixMCListRepository.findAllByCreatedByAndSitesDeletedIsFalse(createdBy);
             int index = 1;
             for (SixMCList item : sixMList) {
                 sixMListTable.addCell(String.valueOf(index++));
@@ -709,16 +628,10 @@ public ByteArrayInputStream generatePdfFailedTrafficByDateRange(LocalDate from, 
             throw new AlreadyExistException(e.getMessage());
         }
     }
+
     // Date Range
     public ByteArrayInputStream generatePdfSixCListByByDateRange(LocalDate from, LocalDate to, String username) {
         try {
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
-            PdfWriter writer = new PdfWriter(out);
-            PdfDocument pdf = new PdfDocument(writer);
-            Document document = new Document(pdf);
-
-            // Add image to the document (optional)
-            String imagePath = "\\\\10.10.10.112\\home\\img.png";
             Image img = new Image(ImageDataFactory.create(imagePath));
             img.setHorizontalAlignment(HorizontalAlignment.CENTER);
             document.add(img);
@@ -775,6 +688,6 @@ public ByteArrayInputStream generatePdfFailedTrafficByDateRange(LocalDate from, 
             throw new AlreadyExistException(e.getMessage());
         }
     }
-    }
+}
 
 

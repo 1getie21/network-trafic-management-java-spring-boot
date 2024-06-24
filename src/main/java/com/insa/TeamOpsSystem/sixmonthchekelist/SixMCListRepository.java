@@ -1,6 +1,5 @@
 package com.insa.TeamOpsSystem.sixmonthchekelist;
 
-import com.insa.TeamOpsSystem.CheckList.CheckList;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -18,13 +17,9 @@ public interface SixMCListRepository extends PagingAndSortingRepository<SixMCLis
 
     Page<SixMCList> findAllByCreatedByAndSitesDeletedIsFalseOrderByCreatedAtDesc(String username, Pageable pageable);
 
+    List<SixMCList> findAllByCreatedByAndSitesDeletedIsFalse(String createdBy);
 
-    List<SixMCList> findAllByCreatedAtBetweenAndCreatedBy(LocalDateTime atStartOfDay,
-                                                          LocalDateTime atStartOfDay1,
-                                                          String   userName,Pageable pageable);
-    List<SixMCList> findAllByCreatedBy(String createdBy);
-
-    Page<SixMCList> findAllByCreatedAtBetween(LocalDateTime atStartOfDay, LocalDateTime atStartOfDay1, Pageable pageable);
+    Page<SixMCList> findAllByCreatedAtBetweenAndSitesDeletedIsFalse(LocalDateTime atStartOfDay, LocalDateTime atStartOfDay1, Pageable pageable);
 
     List<SixMCList> findAllByCreatedAtBetweenAndCreatedByAndSitesDeletedIsFalse(LocalDateTime atStartOfDay, LocalDateTime atStartOfDay1, String username);
 }

@@ -6,13 +6,14 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "sixmclist")
 @Data
 @Where(clause = "deleted=0")
 @SQLDelete(sql = "UPDATE sixmclist SET deleted = 1 WHERE id=? and version=?")
-public class SixMCList extends Auditable {
+public class SixMCList extends Auditable implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

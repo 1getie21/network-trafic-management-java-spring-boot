@@ -6,5 +6,5 @@ import org.mapstruct.Mapper;
 public interface SixMCListMapper {
     SixMCList toTraffics(SixMCListDtos sixmclistDtos);
 
-    SixMCListDtos toTrafficsDto(SixMCList sixmclist);
+    SixMCListDtos toSixMCListDtos(SixMCList sixmclist);
 }

@@ -1,6 +1,7 @@
 package com.insa.TeamOpsSystem.sixmonthchekelist;
 
-import com.insa.TeamOpsSystem.CheckList.CheckListDtos;
+import com.insa.TeamOpsSystem.exceptions.AlreadyExistException;
+import com.insa.TeamOpsSystem.failedTraffics.FailedTrafficDtos;
 import com.insa.TeamOpsSystem.jwt.PaginatedResultsRetrievedEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
@@ -28,41 +29,49 @@ public class SixMCListController {
 
     @PostMapping
     public SixMCList createTraffics(@RequestBody SixMCList sixmclist, UsernamePasswordAuthenticationToken token) throws IllegalAccessException {
-        return sixmclistService.createTraffics(sixmclist,token);
+        return sixmclistService.createTraffics(sixmclist, token);
     }
 
     @GetMapping("/{id}")
     public SixMCList getTrafficById(@PathVariable("id") long id) {
-        return sixmclistService.getTrafficById(id);}
+        return sixmclistService.getTrafficById(id);
+    }
 
 
     @GetMapping
     public Page<SixMCList> getAllTraffics(Pageable pageable, UsernamePasswordAuthenticationToken token) {
-        return sixmclistService.getAllTraffics(pageable,token);
+        return sixmclistService.getAllTraffics(pageable, token);
     }
 
     @PutMapping("/{id}")
-    public SixMCList updateTrafficById(@PathVariable("id") long id,@RequestBody SixMCList sixmclist, UsernamePasswordAuthenticationToken token) throws IllegalAccessException {
+    public SixMCList updateTrafficById(@PathVariable("id") long id, @RequestBody SixMCList sixmclist, UsernamePasswordAuthenticationToken token) throws IllegalAccessException {
 
-        return sixmclistService.updateTrafficById(id,sixmclist,token);
+        return sixmclistService.updateTrafficById(id, sixmclist, token);
     }
 
     @DeleteMapping("/{id}")
     public void deleteTrafficById(@PathVariable("id") long id, UsernamePasswordAuthenticationToken token) {
-        sixmclistService.deleteTrafficById(id,token);
+        sixmclistService.deleteTrafficById(id, token);
     }
+
 
     @GetMapping("/{from}/{to}")
     @ResponseStatus(HttpStatus.OK)
     ResponseEntity<PagedModel<SixMCListDtos>> findAllByCreatedAtBetween(
-            @PathVariable("from")  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from
-            , @PathVariable("to")  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to
+            @PathVariable("from") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from
+            , @PathVariable("to") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to
             , Pageable pageable,
             PagedResourcesAssembler assembler,
             UriComponentsBuilder uriBuilder,
             final HttpServletResponse response) {
         eventPublisher.publishEvent(new PaginatedResultsRetrievedEvent<>(
-                SixMCListDtos.class, uriBuilder, response, pageable.getPageNumber(), sixmclistService.findAllByCreatedAtBetween(from,to, pageable).getTotalPages(), pageable.getPageSize()));
-        return new ResponseEntity<PagedModel<SixMCListDtos>>(assembler.toModel(sixmclistService.findAllByCreatedAtBetween(from,to, pageable).map(sixmclistMapper::toTrafficsDto)), HttpStatus.OK);
+                SixMCListDtos.class, uriBuilder, response, pageable.getPageNumber(), sixmclistService.findAllByCreatedAtBetween(from, to, pageable).getTotalPages(), pageable.getPageSize()));
+        try {
+            return new ResponseEntity<PagedModel<SixMCListDtos>>(
+                    assembler.toModel(sixmclistService.findAllByCreatedAtBetween(from, to, pageable).map(sixmclistMapper::toSixMCListDtos))
+                    , HttpStatus.OK);
+        } catch (Exception exception) {
+            throw new AlreadyExistException(exception.getMessage());
+        }
     }
 }

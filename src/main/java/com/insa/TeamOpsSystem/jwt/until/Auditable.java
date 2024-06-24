@@ -22,8 +22,6 @@ import java.time.LocalDateTime;
 @EntityListeners(AuditingEntityListener.class)
 @Getter
 @Setter
-@ToString
-@RequiredArgsConstructor
 public abstract class Auditable implements Serializable {
 
     @Schema(hidden = true)

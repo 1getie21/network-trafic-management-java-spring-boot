@@ -1,7 +1,7 @@
 package com.insa.TeamOpsSystem.sixmonthchekelist;
 
 
-import com.insa.TeamOpsSystem.CheckList.CheckList;
+import com.insa.TeamOpsSystem.exceptions.AlreadyExistException;
 import com.insa.TeamOpsSystem.exceptions.EntityNotFoundException;
 import com.insa.TeamOpsSystem.jwt.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
@@ -61,9 +61,14 @@ public class SixMCListService {
     }
 
     public Page<SixMCList> findAllByCreatedAtBetween(LocalDate from, LocalDate to, Pageable pageable) {
-        return sixmclistRepository.findAllByCreatedAtBetween(
-                from.atStartOfDay(),
-                to.plusDays(1).atStartOfDay(),pageable);
+        try {
+           return sixmclistRepository.findAllByCreatedAtBetweenAndSitesDeletedIsFalse(
+                    from.atStartOfDay(),
+                    to.plusDays(1).atStartOfDay(), pageable);
+        }
+        catch (Exception exception){
+            throw new AlreadyExistException(exception.getMessage());
+        }
     }
 
 }
