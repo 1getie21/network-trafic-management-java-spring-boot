@@ -20,4 +20,12 @@ public interface FailedTrafficRepository extends PagingAndSortingRepository<Fail
     Page<FailedTraffics> findAllBySitesDeletedIsFalse(Pageable pageable);
 
     List<FailedTraffics> findAllByCreatedAtBetweenAndSitesDeletedIsFalse(LocalDateTime atStartOfDay, LocalDateTime atStartOfDay1);
+
+    List<FailedTraffics> findAllByCreatedByAndSitesDeletedIsFalse(String createdBy);
+
+    Page<FailedTraffics> findAllByCreatedAtBetween(LocalDateTime atStartOfDay, LocalDateTime atStartOfDay1, Pageable pageable);
+
+    List<FailedTraffics> findAllByCreatedBy(String createdBy);
+
+    List<FailedTraffics> findAllByCreatedAtBetweenAndCreatedByAndSitesDeletedIsFalse(LocalDateTime atStartOfDay, LocalDateTime atStartOfDay1, String username);
 }

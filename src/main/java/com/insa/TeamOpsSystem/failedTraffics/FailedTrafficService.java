@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
+import java.time.LocalDate;
 
 import static com.insa.TeamOpsSystem.jwt.until.Util.getNullPropertyNames;
 
@@ -71,4 +72,9 @@ public class FailedTrafficService {
     }
 
 
+    public Page<FailedTraffics> findAllByCreatedAtBetween(LocalDate from, LocalDate to, Pageable pageable) {
+        return failedTrafficRepository.findAllByCreatedAtBetween(
+                from.atStartOfDay(),
+                to.plusDays(1).atStartOfDay(),pageable);
+    }
 }

@@ -1,6 +1,7 @@
 package com.insa.TeamOpsSystem.sixmonthchekelist;
 
 
+import com.insa.TeamOpsSystem.CheckList.CheckList;
 import com.insa.TeamOpsSystem.exceptions.EntityNotFoundException;
 import com.insa.TeamOpsSystem.jwt.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +11,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
 
 import static com.insa.TeamOpsSystem.jwt.until.Util.getNullPropertyNames;
 
@@ -57,5 +60,10 @@ public class SixMCListService {
         sixmclistRepository.deleteById(id);
     }
 
+    public Page<SixMCList> findAllByCreatedAtBetween(LocalDate from, LocalDate to, Pageable pageable) {
+        return sixmclistRepository.findAllByCreatedAtBetween(
+                from.atStartOfDay(),
+                to.plusDays(1).atStartOfDay(),pageable);
+    }
 
 }

@@ -2,19 +2,21 @@ package com.insa.TeamOpsSystem.failedTraffics;
 
 
 import com.insa.TeamOpsSystem.jwt.PaginatedResultsRetrievedEvent;
+import com.insa.TeamOpsSystem.request.RequestDtos;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.servlet.http.HttpServletResponse;
+import java.time.LocalDate;
 
 @RestController
 @RequestMapping("/failed-traffics")
@@ -49,5 +51,19 @@ public class FailedTrafficController implements FailedTrafficApi {
         eventPublisher.publishEvent(new PaginatedResultsRetrievedEvent<>(
                 FailedTrafficDtos.class, uriBuilder, response, pageable.getPageNumber(), failedTrafficService.getAllTraffics(pageable,token).getTotalPages(), pageable.getPageSize()));
         return new ResponseEntity<PagedModel<FailedTrafficDtos>>(assembler.toModel(failedTrafficService.getAllTraffics(pageable,token).map(failedTrafficMapper::toTrafficsDto)), HttpStatus.OK);
+    }
+
+    @GetMapping("/{from}/{to}")
+    @ResponseStatus(HttpStatus.OK)
+    ResponseEntity<PagedModel<FailedTrafficDtos>> findAllByCreatedAtBetween(
+            @PathVariable("from")  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from
+            , @PathVariable("to")  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to
+            , Pageable pageable,
+            PagedResourcesAssembler assembler,
+            UriComponentsBuilder uriBuilder,
+            final HttpServletResponse response) {
+        eventPublisher.publishEvent(new PaginatedResultsRetrievedEvent<>(
+                FailedTrafficDtos.class, uriBuilder, response, pageable.getPageNumber(), failedTrafficService.findAllByCreatedAtBetween(from,to, pageable).getTotalPages(), pageable.getPageSize()));
+        return new ResponseEntity<PagedModel<FailedTrafficDtos>>(assembler.toModel(failedTrafficService.findAllByCreatedAtBetween(from,to, pageable).map(failedTrafficMapper::toTrafficsDto)), HttpStatus.OK);
     }
 }

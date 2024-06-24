@@ -19,7 +19,7 @@ public interface CheckListRepository extends JpaRepository<CheckList, Long>, Jpa
 
     Page<CheckList> findAllByCreatedByAndSitesDeletedIsFalseOrderByCreatedAtDesc(String username, Pageable pageable);
 
-    Page<CheckList> findAllByCreatedAtBetweenAndSitesDeletedIsFalse(LocalDateTime atStartOfDay, LocalDateTime atStartOfDay1, Pageable pageable);
+    Page<CheckList> findAllByCreatedAtBetween(LocalDateTime atStartOfDay, LocalDateTime atStartOfDay1, Pageable pageable);
     List<CheckList> findAllByCreatedAtBetweenAndCreatedByAndSitesDeletedIsFalse(LocalDateTime from, LocalDateTime to, String username);
     List<CheckList> findAllByCreatedByAndSitesDeletedIsFalse(String createdBy);
 }

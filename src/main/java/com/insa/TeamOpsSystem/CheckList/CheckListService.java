@@ -69,7 +69,7 @@ public class CheckListService {
 //    }
 
     public Page<CheckList> findAllByCreatedAtBetween(LocalDate from, LocalDate to, Pageable pageable) {
-        return checkListRepository.findAllByCreatedAtBetweenAndSitesDeletedIsFalse(
+        return checkListRepository.findAllByCreatedAtBetween(
                 from.atStartOfDay(),
                 to.plusDays(1).atStartOfDay(),pageable);
     }

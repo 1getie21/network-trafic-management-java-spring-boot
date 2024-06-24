@@ -1,7 +1,5 @@
 package com.insa.TeamOpsSystem.request;
 
-
-import com.insa.TeamOpsSystem.FTraffic.Ftraffics;
 import com.insa.TeamOpsSystem.exceptions.AlreadyExistException;
 import com.insa.TeamOpsSystem.exceptions.EntityNotFoundException;
 import com.insa.TeamOpsSystem.jwt.UserDetailsImpl;

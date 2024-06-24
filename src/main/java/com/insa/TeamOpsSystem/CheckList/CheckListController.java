@@ -1,6 +1,7 @@
 package com.insa.TeamOpsSystem.CheckList;
 
 
+import com.insa.TeamOpsSystem.FTraffic.FTrafficDtos;
 import com.insa.TeamOpsSystem.jwt.PaginatedResultsRetrievedEvent;
 import com.insa.TeamOpsSystem.request.RequestDtos;
 import lombok.RequiredArgsConstructor;
@@ -73,7 +74,7 @@ public class CheckListController {
 
     @GetMapping("/{from}/{to}")
     @ResponseStatus(HttpStatus.OK)
-    ResponseEntity<PagedModel<RequestDtos>> findAllByCreatedAtBetween(
+    ResponseEntity<PagedModel<CheckListDtos>> findAllByCreatedAtBetween(
             @PathVariable("from")  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from
             , @PathVariable("to")  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to
             , Pageable pageable,
@@ -81,7 +82,7 @@ public class CheckListController {
             UriComponentsBuilder uriBuilder,
             final HttpServletResponse response) {
         eventPublisher.publishEvent(new PaginatedResultsRetrievedEvent<>(
-                RequestDtos.class, uriBuilder, response, pageable.getPageNumber(), checkListService.findAllByCreatedAtBetween(from,to, pageable).getTotalPages(), pageable.getPageSize()));
-        return new ResponseEntity<PagedModel<RequestDtos>>(assembler.toModel(checkListService.findAllByCreatedAtBetween(from,to, pageable).map(checkListMapper::toTrafficsDto)), HttpStatus.OK);
+                CheckListDtos.class, uriBuilder, response, pageable.getPageNumber(), checkListService.findAllByCreatedAtBetween(from,to, pageable).getTotalPages(), pageable.getPageSize()));
+        return new ResponseEntity<PagedModel<CheckListDtos>>(assembler.toModel(checkListService.findAllByCreatedAtBetween(from,to, pageable).map(checkListMapper::toTrafficsDto)), HttpStatus.OK);
     }
 }
