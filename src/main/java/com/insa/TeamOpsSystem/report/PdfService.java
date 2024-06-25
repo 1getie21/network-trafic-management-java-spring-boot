@@ -632,9 +632,9 @@ public class PdfService {
     // Date Range
     public ByteArrayInputStream generatePdfSixCListByByDateRange(LocalDate from, LocalDate to, String username) {
         try {
-            Image img = new Image(ImageDataFactory.create(imagePath));
-            img.setHorizontalAlignment(HorizontalAlignment.CENTER);
-            document.add(img);
+//            Image img = new Image(ImageDataFactory.create(imagePath));
+//            img.setHorizontalAlignment(HorizontalAlignment.CENTER);
+//            document.add(img);
 
             // Add title for the report
             Paragraph title = new Paragraph("Six M List Reports") // Update title as needed
@@ -658,7 +658,7 @@ public class PdfService {
             sixMListTable.addCell("Server");
             sixMListTable.addCell("Routine");
 
-            List<SixMCList> sixMList = (List<SixMCList>) sixMCListRepository.findAllByCreatedAtBetweenAndCreatedByAndSitesDeletedIsFalse(from.atStartOfDay(), to.plusDays(1).atStartOfDay(), username);
+            List<SixMCList> sixMList = sixMCListRepository.findAllByCreatedAtBetweenAndCreatedByAndSitesDeletedIsFalse(from.atStartOfDay(), to.plusDays(1).atStartOfDay(), username);
             int index = 1;
             for (SixMCList item : sixMList) {
                 sixMListTable.addCell(String.valueOf(index++));

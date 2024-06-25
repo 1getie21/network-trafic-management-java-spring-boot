@@ -57,7 +57,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 "/api/pdf/*/**",
                 "/api/pdf/request/*/**",
                 "/api/pdf/check_list/*/**",
-                "/api/pdf/failed-traffic/*/**",
+                "/api/pdf/failed-traffics/*/**",
                 "/api/pdf/sixmclist/*/**",
                 "/api/pdf",
                 "/swagger-resources/**",
