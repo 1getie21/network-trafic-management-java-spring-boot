@@ -248,14 +248,14 @@ public class PdfService {
             Document document = new Document(pdf);
 
             // Add image
-            String imagePath = "\\\\10.10.10.112\\home\\img.png";
-            Image img = new Image(ImageDataFactory.create(imagePath));
-            img.setHorizontalAlignment(HorizontalAlignment.CENTER);
-            document.add(img);
+            String imagePath = "\\\\10.10.10.112\\home\\img3.png";
+            Image img3 = new Image(ImageDataFactory.create(imagePath));
+            img3.setHorizontalAlignment(HorizontalAlignment.CENTER);
+            document.add(img3);
 
 
             // Add date (initially for "Date: All")
-            Paragraph title = new Paragraph("Request:Reports")
+            Paragraph title = new Paragraph("All Traffic Control Service Request Reports")
                     .setTextAlignment(TextAlignment.RIGHT)
                     .setUnderline(1.5f, -1); // This will add an underline with a thickness of 1.5 points
 
@@ -266,7 +266,7 @@ public class PdfService {
             requestTable.setWidth(UnitValue.createPercentValue(100));
             requestTable.setHorizontalAlignment(HorizontalAlignment.CENTER);
             requestTable.addCell("No");
-            requestTable.addCell("Created At");
+           // requestTable.addCell("Created At");
             requestTable.addCell("Created By");
             requestTable.addCell("Phone");
             requestTable.addCell("Email");
@@ -282,7 +282,7 @@ public class PdfService {
 
             for (Request request : requestIterable) {
                 requestTable.addCell(String.valueOf(index++));
-                requestTable.addCell(request.getCreatedAt() != null ? request.getCreatedAt().toString() : "");
+               // requestTable.addCell(request.getCreatedAt() != null ? request.getCreatedAt().toString() : "");
                 requestTable.addCell(request.getCreatedBy() != null ? request.getCreatedBy() : "");
                 requestTable.addCell(request.getPhone() != null ? request.getPhone() : "");
                 requestTable.addCell(request.getEmail() != null ? request.getEmail() : "");
@@ -322,10 +322,10 @@ public class PdfService {
             Document document = new Document(pdf);
 
             // Add image
-            String imagePath = "\\\\10.10.10.112\\home\\img.png";
-            Image img = new Image(ImageDataFactory.create(imagePath));
-            img.setHorizontalAlignment(HorizontalAlignment.CENTER);
-            document.add(img);
+            String imagePath = "\\\\10.10.10.112\\home\\img3.png";
+            Image img3 = new Image(ImageDataFactory.create(imagePath));
+            img3.setHorizontalAlignment(HorizontalAlignment.CENTER);
+            document.add(img3);
             // Add date (for specified date range)
             Paragraph date = new Paragraph("Date: " + from.toString() + " - " + to.toString())
                     .setTextAlignment(TextAlignment.RIGHT)
@@ -338,7 +338,7 @@ public class PdfService {
             requestTable.setHorizontalAlignment(HorizontalAlignment.CENTER);
 
             requestTable.addCell("No");
-            requestTable.addCell("Created At");
+           // requestTable.addCell("Created At");
             requestTable.addCell("Created By");
             requestTable.addCell("Phone");
             requestTable.addCell("Email");
@@ -355,7 +355,7 @@ public class PdfService {
 // Add request data rows
             for (Request request : requests) {
                 requestTable.addCell(String.valueOf(index++));
-                requestTable.addCell(request.getCreatedAt() != null ? request.getCreatedAt().toString() : "");
+               // requestTable.addCell(request.getCreatedAt() != null ? request.getCreatedAt().toString() : "");
                 requestTable.addCell(request.getCreatedBy() != null ? request.getCreatedBy() : "");
                 requestTable.addCell(request.getPhone() != null ? request.getPhone() : "");
                 requestTable.addCell(request.getEmail() != null ? request.getEmail() : "");
@@ -399,13 +399,13 @@ public class PdfService {
             Document document = new Document(pdf);
 
             // Add image
-            String imagePath = "\\\\10.10.10.112\\home\\img.png";
-            Image img = new Image(ImageDataFactory.create(imagePath));
-            img.setHorizontalAlignment(HorizontalAlignment.CENTER);
-            document.add(img);
+            String imagePath = "\\\\10.10.10.112\\home\\img1.png";
+            Image img1 = new Image(ImageDataFactory.create(imagePath));
+            img1.setHorizontalAlignment(HorizontalAlignment.CENTER);
+            document.add(img1);
 
             // Add title for the report
-            Paragraph title = new Paragraph("Checklist Reports")
+            Paragraph title = new Paragraph("All Traffic Processing Capacity Reports")
                     .setTextAlignment(TextAlignment.RIGHT)
                     .setUnderline(1.5f, -1)
                     .setFontSize(16);
@@ -417,14 +417,14 @@ public class PdfService {
             checklistTable.setHorizontalAlignment(HorizontalAlignment.CENTER);
 
 
-            checklistTable.addHeaderCell(new Cell().add(new Paragraph("No")));
-            checklistTable.addHeaderCell(new Cell().add(new Paragraph("Sites")));
-            checklistTable.addHeaderCell(new Cell().add(new Paragraph("Link Type")));
-            checklistTable.addHeaderCell(new Cell().add(new Paragraph("Download")));
-            checklistTable.addHeaderCell(new Cell().add(new Paragraph("Upload")));
-            checklistTable.addHeaderCell(new Cell().add(new Paragraph("Created By")));
-            checklistTable.addHeaderCell(new Cell().add(new Paragraph("Nbp Total")));
-            checklistTable.addHeaderCell(new Cell().add(new Paragraph("Avg NBP")));
+            checklistTable.addCell("No");
+            checklistTable.addCell("Sites");
+            checklistTable.addCell("Link Type");
+            checklistTable.addCell("Download");
+            checklistTable.addCell("Upload");
+            checklistTable.addCell("Created By");
+            checklistTable.addCell("Nbp Total");
+            checklistTable.addCell("Avg NBP");
 
             List<CheckList> checkLists = checkListRepository.findAllByCreatedByAndSitesDeletedIsFalse(createdBy);
             int index = 1;
@@ -468,11 +468,11 @@ public class PdfService {
             Document document = new Document(pdf);
 
             // Add image
-            String imagePath = "\\\\10.10.10.112\\home\\img.png";
+            String imagePath = "\\\\10.10.10.112\\home\\img1.png";
 
-            Image img = new Image(ImageDataFactory.create(imagePath));
-            img.setHorizontalAlignment(HorizontalAlignment.CENTER);
-            document.add(img);
+            Image img1 = new Image(ImageDataFactory.create(imagePath));
+            img1.setHorizontalAlignment(HorizontalAlignment.CENTER);
+            document.add(img1);
 
             // Add date (for specified date range)
             Paragraph date = new Paragraph("Date: " + from.toString() + " - " + to.toString())
@@ -485,14 +485,14 @@ public class PdfService {
             checklistTable.setWidth(UnitValue.createPercentValue(100));
             checklistTable.setHorizontalAlignment(HorizontalAlignment.CENTER);
 
-            checklistTable.addHeaderCell(new Cell().add(new Paragraph("No")));
-            checklistTable.addHeaderCell(new Cell().add(new Paragraph("Sites")));
-            checklistTable.addHeaderCell(new Cell().add(new Paragraph("Link Type")));
-            checklistTable.addHeaderCell(new Cell().add(new Paragraph("Download")));
-            checklistTable.addHeaderCell(new Cell().add(new Paragraph("Upload")));
-            checklistTable.addHeaderCell(new Cell().add(new Paragraph("Created By")));
-            checklistTable.addHeaderCell(new Cell().add(new Paragraph("Nbp Total")));
-            checklistTable.addHeaderCell(new Cell().add(new Paragraph("Avg NBP")));
+            checklistTable.addCell("No");
+            checklistTable.addCell("Sites");
+            checklistTable.addCell("Link Type");
+            checklistTable.addCell("Download");
+            checklistTable.addCell("Upload");
+            checklistTable.addCell("Created By");
+            checklistTable.addCell("Nbp Total");
+            checklistTable.addCell("Avg NBP");
 
             // Fetch checklist data within specified date range
             List<CheckList> checkLists = checkListRepository.findAllByCreatedAtBetweenAndCreatedByAndSitesDeletedIsFalse(from.atStartOfDay(), to.plusDays(1).atStartOfDay(), username);
@@ -559,16 +559,16 @@ public class PdfService {
             failedTrafficTable.setWidth(UnitValue.createPercentValue(100));
             failedTrafficTable.setHorizontalAlignment(HorizontalAlignment.CENTER);
 
-            failedTrafficTable.addHeaderCell(new Cell().add(new Paragraph("No")));
-            failedTrafficTable.addHeaderCell(new Cell().add(new Paragraph("Sites")));
-            failedTrafficTable.addHeaderCell(new Cell().add(new Paragraph("Failed Link Type")));
-            failedTrafficTable.addHeaderCell(new Cell().add(new Paragraph("Created At")));
-            failedTrafficTable.addHeaderCell(new Cell().add(new Paragraph("Created By")));
-            failedTrafficTable.addHeaderCell(new Cell().add(new Paragraph("Reported To")));
-            failedTrafficTable.addHeaderCell(new Cell().add(new Paragraph("Fixed At")));
-            failedTrafficTable.addHeaderCell(new Cell().add(new Paragraph("Failed At")));
-            failedTrafficTable.addHeaderCell(new Cell().add(new Paragraph("Failure Length")));
-            failedTrafficTable.addHeaderCell(new Cell().add(new Paragraph("Failed Reason")));
+            failedTrafficTable.addCell("No");
+            failedTrafficTable.addCell("Sites");
+            failedTrafficTable.addCell("Failed Link Type");
+            failedTrafficTable.addCell("Created At");
+            failedTrafficTable.addCell("Created By");
+            failedTrafficTable.addCell("Reported To");
+            failedTrafficTable.addCell("Fixed At");
+            failedTrafficTable.addCell("Failed At");
+            failedTrafficTable.addCell("Failure Length");
+            failedTrafficTable.addCell("Failed Reason");
 
             List<FailedTraffics> failedTraffics = failedTrafficRepository.findAllByCreatedByAndSitesDeletedIsFalse(createdBy);
             int index = 1;
@@ -623,11 +623,10 @@ public class PdfService {
             document.add(img);
 
             // Add title for the report
-            Paragraph title = new Paragraph("Failed Traffic Reports")
+            Paragraph date = new Paragraph("Date: " + from.toString() + " - " + to.toString())
                     .setTextAlignment(TextAlignment.RIGHT)
-                    .setUnderline(1.5f, -1)
-                    .setFontSize(16);
-            document.add(title);
+                    .setUnderline(1.5f, -1); // This will add an underline with a thickness of 1.5 points
+            document.add(date);
 
             // Add table headers for failed traffic reports
             Table failedTrafficTable = new Table(new float[]{1, 3, 3, 3, 3, 3, 3, 3, 3, 3});
@@ -691,13 +690,14 @@ public class PdfService {
             Document document = new Document(pdf);
 
             // Add image
-            String imagePath = "\\\\10.10.10.112\\home\\img.png";
-            Image img = new Image(ImageDataFactory.create(imagePath));
-            img.setHorizontalAlignment(HorizontalAlignment.CENTER);
-            document.add(img);
+            String imagePath = "\\\\10.10.10.112\\home\\img2.png";
+            //System.out.println("Image Path: " + imagePath);
+            Image img2 = new Image(ImageDataFactory.create(imagePath));
+            img2.setHorizontalAlignment(HorizontalAlignment.CENTER);
+            document.add(img2);
 
             // Add title for the report
-            Paragraph title = new Paragraph("Six Month Check List Reports")
+            Paragraph title = new Paragraph("All Six Month Security System Managment Reports")
                     .setTextAlignment(TextAlignment.RIGHT)
                     .setUnderline(1.5f, -1)
                     .setFontSize(16);
@@ -772,11 +772,11 @@ public class PdfService {
             Document document = new Document(pdf);
 
             // Add image
-            String imagePath = "\\\\10.10.10.112\\home\\img.png";
+            String imagePath = "\\\\10.10.10.112\\home\\img2.png";
 
-            Image img = new Image(ImageDataFactory.create(imagePath));
-            img.setHorizontalAlignment(HorizontalAlignment.CENTER);
-            document.add(img);
+            Image img2 = new Image(ImageDataFactory.create(imagePath));
+            img2.setHorizontalAlignment(HorizontalAlignment.CENTER);
+            document.add(img2);
 
             // Add title for the report
             Paragraph title = new Paragraph("Six Month Check List Reports")
