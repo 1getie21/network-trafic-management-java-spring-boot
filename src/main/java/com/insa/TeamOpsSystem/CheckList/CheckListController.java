@@ -1,9 +1,7 @@
 package com.insa.TeamOpsSystem.CheckList;
 
 
-import com.insa.TeamOpsSystem.FTraffic.FTrafficDtos;
 import com.insa.TeamOpsSystem.jwt.PaginatedResultsRetrievedEvent;
-import com.insa.TeamOpsSystem.request.RequestDtos;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Pageable;

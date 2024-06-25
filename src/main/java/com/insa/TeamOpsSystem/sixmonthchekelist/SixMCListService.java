@@ -35,7 +35,6 @@ public class SixMCListService {
         return sixmclistRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(SixMCList.class, "  Type with an id: " + id + " was not found!"));
     }
 
-
     public Page<SixMCList> getAllTraffics(Pageable pageable, UsernamePasswordAuthenticationToken token) {
 
         UserDetailsImpl userDetails = (UserDetailsImpl) token.getPrincipal();

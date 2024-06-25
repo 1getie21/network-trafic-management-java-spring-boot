@@ -28,4 +28,5 @@ public interface FailedTrafficRepository extends PagingAndSortingRepository<Fail
     List<FailedTraffics> findAllByCreatedBy(String createdBy);
 
     List<FailedTraffics> findAllByCreatedAtBetweenAndCreatedByAndSitesDeletedIsFalse(LocalDateTime atStartOfDay, LocalDateTime atStartOfDay1, String username);
+
 }

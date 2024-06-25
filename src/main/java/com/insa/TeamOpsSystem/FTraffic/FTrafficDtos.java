@@ -10,5 +10,5 @@ public class FTrafficDtos extends Auditable {
     private String trafficTimeName;
     private  String timeValues;
     private Sites sites;
-   private String remark;
+    private String remark;
 }

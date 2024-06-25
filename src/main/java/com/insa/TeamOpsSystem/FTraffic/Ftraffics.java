@@ -1,6 +1,5 @@
 package com.insa.TeamOpsSystem.FTraffic;
 
-
 import com.insa.TeamOpsSystem.sites.Sites;
 import com.insa.TeamOpsSystem.jwt.until.Auditable;
 import lombok.Data;

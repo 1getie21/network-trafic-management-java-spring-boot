@@ -46,6 +46,7 @@ public class PdfController {
                 .body(new InputStreamResource(bis));
     }
 
+
     @GetMapping(value = "/{trafficTimeName}", produces = MediaType.APPLICATION_PDF_VALUE)
     public ResponseEntity<InputStreamResource> generatePdfReportByTrafficTimeName(@PathVariable("trafficTimeName") String trafficTimeName) {
         ByteArrayInputStream bis = pdfService.generatePdfByTrafficTimeName(trafficTimeName);
@@ -58,6 +59,7 @@ public class PdfController {
                 .contentType(MediaType.APPLICATION_PDF)
                 .body(new InputStreamResource(bis));
     }
+
 
     @GetMapping(value = "/request/{from}/{to}", produces = MediaType.APPLICATION_PDF_VALUE)
     public ResponseEntity<InputStreamResource> generatePdfRequestsByDateRange(
@@ -74,7 +76,7 @@ public class PdfController {
                 .body(new InputStreamResource(bis));
     }
 
-    @GetMapping(value = "/requests", produces = MediaType.APPLICATION_PDF_VALUE)
+    @GetMapping(value = "/request", produces = MediaType.APPLICATION_PDF_VALUE)
     public ResponseEntity<InputStreamResource> generatePdfReportByRequesters(@RequestParam ("userName") String username ) {
         ByteArrayInputStream bis = pdfService.generatePdfReportByRequesters(username);
         HttpHeaders headers = new HttpHeaders();
@@ -85,6 +87,7 @@ public class PdfController {
                 .contentType(MediaType.APPLICATION_PDF)
                 .body(new InputStreamResource(bis));
     }
+
 
     @GetMapping(value = "/check_list/{from}/{to}", produces = MediaType.APPLICATION_PDF_VALUE)
     public ResponseEntity<InputStreamResource> generatePdfChecklistByDateRange(
@@ -113,6 +116,7 @@ public class PdfController {
                 .body(new InputStreamResource(bis));
     }
 
+
     @GetMapping(value = "/failed-traffics/{from}/{to}", produces = MediaType.APPLICATION_PDF_VALUE)
     public ResponseEntity<InputStreamResource> generatePdfFailedTrafficByDateRange(
             @PathVariable("from") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
@@ -140,6 +144,7 @@ public class PdfController {
                 .contentType(MediaType.APPLICATION_PDF)
                 .body(new InputStreamResource(bis));
     }
+
 
     @GetMapping(value = "/sixmclist/{from}/{to}", produces = MediaType.APPLICATION_PDF_VALUE)
     public ResponseEntity<InputStreamResource> generatePdfSixCListByByDateRange(

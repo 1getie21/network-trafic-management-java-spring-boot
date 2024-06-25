@@ -3,6 +3,7 @@ package com.insa.TeamOpsSystem.failedTraffics;
 
 import com.insa.TeamOpsSystem.exceptions.EntityNotFoundException;
 import com.insa.TeamOpsSystem.jwt.UserDetailsImpl;
+import com.insa.TeamOpsSystem.sixmonthchekelist.SixMCList;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
@@ -77,4 +78,6 @@ public class FailedTrafficService {
                 from.atStartOfDay(),
                 to.plusDays(1).atStartOfDay(),pageable);
     }
+
+
 }

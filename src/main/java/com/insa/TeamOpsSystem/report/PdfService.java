@@ -11,11 +11,11 @@ import com.insa.TeamOpsSystem.request.Request;
 import com.insa.TeamOpsSystem.request.RequestRepository;
 import com.insa.TeamOpsSystem.sixmonthchekelist.SixMCList;
 import com.insa.TeamOpsSystem.sixmonthchekelist.SixMCListRepository;
+import com.itextpdf.io.image.ImageDataFactory;
+import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.*;
-import com.itextpdf.kernel.pdf.PdfDocument;
-import com.itextpdf.io.image.ImageDataFactory;
 import com.itextpdf.layout.properties.HorizontalAlignment;
 import com.itextpdf.layout.properties.TextAlignment;
 import com.itextpdf.layout.properties.UnitValue;
@@ -37,21 +37,20 @@ public class PdfService {
     private final FailedTrafficRepository failedTrafficRepository;
     private final SixMCListRepository sixMCListRepository;
 
-    ByteArrayOutputStream out = new ByteArrayOutputStream();
-    // Initialize PDF writer
-    PdfWriter writer = new PdfWriter(out);
-
-    // Initialize PDF document
-    PdfDocument pdf = new PdfDocument(writer);
-
-    // Initialize document
-    Document document = new Document(pdf);
-
-    // Add image
-    String imagePath = "\\\\10.10.10.112\\home\\img.png";
-
     public ByteArrayInputStream generatePdf(String userName) {
         try {
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            // Initialize PDF writer
+            PdfWriter writer = new PdfWriter(out);
+
+            // Initialize PDF document
+            PdfDocument pdf = new PdfDocument(writer);
+
+            // Initialize document
+            Document document = new Document(pdf);
+
+            // Add image
+            String imagePath = "\\\\10.10.10.112\\home\\img.png";
             Paragraph date = new Paragraph("Date: All")
                     .setTextAlignment(TextAlignment.RIGHT)
                     .setUnderline(1.5f, -1);
@@ -59,7 +58,7 @@ public class PdfService {
             img.setHorizontalAlignment(HorizontalAlignment.CENTER);
             document.add(img);
             document.add(date);
-            Table table = new Table(new float[]{1, 3, 3, 3, 3});
+            Table table = new Table(new float[]{1, 3, 3, 3, 3, 3, 3});
             table.setWidth(UnitValue.createPercentValue(100));
             table.setHorizontalAlignment(HorizontalAlignment.CENTER);
 
@@ -67,8 +66,8 @@ public class PdfService {
             table.addCell("Site");
             table.addCell("Time");
             table.addCell("Total Time Traffic");
-//            trafficTable.addCell("CreatedBy");
-//            trafficTable.addCell("CreatedAt");
+            table.addCell("CreatedAt");
+            table.addCell("CreatedBy");
             table.addCell("Remark");
 
             // Fetch all traffic data (example data)
@@ -81,8 +80,8 @@ public class PdfService {
                 table.addCell(traffics.getSites() != null ? traffics.getSites().getName() : "");
                 table.addCell(traffics.getTrafficTimeName() != null ? traffics.getTrafficTimeName() : "");
                 table.addCell(traffics.getTimeValues() != null ? traffics.getTimeValues() : "");
-//                trafficTable.addCell(traffics.getCreatedBy() != null ? traffics.getCreatedBy() : "");
-//                trafficTable.addCell((Cell) (traffics.getCreatedAt() != null ? traffics.getCreatedAt() : ""));
+                table.addCell(traffics.getCreatedAt() != null ? traffics.getCreatedAt().toString() : "");;
+                table.addCell(traffics.getCreatedBy() != null ? traffics.getCreatedBy() : "");
                 table.addCell(traffics.getRemark() != null ? traffics.getRemark() : "");
             }
 
@@ -103,6 +102,18 @@ public class PdfService {
 
     public ByteArrayInputStream generatePdfByDateRange(LocalDate from, LocalDate to, String token) {
         try {
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            // Initialize PDF writer
+            PdfWriter writer = new PdfWriter(out);
+
+            // Initialize PDF document
+            PdfDocument pdf = new PdfDocument(writer);
+
+            // Initialize document
+            Document document = new Document(pdf);
+
+            // Add image
+            String imagePath = "\\\\10.10.10.112\\home\\img.png";
 
             Image img = new Image(ImageDataFactory.create(imagePath));
             img.setHorizontalAlignment(HorizontalAlignment.CENTER);
@@ -116,7 +127,7 @@ public class PdfService {
             document.add(date);
 
             // Add table for traffic data
-            Table trafficTable = new Table(new float[]{1, 3, 3, 3, 3});
+            Table trafficTable = new Table(new float[]{1, 3, 3, 3, 3, 3, 3});
             trafficTable.setWidth(UnitValue.createPercentValue(100));
             trafficTable.setHorizontalAlignment(HorizontalAlignment.CENTER);
 
@@ -124,8 +135,8 @@ public class PdfService {
             trafficTable.addCell("Site");
             trafficTable.addCell("Time");
             trafficTable.addCell("Total Time Traffic");
-//            trafficTable.addCell("CreatedBy");
-//            trafficTable.addCell("CreatedAt");
+            trafficTable.addCell("CreatedAt");
+            trafficTable.addCell("CreatedBy");
             trafficTable.addCell("Remark");
 
             // Fetch traffic data within specified date range
@@ -138,8 +149,8 @@ public class PdfService {
                 trafficTable.addCell(traffics.getSites() != null ? traffics.getSites().getName() : "");
                 trafficTable.addCell(traffics.getTrafficTimeName() != null ? traffics.getTrafficTimeName() : "");
                 trafficTable.addCell(traffics.getTimeValues() != null ? traffics.getTimeValues() : "");
-//                trafficTable.addCell(traffics.getCreatedBy() != null ? traffics.getCreatedBy() : "");
-//                trafficTable.addCell((Cell) (traffics.getCreatedAt() != null ? traffics.getCreatedAt() : ""));
+                trafficTable.addCell(traffics.getCreatedAt() != null ? traffics.getCreatedAt().toString() : "");;
+                trafficTable.addCell(traffics.getCreatedBy() != null ? traffics.getCreatedBy() : "");
                 trafficTable.addCell(traffics.getRemark() != null ? traffics.getRemark() : "");
             }
 
@@ -160,6 +171,18 @@ public class PdfService {
 
     public ByteArrayInputStream generatePdfByTrafficTimeName(String trafficTimeName) {
         try {
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            // Initialize PDF writer
+            PdfWriter writer = new PdfWriter(out);
+
+            // Initialize PDF document
+            PdfDocument pdf = new PdfDocument(writer);
+
+            // Initialize document
+            Document document = new Document(pdf);
+
+            // Add image
+            String imagePath = "\\\\10.10.10.112\\home\\img.png";
 
             Image img = new Image(ImageDataFactory.create(imagePath));
             img.setHorizontalAlignment(HorizontalAlignment.CENTER);
@@ -179,6 +202,8 @@ public class PdfService {
             trafficTable.addCell("Site");
             trafficTable.addCell("Time");
             trafficTable.addCell("Total Time Traffic");
+            trafficTable.addCell("CreatedAt");
+            trafficTable.addCell("CreatedBy");
             trafficTable.addCell("Remark");
 
             List<Ftraffics> ftraffics = trafficRepository.findAllByTrafficTimeNameAndSitesDeletedIsFalse(trafficTimeName);
@@ -190,6 +215,8 @@ public class PdfService {
                 trafficTable.addCell(traffics.getSites() != null ? traffics.getSites().getName() : "");
                 trafficTable.addCell(traffics.getTrafficTimeName() != null ? traffics.getTrafficTimeName() : "");
                 trafficTable.addCell(traffics.getTimeValues() != null ? traffics.getTimeValues() : "");
+                trafficTable.addCell(traffics.getCreatedAt() != null ? traffics.getCreatedAt().toString() : "");;
+                trafficTable.addCell(traffics.getCreatedBy() != null ? traffics.getCreatedBy() : "");
                 trafficTable.addCell(traffics.getRemark() != null ? traffics.getRemark() : "");
             }
 
@@ -210,6 +237,18 @@ public class PdfService {
 
     public ByteArrayInputStream generatePdfReportByRequesters(String createdBy) {
         try {
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            // Initialize PDF writer
+            PdfWriter writer = new PdfWriter(out);
+
+            // Initialize PDF document
+            PdfDocument pdf = new PdfDocument(writer);
+
+            // Initialize document
+            Document document = new Document(pdf);
+
+            // Add image
+            String imagePath = "\\\\10.10.10.112\\home\\img.png";
             Image img = new Image(ImageDataFactory.create(imagePath));
             img.setHorizontalAlignment(HorizontalAlignment.CENTER);
             document.add(img);
@@ -223,10 +262,12 @@ public class PdfService {
             document.add(title);
 
             // Add table for traffic data
-            Table requestTable = new Table(new float[]{1, 3, 3, 3, 3, 3, 3, 3, 3});
+            Table requestTable = new Table(new float[]{1, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3});
             requestTable.setWidth(UnitValue.createPercentValue(100));
             requestTable.setHorizontalAlignment(HorizontalAlignment.CENTER);
             requestTable.addCell("No");
+            requestTable.addCell("Created At");
+            requestTable.addCell("Created By");
             requestTable.addCell("Phone");
             requestTable.addCell("Email");
             requestTable.addCell("Requester");
@@ -241,6 +282,8 @@ public class PdfService {
 
             for (Request request : requestIterable) {
                 requestTable.addCell(String.valueOf(index++));
+                requestTable.addCell(request.getCreatedAt() != null ? request.getCreatedAt().toString() : "");
+                requestTable.addCell(request.getCreatedBy() != null ? request.getCreatedBy() : "");
                 requestTable.addCell(request.getPhone() != null ? request.getPhone() : "");
                 requestTable.addCell(request.getEmail() != null ? request.getEmail() : "");
                 requestTable.addCell(request.getRequester() != null ? request.getRequester() : "");
@@ -268,7 +311,18 @@ public class PdfService {
 
     public ByteArrayInputStream generatePdfRequestsByDateRange(LocalDate from, LocalDate to, String username) {
         try {
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            // Initialize PDF writer
+            PdfWriter writer = new PdfWriter(out);
 
+            // Initialize PDF document
+            PdfDocument pdf = new PdfDocument(writer);
+
+            // Initialize document
+            Document document = new Document(pdf);
+
+            // Add image
+            String imagePath = "\\\\10.10.10.112\\home\\img.png";
             Image img = new Image(ImageDataFactory.create(imagePath));
             img.setHorizontalAlignment(HorizontalAlignment.CENTER);
             document.add(img);
@@ -279,11 +333,13 @@ public class PdfService {
 
             document.add(date);
             // Add table for requests data
-            Table requestTable = new Table(new float[]{1, 3, 3, 3, 3, 3, 3, 3, 3});
+            Table requestTable = new Table(new float[]{1, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3});
             requestTable.setWidth(UnitValue.createPercentValue(100));
             requestTable.setHorizontalAlignment(HorizontalAlignment.CENTER);
 
             requestTable.addCell("No");
+            requestTable.addCell("Created At");
+            requestTable.addCell("Created By");
             requestTable.addCell("Phone");
             requestTable.addCell("Email");
             requestTable.addCell("Requester");
@@ -299,6 +355,8 @@ public class PdfService {
 // Add request data rows
             for (Request request : requests) {
                 requestTable.addCell(String.valueOf(index++));
+                requestTable.addCell(request.getCreatedAt() != null ? request.getCreatedAt().toString() : "");
+                requestTable.addCell(request.getCreatedBy() != null ? request.getCreatedBy() : "");
                 requestTable.addCell(request.getPhone() != null ? request.getPhone() : "");
                 requestTable.addCell(request.getEmail() != null ? request.getEmail() : "");
                 requestTable.addCell(request.getRequester() != null ? request.getRequester() : "");
@@ -330,6 +388,18 @@ public class PdfService {
     //Check List
     public ByteArrayInputStream generatePdfByCheckLists(String createdBy) {
         try {
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            // Initialize PDF writer
+            PdfWriter writer = new PdfWriter(out);
+
+            // Initialize PDF document
+            PdfDocument pdf = new PdfDocument(writer);
+
+            // Initialize document
+            Document document = new Document(pdf);
+
+            // Add image
+            String imagePath = "\\\\10.10.10.112\\home\\img.png";
             Image img = new Image(ImageDataFactory.create(imagePath));
             img.setHorizontalAlignment(HorizontalAlignment.CENTER);
             document.add(img);
@@ -337,6 +407,7 @@ public class PdfService {
             // Add title for the report
             Paragraph title = new Paragraph("Checklist Reports")
                     .setTextAlignment(TextAlignment.RIGHT)
+                    .setUnderline(1.5f, -1)
                     .setFontSize(16);
             document.add(title);
 
@@ -386,6 +457,18 @@ public class PdfService {
 
     public ByteArrayInputStream generatePdfChecklistByDateRange(LocalDate from, LocalDate to, String username) {
         try {
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            // Initialize PDF writer
+            PdfWriter writer = new PdfWriter(out);
+
+            // Initialize PDF document
+            PdfDocument pdf = new PdfDocument(writer);
+
+            // Initialize document
+            Document document = new Document(pdf);
+
+            // Add image
+            String imagePath = "\\\\10.10.10.112\\home\\img.png";
 
             Image img = new Image(ImageDataFactory.create(imagePath));
             img.setHorizontalAlignment(HorizontalAlignment.CENTER);
@@ -447,6 +530,18 @@ public class PdfService {
     //failed traffic
     public ByteArrayInputStream generatePdfByFailedTraffics(String createdBy) {
         try {
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            // Initialize PDF writer
+            PdfWriter writer = new PdfWriter(out);
+
+            // Initialize PDF document
+            PdfDocument pdf = new PdfDocument(writer);
+
+            // Initialize document
+            Document document = new Document(pdf);
+
+            // Add image
+            String imagePath = "\\\\10.10.10.112\\home\\img.png";
 
             Image img = new Image(ImageDataFactory.create(imagePath));
             img.setHorizontalAlignment(HorizontalAlignment.CENTER);
@@ -455,6 +550,7 @@ public class PdfService {
             // Add title for the report
             Paragraph title = new Paragraph("Failed Traffic Reports")
                     .setTextAlignment(TextAlignment.RIGHT)
+                    .setUnderline(1.5f, -1)
                     .setFontSize(16);
             document.add(title);
 
@@ -509,6 +605,18 @@ public class PdfService {
     //Date Range
     public ByteArrayInputStream generatePdfFailedTrafficByDateRange(LocalDate from, LocalDate to, String username) {
         try {
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            // Initialize PDF writer
+            PdfWriter writer = new PdfWriter(out);
+
+            // Initialize PDF document
+            PdfDocument pdf = new PdfDocument(writer);
+
+            // Initialize document
+            Document document = new Document(pdf);
+
+            // Add image
+            String imagePath = "\\\\10.10.10.112\\home\\img.png";
 
             Image img = new Image(ImageDataFactory.create(imagePath));
             img.setHorizontalAlignment(HorizontalAlignment.CENTER);
@@ -517,6 +625,7 @@ public class PdfService {
             // Add title for the report
             Paragraph title = new Paragraph("Failed Traffic Reports")
                     .setTextAlignment(TextAlignment.RIGHT)
+                    .setUnderline(1.5f, -1)
                     .setFontSize(16);
             document.add(title);
 
@@ -524,17 +633,17 @@ public class PdfService {
             Table failedTrafficTable = new Table(new float[]{1, 3, 3, 3, 3, 3, 3, 3, 3, 3});
             failedTrafficTable.setWidth(UnitValue.createPercentValue(100));
             failedTrafficTable.setHorizontalAlignment(HorizontalAlignment.CENTER);
-
-            failedTrafficTable.addCell(new Cell().add(new Paragraph("No")));
-            failedTrafficTable.addCell(new Cell().add(new Paragraph("Sites")));
-            failedTrafficTable.addHeaderCell(new Cell().add(new Paragraph("Failed Link Type")));
-            failedTrafficTable.addCell(new Cell().add(new Paragraph("Created At")));
-            failedTrafficTable.addCell(new Cell().add(new Paragraph("Created By")));
-            failedTrafficTable.addCell(new Cell().add(new Paragraph("Reported To")));
-            failedTrafficTable.addCell(new Cell().add(new Paragraph("Fixed At")));
-            failedTrafficTable.addCell(new Cell().add(new Paragraph("Failed At")));
-            failedTrafficTable.addCell(new Cell().add(new Paragraph("Failure Length")));
-            failedTrafficTable.addCell(new Cell().add(new Paragraph("Failed Reason")));
+            //table.addCell("No");
+            failedTrafficTable.addCell("No");
+            failedTrafficTable.addCell("Sites");
+            failedTrafficTable.addCell("Failed Link Type");
+            failedTrafficTable.addCell("Created At");
+            failedTrafficTable.addCell("Created By");
+            failedTrafficTable.addCell("Reported To");
+            failedTrafficTable.addCell("Fixed At");
+            failedTrafficTable.addCell("Failed At");
+            failedTrafficTable.addCell("Failure Length");
+            failedTrafficTable.addCell("Failed Reason");
 
             List<FailedTraffics> failedTraffics = failedTrafficRepository.findAllByCreatedAtBetweenAndCreatedByAndSitesDeletedIsFalse(from.atStartOfDay(), to.plusDays(1).atStartOfDay(), username);
             int index = 1;
@@ -571,19 +680,32 @@ public class PdfService {
     // SixMCList
     public ByteArrayInputStream generatePdfBySixCList(String createdBy) {
         try {
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            // Initialize PDF writer
+            PdfWriter writer = new PdfWriter(out);
 
+            // Initialize PDF document
+            PdfDocument pdf = new PdfDocument(writer);
+
+            // Initialize document
+            Document document = new Document(pdf);
+
+            // Add image
+            String imagePath = "\\\\10.10.10.112\\home\\img.png";
             Image img = new Image(ImageDataFactory.create(imagePath));
             img.setHorizontalAlignment(HorizontalAlignment.CENTER);
             document.add(img);
 
             // Add title for the report
-            Paragraph title = new Paragraph("Six M List Reports") // Update title as needed
+            Paragraph title = new Paragraph("Six Month Check List Reports")
                     .setTextAlignment(TextAlignment.RIGHT)
+                    .setUnderline(1.5f, -1)
                     .setFontSize(16);
             document.add(title);
 
+
             // Add table headers for Six M List
-            Table sixMListTable = new Table(new float[]{1, 3, 3, 3, 3, 3, 3, 3, 3, 3}); // Update column widths as needed
+            Table sixMListTable = new Table(new float[]{1, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3}); // Update column widths as needed
             sixMListTable.setWidth(UnitValue.createPercentValue(100));
             sixMListTable.setHorizontalAlignment(HorizontalAlignment.CENTER);
 
@@ -597,12 +719,16 @@ public class PdfService {
             sixMListTable.addCell("T9140");
             sixMListTable.addCell("Server");
             sixMListTable.addCell("Routine");
+            sixMListTable.addCell("CreatedAt");
+            sixMListTable.addCell("CreatedBy");
+
 
             List<SixMCList> sixMList = sixMCListRepository.findAllByCreatedByAndSitesDeletedIsFalse(createdBy);
             int index = 1;
             for (SixMCList item : sixMList) {
                 sixMListTable.addCell(String.valueOf(index++));
                 sixMListTable.addCell(item.getSites() != null ? item.getSites().getName() : "");
+                sixMListTable.addCell(item.getDatacenter() != null ? item.getDatacenter() : "");
                 sixMListTable.addCell(item.getFiber() != null ? item.getFiber() : "");
                 sixMListTable.addCell(item.getRack() != null ? item.getRack() : "");
                 sixMListTable.addCell(item.getOpd() != null ? item.getOpd() : "");
@@ -610,6 +736,9 @@ public class PdfService {
                 sixMListTable.addCell(item.getT9140() != null ? item.getT9140() : "");
                 sixMListTable.addCell(item.getServer() != null ? item.getServer() : "");
                 sixMListTable.addCell(item.getRoutine() != null ? item.getRoutine() : "");
+                sixMListTable.addCell(item.getCreatedAt() != null ? item.getCreatedAt().toString() : "");;
+                sixMListTable.addCell(item.getCreatedBy() != null ? item.getCreatedBy() : "");
+
             }
 
             // Add table to document
@@ -632,18 +761,32 @@ public class PdfService {
     // Date Range
     public ByteArrayInputStream generatePdfSixCListByByDateRange(LocalDate from, LocalDate to, String username) {
         try {
-//            Image img = new Image(ImageDataFactory.create(imagePath));
-//            img.setHorizontalAlignment(HorizontalAlignment.CENTER);
-//            document.add(img);
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            // Initialize PDF writer
+            PdfWriter writer = new PdfWriter(out);
+
+            // Initialize PDF document
+            PdfDocument pdf = new PdfDocument(writer);
+
+            // Initialize document
+            Document document = new Document(pdf);
+
+            // Add image
+            String imagePath = "\\\\10.10.10.112\\home\\img.png";
+
+            Image img = new Image(ImageDataFactory.create(imagePath));
+            img.setHorizontalAlignment(HorizontalAlignment.CENTER);
+            document.add(img);
 
             // Add title for the report
-            Paragraph title = new Paragraph("Six M List Reports") // Update title as needed
+            Paragraph title = new Paragraph("Six Month Check List Reports")
                     .setTextAlignment(TextAlignment.RIGHT)
+                    .setUnderline(1.5f, -1)
                     .setFontSize(16);
             document.add(title);
 
             // Add table headers for Six M List
-            Table sixMListTable = new Table(new float[]{1, 3, 3, 3, 3, 3, 3, 3, 3, 3}); // Update column widths as needed
+            Table sixMListTable = new Table(new float[]{1, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3}); // Update column widths as needed
             sixMListTable.setWidth(UnitValue.createPercentValue(100));
             sixMListTable.setHorizontalAlignment(HorizontalAlignment.CENTER);
 
@@ -657,12 +800,16 @@ public class PdfService {
             sixMListTable.addCell("T9140");
             sixMListTable.addCell("Server");
             sixMListTable.addCell("Routine");
+            sixMListTable.addCell("CreatedAt");
+            sixMListTable.addCell("CreatedBy");
+
 
             List<SixMCList> sixMList = sixMCListRepository.findAllByCreatedAtBetweenAndCreatedByAndSitesDeletedIsFalse(from.atStartOfDay(), to.plusDays(1).atStartOfDay(), username);
             int index = 1;
             for (SixMCList item : sixMList) {
                 sixMListTable.addCell(String.valueOf(index++));
                 sixMListTable.addCell(item.getSites() != null ? item.getSites().getName() : "");
+                sixMListTable.addCell(item.getDatacenter() != null ? item.getDatacenter() : "");
                 sixMListTable.addCell(item.getFiber() != null ? item.getFiber() : "");
                 sixMListTable.addCell(item.getRack() != null ? item.getRack() : "");
                 sixMListTable.addCell(item.getOpd() != null ? item.getOpd() : "");
@@ -670,6 +817,8 @@ public class PdfService {
                 sixMListTable.addCell(item.getT9140() != null ? item.getT9140() : "");
                 sixMListTable.addCell(item.getServer() != null ? item.getServer() : "");
                 sixMListTable.addCell(item.getRoutine() != null ? item.getRoutine() : "");
+                sixMListTable.addCell(item.getCreatedAt() != null ? item.getCreatedAt().toString() : "");;
+                sixMListTable.addCell(item.getCreatedBy() != null ? item.getCreatedBy() : "");
             }
 
             // Add table to document

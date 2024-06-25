@@ -1,6 +1,5 @@
 package com.insa.TeamOpsSystem.FTraffic;
 
-
 import com.insa.TeamOpsSystem.exceptions.AlreadyExistException;
 import com.insa.TeamOpsSystem.exceptions.EntityNotFoundException;
 import com.insa.TeamOpsSystem.jwt.UserDetailsImpl;
@@ -29,10 +28,10 @@ public class FTrafficService {
         fTraffics.setCreatedBy(userDetails.getUsername());
         fTraffics.setUpdated_by(userDetails.getUsername());
         List<Ftraffics> traffics= fTrafficRepository.findAllByCreatedAtIsGreaterThanEqualAndTrafficTimeNameAndSitesIdAndSitesDeletedIsFalse(LocalDate.now().atStartOfDay(), fTraffics.getTrafficTimeName(), fTraffics.getSites().getId());
-       if (traffics.isEmpty()) {
-           return fTrafficRepository.save(fTraffics);
-       }
-       else throw new AlreadyExistException("Site already exist");
+        if (traffics.isEmpty()) {
+            return fTrafficRepository.save(fTraffics);
+        }
+        else throw new AlreadyExistException("Site already exist");
     }
 
     public Ftraffics getTrafficById(long id) {

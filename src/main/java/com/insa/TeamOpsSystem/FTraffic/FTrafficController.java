@@ -1,6 +1,5 @@
 package com.insa.TeamOpsSystem.FTraffic;
 
-
 import com.insa.TeamOpsSystem.jwt.PaginatedResultsRetrievedEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
@@ -11,6 +10,7 @@ import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.stereotype.Component; // Import Component annotation
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -21,6 +21,7 @@ import java.time.LocalDate;
 @RestController
 @RequestMapping("/f-traffics")
 @RequiredArgsConstructor
+@Component("FTrafficController") // Specify a unique name for this controller
 public class FTrafficController {
     private final FTrafficService fTrafficService;
     private final FTrafficMapper fTrafficMapper;
