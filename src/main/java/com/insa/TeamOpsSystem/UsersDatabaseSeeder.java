@@ -47,9 +47,9 @@ public class UsersDatabaseSeeder implements CommandLineRunner {
         }
         if (userRepository.findByUsername("Admin").isEmpty()) {
             user.setFirstName("Admin");
-            user.setLastName("Admin");
-            user.setUsername("Admin");
-            user.setEmail("admin@gmail.com");
+            user.setLastName("Adminn");
+            user.setUsername("Adminn");
+            user.setEmail("adminn@gmail.com");
             user.setPassword(passwordEncoder.encode("1234"));
             Roles adminRole =   rolesRepository.findByName("ROLE_ADMIN")
                     .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
