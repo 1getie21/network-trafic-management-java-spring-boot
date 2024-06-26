@@ -194,7 +194,7 @@ public class PdfService {
             document.add(date);
 
             // Add table for traffic data
-            Table trafficTable = new Table(new float[]{1, 3, 3, 3, 3});
+            Table trafficTable = new Table(new float[]{1, 3, 3, 3, 3, 3, 3});
             trafficTable.setWidth(UnitValue.createPercentValue(100));
             trafficTable.setHorizontalAlignment(HorizontalAlignment.CENTER);
 
@@ -262,7 +262,7 @@ public class PdfService {
             document.add(title);
 
             // Add table for traffic data
-            Table requestTable = new Table(new float[]{1, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3});
+            Table requestTable = new Table(new float[]{1, 3, 3, 3, 3, 3, 3, 3, 3});
             requestTable.setWidth(UnitValue.createPercentValue(100));
             requestTable.setHorizontalAlignment(HorizontalAlignment.CENTER);
             requestTable.addCell("No");
@@ -275,7 +275,7 @@ public class PdfService {
             requestTable.addCell("Categories");
             requestTable.addCell("Contact");
             requestTable.addCell("Description");
-            requestTable.addCell("Priority");
+           // requestTable.addCell("Priority");
             List<Request> requestIterable = requestRepository.findAllByCreatedBy(createdBy);
             // Add rows
             int index = 1;
@@ -291,7 +291,7 @@ public class PdfService {
                 requestTable.addCell(request.getCategories() != null ? request.getCategories() : "");
                 requestTable.addCell(request.getContact() != null ? request.getContact() : "");
                 requestTable.addCell(request.getDescription() != null ? request.getDescription() : "");
-                requestTable.addCell(request.getPriority() != null ? request.getPriority() : "");
+               // requestTable.addCell(request.getPriority() != null ? request.getPriority() : "");
             }
 
             // Add table to document
@@ -333,7 +333,7 @@ public class PdfService {
 
             document.add(date);
             // Add table for requests data
-            Table requestTable = new Table(new float[]{1, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3});
+            Table requestTable = new Table(new float[]{1, 3, 3, 3, 3, 3, 3, 3, 3});
             requestTable.setWidth(UnitValue.createPercentValue(100));
             requestTable.setHorizontalAlignment(HorizontalAlignment.CENTER);
 
@@ -347,7 +347,7 @@ public class PdfService {
             requestTable.addCell("Categories");
             requestTable.addCell("Contact");
             requestTable.addCell("Description");
-            requestTable.addCell("Priority");
+          //  requestTable.addCell("Priority");
 
 
             List<Request> requests = requestRepository.findAllByCreatedAtBetweenAndCreatedBy(from.atStartOfDay(), to.plusDays(1).atStartOfDay(), username);
@@ -364,7 +364,7 @@ public class PdfService {
                 requestTable.addCell(request.getCategories() != null ? request.getCategories() : "");
                 requestTable.addCell(request.getContact() != null ? request.getContact() : "");
                 requestTable.addCell(request.getDescription() != null ? request.getDescription() : "");
-                requestTable.addCell(request.getPriority() != null ? request.getPriority() : "");
+               // requestTable.addCell(request.getPriority() != null ? request.getPriority() : "");
             }
 
 
@@ -779,11 +779,11 @@ public class PdfService {
             document.add(img2);
 
             // Add title for the report
-            Paragraph title = new Paragraph("Six Month Check List Reports")
+            Paragraph date = new Paragraph("Date: " + from.toString() + " - " + to.toString())
                     .setTextAlignment(TextAlignment.RIGHT)
                     .setUnderline(1.5f, -1)
                     .setFontSize(16);
-            document.add(title);
+            document.add(date);
 
             // Add table headers for Six M List
             Table sixMListTable = new Table(new float[]{1, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3}); // Update column widths as needed
