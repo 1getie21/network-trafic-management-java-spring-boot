@@ -15,11 +15,18 @@ import java.util.List;
 @RepositoryRestResource
 public interface CheckListRepository extends JpaRepository<CheckList, Long>, JpaSpecificationExecutor<CheckList> {
 
-    Page<CheckList> findAllBySitesDeletedIsFalse(Pageable pageable);
-
+    Page<CheckList> findAllBySitesDeletedIsFalse(Pageable Pageable);
+    List<CheckList> findAllBySitesDeletedIsFalse(   );
     Page<CheckList> findAllByCreatedByAndSitesDeletedIsFalseOrderByCreatedAtDesc(String username, Pageable pageable);
 
     Page<CheckList> findAllByCreatedAtBetween(LocalDateTime atStartOfDay, LocalDateTime atStartOfDay1, Pageable pageable);
     List<CheckList> findAllByCreatedAtBetweenAndCreatedByAndSitesDeletedIsFalse(LocalDateTime from, LocalDateTime to, String username);
+   // List<CheckList> findAllByCreatedAtBetweenAndCreatedByAndSitesDeletedIsFalse(LocalDateTime atStartOfDay, LocalDateTime atStartOfDay1, String username);
     List<CheckList> findAllByCreatedByAndSitesDeletedIsFalse(String createdBy);
+
+    List<CheckList> findAllByCreatedAtBetween(LocalDateTime atStartOfDay, LocalDateTime atStartOfDay1);
+
+
+
+
 }

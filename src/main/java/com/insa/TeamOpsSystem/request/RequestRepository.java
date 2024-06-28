@@ -17,8 +17,14 @@ public interface RequestRepository extends PagingAndSortingRepository<Request, L
 
     Page<Request> findAllByCreatedByOrderByCreatedAt(String username, Pageable pageable);
 
-     Page<Request> findAllByCreatedAtBetween(LocalDateTime from, LocalDateTime to, Pageable pageable);
+    Page<Request> findAllByCreatedAtBetween(LocalDateTime from, LocalDateTime to, Pageable pageable);
+
+    List<Request> findAllByCreatedAtBetween(LocalDateTime from, LocalDateTime to);
+
     List<Request> findAllByCreatedAtBetweenAndCreatedBy(LocalDateTime from, LocalDateTime to, String username);
 
     List<Request> findAllByCreatedBy(String createdBy);
+
+
+    // List<Request> findAll(String createdBy);
 }

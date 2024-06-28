@@ -20,7 +20,8 @@ public class PdfController {
     private final PdfService pdfService;
 
     @GetMapping(produces = MediaType.APPLICATION_PDF_VALUE)
-    public ResponseEntity<InputStreamResource> generatePdf(@RequestParam ("userName") String username  ) {
+    public ResponseEntity<InputStreamResource> generatePdf(
+            @RequestParam ("userName") String username  ) {
         ByteArrayInputStream bis = pdfService.generatePdf(username);
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Disposition", "inline; filename=requests_report.pdf");
@@ -34,8 +35,10 @@ public class PdfController {
     @GetMapping(value = "/{from}/{to}", produces = MediaType.APPLICATION_PDF_VALUE)
     public ResponseEntity<InputStreamResource> generatePdfReportByDateRAnge(
             @PathVariable("from") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
-            @PathVariable("to") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to,@RequestParam ("userName") String username) {
-        ByteArrayInputStream bis = pdfService.generatePdfByDateRange(from, to,username);
+            @PathVariable("to") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to,
+            @RequestParam("userName") String username ) {
+
+        ByteArrayInputStream bis = pdfService.generatePdfByDateRange(from, to,  username);
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Disposition", "inline; filename=report.pdf");
@@ -48,8 +51,10 @@ public class PdfController {
 
 
     @GetMapping(value = "/{trafficTimeName}", produces = MediaType.APPLICATION_PDF_VALUE)
-    public ResponseEntity<InputStreamResource> generatePdfReportByTrafficTimeName(@PathVariable("trafficTimeName") String trafficTimeName) {
-        ByteArrayInputStream bis = pdfService.generatePdfByTrafficTimeName(trafficTimeName);
+    public ResponseEntity<InputStreamResource> generatePdfReportByTrafficTimeName(
+            @PathVariable("trafficTimeName") String trafficTimeName,
+            @RequestParam ("userName") String username){
+        ByteArrayInputStream bis = pdfService.generatePdfByTrafficTimeName(trafficTimeName, username);
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Disposition", "inline; filename=report.pdf");
@@ -77,7 +82,8 @@ public class PdfController {
     }
 
     @GetMapping(value = "/request", produces = MediaType.APPLICATION_PDF_VALUE)
-    public ResponseEntity<InputStreamResource> generatePdfReportByRequesters(@RequestParam ("userName") String username ) {
+    public ResponseEntity<InputStreamResource> generatePdfReportByRequesters(
+            @RequestParam ("userName") String username ) {
         ByteArrayInputStream bis = pdfService.generatePdfReportByRequesters(username);
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Disposition", "inline; filename=request_report.pdf");

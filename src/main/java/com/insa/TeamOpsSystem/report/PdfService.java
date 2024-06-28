@@ -15,7 +15,10 @@ import com.itextpdf.io.image.ImageDataFactory;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
-import com.itextpdf.layout.element.*;
+import com.itextpdf.layout.element.Div;
+import com.itextpdf.layout.element.Image;
+import com.itextpdf.layout.element.Paragraph;
+import com.itextpdf.layout.element.Table;
 import com.itextpdf.layout.properties.HorizontalAlignment;
 import com.itextpdf.layout.properties.TextAlignment;
 import com.itextpdf.layout.properties.UnitValue;
@@ -71,10 +74,17 @@ public class PdfService {
             table.addCell("Remark");
 
             // Fetch all traffic data (example data)
-            List<Ftraffics> ftraffics = trafficRepository.findAllBySitesDeletedIsFalseAndCreatedBy(userName);
+//            List<Ftraffics> ftraffics = trafficRepository.findAllBySitesDeletedIsFalseAndCreatedBy(userName);
+//            int index = 1;
+
+            List<Ftraffics> ftraffics;
+            if (userName.equals("ROLE_ADMIN")) {
+                ftraffics = trafficRepository.findAllBySitesDeletedIsFalse();
+            } else {
+                ftraffics = trafficRepository.findAllBySitesDeletedIsFalseAndCreatedBy(userName);
+            }
             int index = 1;
             // Add rows
-
             for (Ftraffics traffics : ftraffics) {
                 table.addCell(String.valueOf(index++));
                 table.addCell(traffics.getSites() != null ? traffics.getSites().getName() : "");
@@ -100,7 +110,7 @@ public class PdfService {
         }
     }
 
-    public ByteArrayInputStream generatePdfByDateRange(LocalDate from, LocalDate to, String token) {
+    public ByteArrayInputStream generatePdfByDateRange(LocalDate from, LocalDate to,    String userName) {
         try {
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             // Initialize PDF writer
@@ -140,9 +150,18 @@ public class PdfService {
             trafficTable.addCell("Remark");
 
             // Fetch traffic data within specified date range
-            List<Ftraffics> ftraffics = trafficRepository.findAllByCreatedAtBetweenAndSitesDeletedIsFalseAndCreatedBy(from.atStartOfDay(), to.plusDays(1).atStartOfDay(), token);
-            int index = 1;  // Index counter
+//            List<Ftraffics> ftraffics = trafficRepository.findAllByCreatedAtBetweenAndSitesDeletedIsFalseAndCreatedBy(from.atStartOfDay(), to.plusDays(1).atStartOfDay(), token);
+//            int index = 1;  // Index counter
 
+            List<Ftraffics> ftraffics;
+           // System.out.println("userName="+userName);
+            if (userName.equals("ROLE_ADMIN")) {
+                ftraffics = trafficRepository.findAllByCreatedAtBetweenAndSitesDeletedIsFalse(from.atStartOfDay(), to.plusDays(1).atStartOfDay());
+            } else {
+                ftraffics = trafficRepository.findAllByCreatedAtBetweenAndSitesDeletedIsFalseAndCreatedBy(
+                        from.atStartOfDay(), to.plusDays(1).atStartOfDay(), userName);
+            }
+            int index = 1;  // Index counter
             // Add rows
             for (Ftraffics traffics : ftraffics) {
                 trafficTable.addCell(String.valueOf(index++));
@@ -169,7 +188,7 @@ public class PdfService {
         }
     }
 
-    public ByteArrayInputStream generatePdfByTrafficTimeName(String trafficTimeName) {
+    public ByteArrayInputStream generatePdfByTrafficTimeName(String trafficTimeName, String userName) {
         try {
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             // Initialize PDF writer
@@ -206,7 +225,16 @@ public class PdfService {
             trafficTable.addCell("CreatedBy");
             trafficTable.addCell("Remark");
 
-            List<Ftraffics> ftraffics = trafficRepository.findAllByTrafficTimeNameAndSitesDeletedIsFalse(trafficTimeName);
+            //List<Ftraffics> ftraffics = trafficRepository.findAllByTrafficTimeNameAndCreatedByAndSitesDeletedIsFalse(trafficTimeName, userName);
+
+            List<Ftraffics> ftraffics;
+            if (userName.equals("ROLE_ADMIN")) {
+                //please use this condition
+                ftraffics = trafficRepository.findAllBySitesDeletedIsFalse();
+            } else {
+                ftraffics = trafficRepository.findAllByTrafficTimeNameAndCreatedByAndSitesDeletedIsFalse(trafficTimeName, userName);;
+
+            }
             int index = 1;  // Index counter
 
             // Add rows
@@ -236,24 +264,21 @@ public class PdfService {
     }
 
     public ByteArrayInputStream generatePdfReportByRequesters(String createdBy) {
-        try {
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
-            // Initialize PDF writer
-            PdfWriter writer = new PdfWriter(out);
+        try{  ByteArrayOutputStream out = new ByteArrayOutputStream();
+        // Initialize PDF writer
+        PdfWriter writer = new PdfWriter(out);
 
-            // Initialize PDF document
-            PdfDocument pdf = new PdfDocument(writer);
+        // Initialize PDF document
+        PdfDocument pdf = new PdfDocument(writer);
 
-            // Initialize document
-            Document document = new Document(pdf);
+        // Initialize document
+        Document document = new Document(pdf);
 
-            // Add image
-            String imagePath = "\\\\10.10.10.112\\home\\img3.png";
-            Image img3 = new Image(ImageDataFactory.create(imagePath));
-            img3.setHorizontalAlignment(HorizontalAlignment.CENTER);
-            document.add(img3);
-
-
+        // Add image
+        String imagePath = "\\\\10.10.10.112\\home\\img3.png";
+        Image img3 = new Image(ImageDataFactory.create(imagePath));
+        img3.setHorizontalAlignment(HorizontalAlignment.CENTER);
+        document.add(img3);
             // Add date (initially for "Date: All")
             Paragraph title = new Paragraph("All Traffic Control Service Request Reports")
                     .setTextAlignment(TextAlignment.RIGHT)
@@ -276,11 +301,19 @@ public class PdfService {
             requestTable.addCell("Contact");
             requestTable.addCell("Description");
            // requestTable.addCell("Priority");
-            List<Request> requestIterable = requestRepository.findAllByCreatedBy(createdBy);
-            // Add rows
+//            List<Request> requestIterable = requestRepository.findAllByCreatedBy(createdBy);
+//            // Add rows
+
+            List<Request> requestss;
+            if (createdBy.equals("ROLE_ADMIN")) {
+                requestss = (List<Request>) requestRepository.findAll();
+            } else {
+                requestss = requestRepository.findAllByCreatedBy(createdBy);
+            }
+
             int index = 1;
 
-            for (Request request : requestIterable) {
+            for (Request request : requestss) {
                 requestTable.addCell(String.valueOf(index++));
                // requestTable.addCell(request.getCreatedAt() != null ? request.getCreatedAt().toString() : "");
                 requestTable.addCell(request.getCreatedBy() != null ? request.getCreatedBy() : "");
@@ -350,8 +383,19 @@ public class PdfService {
           //  requestTable.addCell("Priority");
 
 
-            List<Request> requests = requestRepository.findAllByCreatedAtBetweenAndCreatedBy(from.atStartOfDay(), to.plusDays(1).atStartOfDay(), username);
+//            List<Request> requests = requestRepository.findAllByCreatedAtBetweenAndCreatedBy(from.atStartOfDay(), to.plusDays(1).atStartOfDay(), username);
+//            int index = 1; // Reset index counter
+
+            List<Request> requests;
+            if (username.equals("ROLE_ADMIN")) {
+                //please use this condition
+                requests = requestRepository.findAllByCreatedAtBetween(from.atStartOfDay(),
+                        to.plusDays(1).atStartOfDay());
+            } else {
+                requests = requestRepository.findAllByCreatedAtBetweenAndCreatedBy(from.atStartOfDay(), to.plusDays(1).atStartOfDay(), username);
+            }
             int index = 1; // Reset index counter
+
 // Add request data rows
             for (Request request : requests) {
                 requestTable.addCell(String.valueOf(index++));
@@ -426,7 +470,15 @@ public class PdfService {
             checklistTable.addCell("Nbp Total");
             checklistTable.addCell("Avg NBP");
 
-            List<CheckList> checkLists = checkListRepository.findAllByCreatedByAndSitesDeletedIsFalse(createdBy);
+            //List<CheckList> checkLists = checkListRepository.findAllByCreatedByAndSitesDeletedIsFalse(createdBy);
+
+            List<CheckList> checkLists;
+            if (createdBy.equals("ROLE_ADMIN")) {
+                checkLists = checkListRepository.findAllBySitesDeletedIsFalse();
+            } else {
+                checkLists = checkListRepository.findAllByCreatedByAndSitesDeletedIsFalse(createdBy);
+            }
+
             int index = 1;
             for (CheckList checklist : checkLists) {
                 checklistTable.addCell(String.valueOf(index++));
@@ -495,7 +547,17 @@ public class PdfService {
             checklistTable.addCell("Avg NBP");
 
             // Fetch checklist data within specified date range
-            List<CheckList> checkLists = checkListRepository.findAllByCreatedAtBetweenAndCreatedByAndSitesDeletedIsFalse(from.atStartOfDay(), to.plusDays(1).atStartOfDay(), username);
+           // List<CheckList> checkLists = checkListRepository.findAllByCreatedAtBetweenAndCreatedByAndSitesDeletedIsFalse(from.atStartOfDay(), to.plusDays(1).atStartOfDay(), username);
+
+            List<CheckList> checkLists;
+            if (username.equals("ROLE_ADMIN")) {
+                //please use this condition
+                checkLists = checkListRepository.findAllByCreatedAtBetween(from.atStartOfDay(),
+                        to.plusDays(1).atStartOfDay());
+            } else {
+                checkLists = checkListRepository.findAllByCreatedAtBetweenAndCreatedByAndSitesDeletedIsFalse(from.atStartOfDay(), to.plusDays(1).atStartOfDay(), username);
+
+            }
 
             // Add rows to the table
             int index = 1;

@@ -19,16 +19,24 @@ import java.io.IOException;
 public class FilesController {
     private final FilesStorageService storageService;
 
+//    @PostMapping()
+//    public Object uploadFile(@RequestParam("file") MultipartFile file ) {
+//        try {
+//            return storageService.save(file);
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ResponseMessage(e.getMessage()));
+//        }
+//    }
+
     @PostMapping()
-    public Object uploadFile(@RequestParam("file") MultipartFile file ) {
+    public ResponseEntity<Object> uploadFile(@RequestParam("file") MultipartFile file) {
         try {
-            return storageService.save(file);
+            storageService.save(file);
+            return ResponseEntity.ok().build();
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ResponseMessage(e.getMessage()));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ResponseMessage("Failed to upload file: " + e.getMessage()));
         }
     }
-
-
     @GetMapping("/{filename:.+}")
     public ResponseEntity<Resource> downloadFile(@PathVariable String filename, HttpServletRequest request) {
         try {
