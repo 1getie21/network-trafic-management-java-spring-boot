@@ -632,7 +632,15 @@ public class PdfService {
             failedTrafficTable.addCell("Failure Length");
             failedTrafficTable.addCell("Failed Reason");
 
-            List<FailedTraffics> failedTraffics = failedTrafficRepository.findAllByCreatedByAndSitesDeletedIsFalse(createdBy);
+           // List<FailedTraffics> failedTraffics = failedTrafficRepository.findAllByCreatedByAndSitesDeletedIsFalse(createdBy);
+
+            List<FailedTraffics> failedTraffics;
+
+            if (createdBy.equals("ROLE_ADMIN")) {
+                failedTraffics = failedTrafficRepository.findAllBySitesDeletedIsFalse();
+            } else {
+                failedTraffics = failedTrafficRepository.findAllByCreatedByAndSitesDeletedIsFalse(createdBy);
+            }
             int index = 1;
             for (FailedTraffics failedTraffic : failedTraffics) {
                 failedTrafficTable.addCell(String.valueOf(index++));
@@ -706,7 +714,17 @@ public class PdfService {
             failedTrafficTable.addCell("Failure Length");
             failedTrafficTable.addCell("Failed Reason");
 
-            List<FailedTraffics> failedTraffics = failedTrafficRepository.findAllByCreatedAtBetweenAndCreatedByAndSitesDeletedIsFalse(from.atStartOfDay(), to.plusDays(1).atStartOfDay(), username);
+            //List<FailedTraffics> failedTraffics = failedTrafficRepository.findAllByCreatedAtBetweenAndCreatedByAndSitesDeletedIsFalse(from.atStartOfDay(), to.plusDays(1).atStartOfDay(), username);
+
+            List<FailedTraffics> failedTraffics;
+            if (username.equals("ROLE_ADMIN")) {
+                //please use this condition
+                failedTraffics = (List<FailedTraffics>) failedTrafficRepository.findAllByCreatedAtBetween(from.atStartOfDay(),
+                        to.plusDays(1).atStartOfDay());
+            } else {
+                failedTraffics = failedTrafficRepository.findAllByCreatedAtBetweenAndCreatedByAndSitesDeletedIsFalse(from.atStartOfDay(), to.plusDays(1).atStartOfDay(), username);
+
+            }
             int index = 1;
             for (FailedTraffics failedTraffic : failedTraffics) {
                 failedTrafficTable.addCell(String.valueOf(index++));
@@ -784,8 +802,14 @@ public class PdfService {
             sixMListTable.addCell("CreatedAt");
             sixMListTable.addCell("CreatedBy");
 
+            //List<SixMCList> sixMList = sixMCListRepository.findAllByCreatedByAndSitesDeletedIsFalse(createdBy);
 
-            List<SixMCList> sixMList = sixMCListRepository.findAllByCreatedByAndSitesDeletedIsFalse(createdBy);
+            List<SixMCList> sixMList;
+            if (createdBy.equals("ROLE_ADMIN")) {
+                sixMList = sixMCListRepository.findAllBySitesDeletedIsFalse();
+            } else {
+                sixMList = sixMCListRepository.findAllByCreatedByAndSitesDeletedIsFalse(createdBy);
+            }
             int index = 1;
             for (SixMCList item : sixMList) {
                 sixMListTable.addCell(String.valueOf(index++));
@@ -866,7 +890,17 @@ public class PdfService {
             sixMListTable.addCell("CreatedBy");
 
 
-            List<SixMCList> sixMList = sixMCListRepository.findAllByCreatedAtBetweenAndCreatedByAndSitesDeletedIsFalse(from.atStartOfDay(), to.plusDays(1).atStartOfDay(), username);
+            //List<SixMCList> sixMList = sixMCListRepository.findAllByCreatedAtBetweenAndCreatedByAndSitesDeletedIsFalse(from.atStartOfDay(), to.plusDays(1).atStartOfDay(), username);
+
+            List<SixMCList> sixMList;
+            if (username.equals("ROLE_ADMIN")) {
+                //please use this condition
+                sixMList = sixMCListRepository.findAllByCreatedAtBetween(from.atStartOfDay(),
+                        to.plusDays(1).atStartOfDay());
+            } else {
+                sixMList = sixMCListRepository.findAllByCreatedAtBetweenAndCreatedByAndSitesDeletedIsFalse(from.atStartOfDay(), to.plusDays(1).atStartOfDay(), username);
+
+            }
             int index = 1;
             for (SixMCList item : sixMList) {
                 sixMListTable.addCell(String.valueOf(index++));

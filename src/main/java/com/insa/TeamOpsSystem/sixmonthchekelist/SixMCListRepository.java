@@ -24,4 +24,8 @@ public interface SixMCListRepository extends PagingAndSortingRepository<SixMCLis
     Page<SixMCList> findAllByCreatedAtBetweenAndCreatedByAndSitesDeletedIsFalse(LocalDateTime atStartOfDay, LocalDateTime atStartOfDay1, String username,Pageable pageable);
 
     List<SixMCList> findAllByCreatedAtBetweenAndCreatedByAndSitesDeletedIsFalse(LocalDateTime atStartOfDay, LocalDateTime atStartOfDay1, String username);
+
+    List<SixMCList> findAllBySitesDeletedIsFalse(   );
+
+    List<SixMCList> findAllByCreatedAtBetween(LocalDateTime atStartOfDay, LocalDateTime atStartOfDay1);
 }
