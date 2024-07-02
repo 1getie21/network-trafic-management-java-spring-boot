@@ -1,7 +1,6 @@
 package com.insa.TeamOpsSystem.sixmonthchekelist;
 
 
-import com.insa.TeamOpsSystem.exceptions.AlreadyExistException;
 import com.insa.TeamOpsSystem.exceptions.EntityNotFoundException;
 import com.insa.TeamOpsSystem.jwt.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
@@ -59,13 +58,20 @@ public class SixMCListService {
         sixmclistRepository.deleteById(id);
     }
 
-    public Page<SixMCList> findAllByCreatedAtBetween(LocalDate from, LocalDate to, Pageable pageable) {
-        try {
-           return sixmclistRepository.findAllByCreatedAtBetweenAndCreatedByAndSitesDeletedIsFalse(from.atStartOfDay(), to.plusDays(1).atStartOfDay(), "Admin",pageable);
+
+    public Page<SixMCList> findAllByCreatedAtBetween(LocalDate from, LocalDate to, UsernamePasswordAuthenticationToken token, Pageable pageable) {
+        UserDetailsImpl userDetails = (UserDetailsImpl) token.getPrincipal();
+        //please use this if condition
+        if (userDetails.getAuthorities().stream().anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"))) {
+            return sixmclistRepository.findAllByCreatedAtBetweenAndSitesDeletedIsFalseOrderByCreatedAtDesc(
+                    from.atStartOfDay(),
+                    to.plusDays(1).atStartOfDay(), pageable);
+        } else {
+            return sixmclistRepository.findAllByCreatedAtBetweenAndCreatedByAndSitesDeletedIsFalseOrderByCreatedAtDesc(
+                    from.atStartOfDay(),
+                    to.plusDays(1).atStartOfDay(), userDetails.getUsername(), pageable);
         }
-        catch (Exception exception){
-            throw new RuntimeException(exception.getMessage());
-        }
+
     }
 
 }

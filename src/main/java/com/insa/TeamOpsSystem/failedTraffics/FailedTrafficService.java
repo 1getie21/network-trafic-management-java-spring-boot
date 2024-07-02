@@ -3,7 +3,6 @@ package com.insa.TeamOpsSystem.failedTraffics;
 
 import com.insa.TeamOpsSystem.exceptions.EntityNotFoundException;
 import com.insa.TeamOpsSystem.jwt.UserDetailsImpl;
-import com.insa.TeamOpsSystem.sixmonthchekelist.SixMCList;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
@@ -33,7 +32,7 @@ public class FailedTrafficService {
         long hours = duration.toHours() % 24;
         long minutes = duration.toMinutes() % 60;
         long remainingSeconds = duration.getSeconds() % 60;
-        String durationString=days+" Days,"+hours+" hrs, "+minutes+" min, "+remainingSeconds+" scs";
+        String durationString = days + " Days," + hours + " hrs, " + minutes + " min, " + remainingSeconds + " scs";
 
         failedTraffics.setFailureLength(durationString);
         return failedTrafficRepository.save(failedTraffics);
@@ -44,8 +43,9 @@ public class FailedTrafficService {
     }
 
 
-    public Page<FailedTraffics> getAllTraffics(Pageable pageable,UsernamePasswordAuthenticationToken token) {
+    public Page<FailedTraffics> getAllTraffics(Pageable pageable, UsernamePasswordAuthenticationToken token) {
         UserDetailsImpl userDetails = (UserDetailsImpl) token.getPrincipal();
+        //please use this if condition
         if (userDetails.getAuthorities().stream().anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"))) {
             return failedTrafficRepository.findAllBySitesDeletedIsFalse(pageable);
         } else {
@@ -60,7 +60,7 @@ public class FailedTrafficService {
         long hours = duration.toHours() % 24;
         long minutes = duration.toMinutes() % 60;
         long remainingSeconds = duration.getSeconds() % 60;
-        String durationString=days+" Days,"+hours+" hrs, "+minutes+" min, "+remainingSeconds+" scs";
+        String durationString = days + " Days," + hours + " hrs, " + minutes + " min, " + remainingSeconds + " scs";
 
         failedTraffics.setFailureLength(durationString);
         BeanUtils.copyProperties(failedTraffics, et, getNullPropertyNames(failedTraffics));
@@ -73,10 +73,19 @@ public class FailedTrafficService {
     }
 
 
-    public Page<FailedTraffics> findAllByCreatedAtBetween(LocalDate from, LocalDate to, Pageable pageable) {
-        return failedTrafficRepository.findAllByCreatedAtBetween(
-                from.atStartOfDay(),
-                to.plusDays(1).atStartOfDay(),pageable);
+    public Page<FailedTraffics> findAllByCreatedAtBetween(LocalDate from, LocalDate to,  UsernamePasswordAuthenticationToken token,Pageable pageable) {
+        UserDetailsImpl userDetails = (UserDetailsImpl) token.getPrincipal();
+        //please use this if condition
+        if (userDetails.getAuthorities().stream().anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"))) {
+            return failedTrafficRepository.findAllByCreatedAtBetweenAndSitesDeletedIsFalseOrderByCreatedAtDesc(
+                    from.atStartOfDay(),
+                    to.plusDays(1).atStartOfDay(), pageable);
+        } else {
+            return failedTrafficRepository.findAllByCreatedAtBetweenAndCreatedByAndSitesDeletedIsFalseOrderByCreatedAtDesc(
+                    from.atStartOfDay(),
+                    to.plusDays(1).atStartOfDay(), userDetails.getUsername(), pageable);
+        }
+
     }
 
 

@@ -2,7 +2,6 @@ package com.insa.TeamOpsSystem.failedTraffics;
 
 
 import com.insa.TeamOpsSystem.jwt.PaginatedResultsRetrievedEvent;
-import com.insa.TeamOpsSystem.request.RequestDtos;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Pageable;
@@ -58,12 +57,13 @@ public class FailedTrafficController implements FailedTrafficApi {
     ResponseEntity<PagedModel<FailedTrafficDtos>> findAllByCreatedAtBetween(
             @PathVariable("from")  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from
             , @PathVariable("to")  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to
+            ,UsernamePasswordAuthenticationToken token
             , Pageable pageable,
             PagedResourcesAssembler assembler,
             UriComponentsBuilder uriBuilder,
             final HttpServletResponse response) {
         eventPublisher.publishEvent(new PaginatedResultsRetrievedEvent<>(
-                FailedTrafficDtos.class, uriBuilder, response, pageable.getPageNumber(), failedTrafficService.findAllByCreatedAtBetween(from,to, pageable).getTotalPages(), pageable.getPageSize()));
-        return new ResponseEntity<PagedModel<FailedTrafficDtos>>(assembler.toModel(failedTrafficService.findAllByCreatedAtBetween(from,to, pageable).map(failedTrafficMapper::toTrafficsDto)), HttpStatus.OK);
+                FailedTrafficDtos.class, uriBuilder, response, pageable.getPageNumber(), failedTrafficService.findAllByCreatedAtBetween(from,to,token, pageable).getTotalPages(), pageable.getPageSize()));
+        return new ResponseEntity<PagedModel<FailedTrafficDtos>>(assembler.toModel(failedTrafficService.findAllByCreatedAtBetween(from,to,token, pageable).map(failedTrafficMapper::toTrafficsDto)), HttpStatus.OK);
     }
 }

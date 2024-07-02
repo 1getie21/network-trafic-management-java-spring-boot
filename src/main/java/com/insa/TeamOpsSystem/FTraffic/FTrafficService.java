@@ -12,7 +12,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.insa.TeamOpsSystem.jwt.until.Util.getNullPropertyNames;
@@ -27,11 +26,10 @@ public class FTrafficService {
         UserDetails userDetails = (UserDetails) token.getPrincipal();
         fTraffics.setCreatedBy(userDetails.getUsername());
         fTraffics.setUpdated_by(userDetails.getUsername());
-        List<Ftraffics> traffics= fTrafficRepository.findAllByCreatedAtIsGreaterThanEqualAndTrafficTimeNameAndSitesIdAndSitesDeletedIsFalse(LocalDate.now().atStartOfDay(), fTraffics.getTrafficTimeName(), fTraffics.getSites().getId());
+        List<Ftraffics> traffics = fTrafficRepository.findAllByCreatedAtIsGreaterThanEqualAndTrafficTimeNameAndSitesIdAndSitesDeletedIsFalse(LocalDate.now().atStartOfDay(), fTraffics.getTrafficTimeName(), fTraffics.getSites().getId());
         if (traffics.isEmpty()) {
             return fTrafficRepository.save(fTraffics);
-        }
-        else throw new AlreadyExistException("Site already exist");
+        } else throw new AlreadyExistException("Site already exist");
     }
 
     public Ftraffics getTrafficById(long id) {
@@ -51,11 +49,17 @@ public class FTrafficService {
     public Page<Ftraffics> getAllTrafficsByTrafficTime(String trafficTime, Pageable pageable) {
         return fTrafficRepository.findAllBySitesDeletedIsFalseAndTrafficTimeName(trafficTime, pageable);
     }
-    public Page<Ftraffics> findAllByCreatedAtBetween(LocalDate from, LocalDate to,UsernamePasswordAuthenticationToken token, Pageable pageable) {
+
+    public Page<Ftraffics> findAllByCreatedAtBetween(LocalDate from, LocalDate to, UsernamePasswordAuthenticationToken token, Pageable pageable) {
 
         UserDetails userDetails = (UserDetails) token.getPrincipal();
-        String createdBy= userDetails.getUsername();
-        return fTrafficRepository.findAllByCreatedAtBetweenAndSitesDeletedIsFalseAndCreatedBy(from.atStartOfDay(), to.plusDays(1).atStartOfDay(),createdBy,pageable);
+        String createdBy = userDetails.getUsername();
+        if (userDetails.getAuthorities().stream().anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"))) {
+            return fTrafficRepository.findAllByCreatedAtBetweenAndSitesDeletedIsFalse(from.atStartOfDay(),
+                    to.plusDays(1).atStartOfDay(), pageable);
+        } else {
+            return fTrafficRepository.findAllByCreatedAtBetweenAndSitesDeletedIsFalseAndCreatedBy(from.atStartOfDay(), to.plusDays(1).atStartOfDay(), createdBy, pageable);
+        }
     }
 
     public Ftraffics updateTrafficById(long id, Ftraffics fTraffics, UsernamePasswordAuthenticationToken token) throws IllegalAccessException {

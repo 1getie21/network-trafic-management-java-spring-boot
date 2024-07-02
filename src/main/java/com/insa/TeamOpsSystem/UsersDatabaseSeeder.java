@@ -30,9 +30,9 @@ public class UsersDatabaseSeeder implements CommandLineRunner {
             roles.setName("ROLE_ADMIN");
             rolesRepository.save(roles);
         }
-        if (rolesRepository.findByName("ROLE_MANAGER").isEmpty()) {
+        if (rolesRepository.findByName("ROLE_USER").isEmpty()) {
             Roles roles = new Roles();
-            roles.setName("ROLE_MANAGER");
+            roles.setName("ROLE_USER");
             rolesRepository.save(roles);
         }
         if (rolesRepository.findByName("ROLE_MEMBER").isEmpty()) {
@@ -40,11 +40,11 @@ public class UsersDatabaseSeeder implements CommandLineRunner {
             roles.setName("ROLE_MEMBER");
             rolesRepository.save(roles);
         }
-        if (rolesRepository.findByName("ROLE_USER").isEmpty()) {
-            Roles roles = new Roles();
-            roles.setName("ROLE_USER");
-            rolesRepository.save(roles);
-        }
+//        if (rolesRepository.findByName("ROLE_USER").isEmpty()) {
+//            Roles roles = new Roles();
+//            roles.setName("ROLE_USER");
+//            rolesRepository.save(roles);
+//        }
         if (userRepository.findByUsername("Admin").isEmpty()) {
             user.setFirstName("Admin");
             user.setLastName("Admin");

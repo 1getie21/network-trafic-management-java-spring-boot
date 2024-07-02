@@ -13,19 +13,18 @@ import java.util.List;
 @Repository
 @RepositoryRestResource
 public interface FailedTrafficRepository extends PagingAndSortingRepository<FailedTraffics, Long>, JpaSpecificationExecutor<FailedTraffics> {
-    Page<FailedTraffics> findAllByOrderByCreatedAtDesc(Pageable pageable);
 
     Page<FailedTraffics> findAllByCreatedByAndSitesDeletedIsFalseOrderByCreatedAtDesc(String username, Pageable pageable);
 
     Page<FailedTraffics> findAllBySitesDeletedIsFalse(Pageable pageable);
 
-    List<FailedTraffics> findAllByCreatedAtBetweenAndSitesDeletedIsFalse(LocalDateTime atStartOfDay, LocalDateTime atStartOfDay1);
 
     List<FailedTraffics> findAllByCreatedByAndSitesDeletedIsFalse(String createdBy);
 
-    Page<FailedTraffics> findAllByCreatedAtBetween(LocalDateTime atStartOfDay, LocalDateTime atStartOfDay1, Pageable pageable);
+    Page<FailedTraffics> findAllByCreatedAtBetweenAndSitesDeletedIsFalseOrderByCreatedAtDesc(LocalDateTime atStartOfDay, LocalDateTime atStartOfDay1, Pageable pageable);
+    Page<FailedTraffics> findAllByCreatedAtBetweenAndCreatedByAndSitesDeletedIsFalseOrderByCreatedAtDesc(LocalDateTime from, LocalDateTime to,String createdBy, Pageable pageable);
 
-    List<FailedTraffics> findAllByCreatedBy(String createdBy);
+
 
     List<FailedTraffics> findAllBySitesDeletedIsFalse(   );
 

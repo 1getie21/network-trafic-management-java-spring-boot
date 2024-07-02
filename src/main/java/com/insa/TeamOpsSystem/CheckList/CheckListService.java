@@ -73,4 +73,18 @@ public class CheckListService {
                 from.atStartOfDay(),
                 to.plusDays(1).atStartOfDay(),pageable);
     }
+
+
+    public Page<CheckList> findAllByCreatedAtBetween(LocalDate from, LocalDate to, UsernamePasswordAuthenticationToken token, Pageable pageable) {
+
+        UserDetails userDetails = (UserDetails) token.getPrincipal();
+        String createdBy = userDetails.getUsername();
+        if (userDetails.getAuthorities().stream().anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"))) {
+            return checkListRepository.findAllByCreatedAtBetweenAndSitesDeletedIsFalse(from.atStartOfDay(),
+                    to.plusDays(1).atStartOfDay(), pageable);
+        } else {
+            return checkListRepository.findAllByCreatedAtBetweenAndSitesDeletedIsFalseAndCreatedBy(from.atStartOfDay(), to.plusDays(1).atStartOfDay(), createdBy, pageable);
+        }
+    }
+
 }

@@ -27,6 +27,7 @@ public interface CheckListRepository extends JpaRepository<CheckList, Long>, Jpa
     List<CheckList> findAllByCreatedAtBetween(LocalDateTime atStartOfDay, LocalDateTime atStartOfDay1);
 
 
+    Page<CheckList> findAllByCreatedAtBetweenAndSitesDeletedIsFalse(LocalDateTime atStartOfDay, LocalDateTime atStartOfDay1, Pageable pageable);
 
-
+    Page<CheckList> findAllByCreatedAtBetweenAndSitesDeletedIsFalseAndCreatedBy(LocalDateTime atStartOfDay, LocalDateTime atStartOfDay1, String createdBy, Pageable pageable);
 }

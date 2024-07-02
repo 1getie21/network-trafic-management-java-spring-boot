@@ -154,9 +154,9 @@ public class PdfService {
 //            int index = 1;  // Index counter
 
             List<Ftraffics> ftraffics;
-           // System.out.println("userName="+userName);
             if (userName.equals("ROLE_ADMIN")) {
-                ftraffics = trafficRepository.findAllByCreatedAtBetweenAndSitesDeletedIsFalse(from.atStartOfDay(), to.plusDays(1).atStartOfDay());
+                ftraffics = trafficRepository.findAllByCreatedAtBetweenAndSitesDeletedIsFalse(
+                        from.atStartOfDay(), to.plusDays(1).atStartOfDay());
             } else {
                 ftraffics = trafficRepository.findAllByCreatedAtBetweenAndSitesDeletedIsFalseAndCreatedBy(
                         from.atStartOfDay(), to.plusDays(1).atStartOfDay(), userName);
@@ -894,7 +894,7 @@ public class PdfService {
 
             List<SixMCList> sixMList;
             if (username.equals("ROLE_ADMIN")) {
-                //please use this condition
+
                 sixMList = sixMCListRepository.findAllByCreatedAtBetween(from.atStartOfDay(),
                         to.plusDays(1).atStartOfDay());
             } else {

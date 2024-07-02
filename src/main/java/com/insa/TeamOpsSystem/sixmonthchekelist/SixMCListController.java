@@ -1,7 +1,5 @@
 package com.insa.TeamOpsSystem.sixmonthchekelist;
 
-import com.insa.TeamOpsSystem.exceptions.AlreadyExistException;
-import com.insa.TeamOpsSystem.failedTraffics.FailedTrafficDtos;
 import com.insa.TeamOpsSystem.jwt.PaginatedResultsRetrievedEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
@@ -54,14 +52,31 @@ public class SixMCListController {
         sixmclistService.deleteTrafficById(id, token);
     }
 
+    private SixMCListMapperImpl mapper;
 
     @GetMapping("/{from}/{to}")
     @ResponseStatus(HttpStatus.OK)
-    Page<SixMCList>findAllByCreatedAtBetween(
+            ResponseEntity<PagedModel<SixMCListDtos>> findAllByCreatedAtBetween(
             @PathVariable("from") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from
-            , @PathVariable("to") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to ,Pageable pageable ) {
-
-            return sixmclistService.findAllByCreatedAtBetween(from, to,pageable);
-
+            , @PathVariable("to") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to
+            ,UsernamePasswordAuthenticationToken token
+            , Pageable pageable,
+            PagedResourcesAssembler assembler,
+            UriComponentsBuilder uriBuilder,
+            final HttpServletResponse response) {
+        eventPublisher.publishEvent(new PaginatedResultsRetrievedEvent<>(
+                SixMCListDtos.class, uriBuilder, response, pageable.getPageNumber(), sixmclistService.findAllByCreatedAtBetween(from, to, token, pageable).getTotalPages(), pageable.getPageSize()));
+//        return new ResponseEntity<PagedModel<SixMCListDtos>>(assembler.toModel(
+//                sixmclistService.findAllByCreatedAtBetween(from,to,token, pageable)
+//                        .map(SixMCListMapper::toTrafficsDto)), HttpStatus.OK);
+        return new ResponseEntity<PagedModel<SixMCListDtos>>(
+                assembler.toModel(
+                        sixmclistService.findAllByCreatedAtBetween(from, to, token, pageable)
+                                .map(sixMCList -> mapper.toSixMCListDtos(sixMCList))
+                ),
+                HttpStatus.OK
+        );
     }
 }
+
+
