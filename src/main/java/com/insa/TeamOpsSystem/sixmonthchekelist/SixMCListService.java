@@ -61,7 +61,6 @@ public class SixMCListService {
 
     public Page<SixMCList> findAllByCreatedAtBetween(LocalDate from, LocalDate to, UsernamePasswordAuthenticationToken token, Pageable pageable) {
         UserDetailsImpl userDetails = (UserDetailsImpl) token.getPrincipal();
-        //please use this if condition
         if (userDetails.getAuthorities().stream().anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"))) {
             return sixmclistRepository.findAllByCreatedAtBetweenAndSitesDeletedIsFalseOrderByCreatedAtDesc(
                     from.atStartOfDay(),
