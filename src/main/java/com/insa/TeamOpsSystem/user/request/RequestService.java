@@ -1,4 +1,4 @@
-package com.insa.TeamOpsSystem.request;
+package com.insa.TeamOpsSystem.user.request;
 
 import com.insa.TeamOpsSystem.exceptions.AlreadyExistException;
 import com.insa.TeamOpsSystem.exceptions.EntityNotFoundException;

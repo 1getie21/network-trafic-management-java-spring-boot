@@ -1,4 +1,4 @@
-package com.insa.TeamOpsSystem.request;
+package com.insa.TeamOpsSystem.user.request;
 import com.insa.TeamOpsSystem.sites.Sites;
 import com.insa.TeamOpsSystem.jwt.until.Auditable;
 import lombok.Data;

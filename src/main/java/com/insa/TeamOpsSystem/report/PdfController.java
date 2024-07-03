@@ -158,6 +158,7 @@ public class PdfController {
             @PathVariable("to") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to,
             @RequestParam("userName") String username) {
         ByteArrayInputStream bis = pdfService.generatePdfSixCListByByDateRange(from, to,username);
+
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Disposition", "inline; filename=report.pdf");
 

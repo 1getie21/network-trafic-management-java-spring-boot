@@ -1,4 +1,4 @@
-package com.insa.TeamOpsSystem.request;
+package com.insa.TeamOpsSystem.user.request;
 
 import com.insa.TeamOpsSystem.jwt.PaginatedResultsRetrievedEvent;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -11,6 +11,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -29,6 +30,7 @@ public class RequestController {
 
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("hasRole('ROLE_USER')")
     Request createTraffics(@RequestBody @Valid Request requestDtos, UsernamePasswordAuthenticationToken token) throws IllegalAccessException{
         return requestService.createTraffics(requestDtos,token);
     }
@@ -44,15 +46,16 @@ public class RequestController {
         return requestService.acceptRequest(id,token);
     }
 
-
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole('ROLE_USER')")
     Request updateTrafficById(@PathVariable("id") long id, @RequestBody @Valid Request requestDtos, UsernamePasswordAuthenticationToken token) throws IllegalAccessException {
         return requestService.updateTrafficById(id,requestDtos,token);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole('ROLE_USER')")
     void deleteTrafficById(@PathVariable("id") long id,UsernamePasswordAuthenticationToken token) throws IllegalAccessException {
            requestService.deleteTrafficById(id,token);
     }

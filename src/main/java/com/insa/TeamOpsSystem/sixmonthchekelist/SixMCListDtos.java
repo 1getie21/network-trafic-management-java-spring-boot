@@ -1,16 +1,14 @@
 package com.insa.TeamOpsSystem.sixmonthchekelist;
 
-import com.insa.TeamOpsSystem.sites.Sites;
 import com.insa.TeamOpsSystem.jwt.until.Auditable;
+import com.insa.TeamOpsSystem.sites.Sites;
 import lombok.Data;
 
-import java.io.Serializable;
-
 @Data
-public class SixMCListDtos extends Auditable  implements Serializable {
+public class SixMCListDtos extends Auditable      {
     private Long id;
-    private String datacenter;
-    private String fiber;
+    private  String datacenter;
+    private  String fiber;
     private String rack;
     private String opd;
     private String Switch;

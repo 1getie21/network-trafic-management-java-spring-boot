@@ -1,4 +1,4 @@
-package com.insa.TeamOpsSystem.request;
+package com.insa.TeamOpsSystem.user.request;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

@@ -16,8 +16,7 @@ public interface SixMCListRepository extends PagingAndSortingRepository<SixMCLis
     Page<SixMCList> findAllBySitesDeletedIsFalse(Pageable pageable);
 
     Page<SixMCList> findAllByCreatedByAndSitesDeletedIsFalseOrderByCreatedAtDesc(String username, Pageable pageable);
-
-    List<SixMCList> findAllByCreatedByAndSitesDeletedIsFalse(String createdBy);
+     List<SixMCList> findAllByCreatedByAndSitesDeletedIsFalse(String createdBy);
 
     List<SixMCList> findAllByCreatedAtBetweenAndCreatedByAndSitesDeletedIsFalse(LocalDateTime atStartOfDay, LocalDateTime atStartOfDay1, String username);
 
@@ -25,7 +24,9 @@ public interface SixMCListRepository extends PagingAndSortingRepository<SixMCLis
 
     List<SixMCList> findAllByCreatedAtBetween(LocalDateTime atStartOfDay, LocalDateTime atStartOfDay1);
 
-    Page<SixMCList> findAllByCreatedAtBetweenAndSitesDeletedIsFalseOrderByCreatedAtDesc(LocalDateTime atStartOfDay, LocalDateTime atStartOfDay1, Pageable pageable);
 
-    Page<SixMCList> findAllByCreatedAtBetweenAndCreatedByAndSitesDeletedIsFalseOrderByCreatedAtDesc(LocalDateTime atStartOfDay, LocalDateTime atStartOfDay1, String username, Pageable pageable);
-}
+    Page<SixMCList> findAllByCreatedAtBetweenAndSitesDeletedIsFalse(LocalDateTime atStartOfDay, LocalDateTime atStartOfDay1, Pageable pageable);
+
+    Page<SixMCList> findAllByCreatedAtBetweenAndSitesDeletedIsFalseAndCreatedBy(LocalDateTime atStartOfDay, LocalDateTime atStartOfDay1, String createdBy, Pageable pageable);
+
+ }
