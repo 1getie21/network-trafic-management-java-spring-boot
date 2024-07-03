@@ -1,5 +1,4 @@
-package com.insa.TeamOpsSystem.user.request;
-import com.insa.TeamOpsSystem.sites.Sites;
+package com.insa.TeamOpsSystem.request;
 import com.insa.TeamOpsSystem.jwt.until.Auditable;
 import lombok.Data;
 import org.hibernate.annotations.SQLDelete;

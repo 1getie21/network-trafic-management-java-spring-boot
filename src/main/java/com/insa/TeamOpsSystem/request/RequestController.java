@@ -1,4 +1,4 @@
-package com.insa.TeamOpsSystem.user.request;
+package com.insa.TeamOpsSystem.request;
 
 import com.insa.TeamOpsSystem.jwt.PaginatedResultsRetrievedEvent;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -11,7 +11,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -30,7 +29,7 @@ public class RequestController {
 
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
-    @PreAuthorize("hasRole('ROLE_USER')")
+
     Request createTraffics(@RequestBody @Valid Request requestDtos, UsernamePasswordAuthenticationToken token) throws IllegalAccessException{
         return requestService.createTraffics(requestDtos,token);
     }
@@ -40,22 +39,21 @@ public class RequestController {
     Request getTrafficById(@PathVariable("id") long id) {
         return requestService.getTrafficById(id);
     }
+
     @GetMapping("/accept/{id}")
     @ResponseStatus(HttpStatus.OK)
-    Request acceptRequest(@PathVariable("id") long id,UsernamePasswordAuthenticationToken token) {
+    Request acceptRequest(@PathVariable("id") long id, UsernamePasswordAuthenticationToken token) {
         return requestService.acceptRequest(id,token);
     }
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    @PreAuthorize("hasRole('ROLE_USER')")
     Request updateTrafficById(@PathVariable("id") long id, @RequestBody @Valid Request requestDtos, UsernamePasswordAuthenticationToken token) throws IllegalAccessException {
         return requestService.updateTrafficById(id,requestDtos,token);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    @PreAuthorize("hasRole('ROLE_USER')")
     void deleteTrafficById(@PathVariable("id") long id,UsernamePasswordAuthenticationToken token) throws IllegalAccessException {
            requestService.deleteTrafficById(id,token);
     }
@@ -78,11 +76,15 @@ public class RequestController {
             @PathVariable("from")  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from
             , @PathVariable("to")  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to
             , Pageable pageable,
+            UsernamePasswordAuthenticationToken token,
             PagedResourcesAssembler assembler,
             UriComponentsBuilder uriBuilder,
             final HttpServletResponse response) {
         eventPublisher.publishEvent(new PaginatedResultsRetrievedEvent<>(
-                RequestDtos.class, uriBuilder, response, pageable.getPageNumber(), requestService.findAllByCreatedAtBetween(from,to, pageable).getTotalPages(), pageable.getPageSize()));
-        return new ResponseEntity<PagedModel<RequestDtos>>(assembler.toModel(requestService.findAllByCreatedAtBetween(from,to, pageable).map(requestMapper::toTrafficsDto)), HttpStatus.OK);
+                RequestDtos.class, uriBuilder, response, pageable.getPageNumber(),
+                requestService.findAllByCreatedAtBetween(from,to, token, pageable).getTotalPages(), pageable.getPageSize()));
+        return new ResponseEntity<PagedModel<RequestDtos>>(assembler.toModel(
+                requestService.findAllByCreatedAtBetween(from,to, token, pageable).map(
+                        requestMapper::toTrafficsDto)), HttpStatus.OK);
     }
 }

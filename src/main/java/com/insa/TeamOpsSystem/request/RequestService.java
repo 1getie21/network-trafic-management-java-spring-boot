@@ -1,4 +1,4 @@
-package com.insa.TeamOpsSystem.user.request;
+package com.insa.TeamOpsSystem.request;
 
 import com.insa.TeamOpsSystem.exceptions.AlreadyExistException;
 import com.insa.TeamOpsSystem.exceptions.EntityNotFoundException;
@@ -69,9 +69,16 @@ public class RequestService {
             throw new AlreadyExistException("Request is already accepted");
         }
     }
-    public Page<Request> findAllByCreatedAtBetween(LocalDate from, LocalDate to, Pageable pageable) {
-        return requestRepository.findAllByCreatedAtBetween(from.atStartOfDay(), to.plusDays(1).atStartOfDay(),pageable);
-    }
+    public Page<Request> findAllByCreatedAtBetween(LocalDate from, LocalDate to, UsernamePasswordAuthenticationToken token, Pageable pageable) {
 
+        UserDetails userDetails = (UserDetails) token.getPrincipal();
+        String createdBy = userDetails.getUsername();
+        if (userDetails.getAuthorities().stream().anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"))) {
+            return requestRepository.findAllByCreatedAtBetween(from.atStartOfDay(),
+                    to.plusDays(1).atStartOfDay(), pageable);
+        } else {
+            return (Page<Request>) requestRepository.findAllByCreatedAtBetweenAndCreatedBy(from.atStartOfDay(), to.plusDays(1).atStartOfDay(), createdBy, pageable);
+        }
+    }
 
 }

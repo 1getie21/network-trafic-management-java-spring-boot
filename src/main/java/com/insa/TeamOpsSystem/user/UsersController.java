@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,7 +29,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/users")
 @RequiredArgsConstructor
 @CrossOrigin(origins = {"http://localhost:3000", "http://10.10.10.112:8088"})
-public class UsersController implements UserApi {
+public class UsersController {
     private final UserService userService;
     private final UserMapper userMapper;
     private final ApplicationEventPublisher eventPublisher;
@@ -37,8 +38,9 @@ public class UsersController implements UserApi {
 
     private final UserRepository userRepository;
 
-    @Override
-    public UserDto createTeamMembers(UserDto userDto) throws IllegalAccessException {
+    @PostMapping("/signup")
+    @ResponseStatus(HttpStatus.CREATED)
+    UserDto createTeamMembers(@RequestBody @Valid UserDto userDto) throws IllegalAccessException {
         return userMapper.toUsersDto(userService.createTeamMembers(userMapper.toUsers(userDto)));
     }
 
@@ -73,22 +75,36 @@ public class UsersController implements UserApi {
         }
     }
 
-    @Override
-    public UserDto getTeamMembersById(long id) {
+    @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    UserDto getTeamMembersById(@PathVariable("id") long id) {
         return userMapper.toUsersDto(userService.getTeamMembersById(id));
     }
 
-
-    @Override
-    public UserDto updateTeamMembers(long id, UserDto userDto, UsernamePasswordAuthenticationToken token) throws IllegalAccessException {
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    UserDto updateTeamMembers(@PathVariable("id") long id, @RequestBody UserDto userDto, UsernamePasswordAuthenticationToken token) throws IllegalAccessException {
         return userMapper.toUsersDto(userService.updateTeamMembers(id, userMapper.toUsers(userDto), token));
     }
 
+    @PutMapping("/update-password/{id}")
+    public SystemUsers updatePassword(@PathVariable("id") long id, @RequestBody PasswordRequest passwordRequest, UsernamePasswordAuthenticationToken token) throws IllegalAccessException {
+        return userService.updatePassword(id, passwordRequest, token);
+    }
 
-    @Override
-    public ResponseEntity<PagedModel<UserDto>> getAllTeamMembers(Pageable pageable, PagedResourcesAssembler assembler, UriComponentsBuilder uriBuilder, HttpServletResponse response) {
+    @GetMapping()
+    @ResponseStatus(HttpStatus.OK)
+    ResponseEntity<PagedModel<UserDto>> getAllTeamMembers(Pageable pageable,
+                                                          PagedResourcesAssembler assembler,
+                                                          UriComponentsBuilder uriBuilder,
+                                                          final HttpServletResponse response) {
         eventPublisher.publishEvent(new PaginatedResultsRetrievedEvent<>(
-                UserDto.class, uriBuilder, response, pageable.getPageNumber(), userService.getAllTeamMembers(pageable).getTotalPages(), pageable.getPageSize()));
+                UserDto.class
+                , uriBuilder
+                , response
+                , pageable.getPageNumber()
+                , userService.getAllTeamMembers(pageable).getTotalPages()
+                , pageable.getPageSize()));
         return new ResponseEntity<PagedModel<UserDto>>(assembler.toModel(userService.getAllTeamMembers(pageable).map(userMapper::toUsersDto)), HttpStatus.OK);
     }
 }

@@ -26,7 +26,7 @@ public class SixMCListService {
         UserDetails userDetails = (UserDetails) token.getPrincipal();
         sixmclist.setCreatedBy(userDetails.getUsername());
         sixmclist.setUpdated_by(userDetails.getUsername());
-        return  sixmclistRepository.save(sixmclist);
+        return sixmclistRepository.save(sixmclist);
     }
 
 
@@ -58,17 +58,17 @@ public class SixMCListService {
         sixmclistRepository.deleteById(id);
     }
 
+
     public Page<SixMCList> findAllByCreatedAtBetween(LocalDate from, LocalDate to, UsernamePasswordAuthenticationToken token, Pageable pageable) {
 
-//        UserDetails userDetails = (UserDetails) token.getPrincipal();
-//        String createdBy = userDetails.getUsername();
-//        if (userDetails.getAuthorities().stream().anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"))) {
+        UserDetails userDetails = (UserDetails) token.getPrincipal();
+        String createdBy = userDetails.getUsername();
+        if (userDetails.getAuthorities().stream().anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"))) {
             return sixmclistRepository.findAllByCreatedAtBetweenAndSitesDeletedIsFalse(from.atStartOfDay(),
                     to.plusDays(1).atStartOfDay(), pageable);
-//        } else {
-//            return sixmclistRepository.findAllByCreatedAtBetweenAndSitesDeletedIsFalseAndCreatedBy(from.atStartOfDay(), to.plusDays(1).atStartOfDay(), createdBy, pageable);
-//        }
+        } else {
+            return sixmclistRepository.findAllByCreatedAtBetweenAndSitesDeletedIsFalseAndCreatedBy(from.atStartOfDay(), to.plusDays(1).atStartOfDay(), createdBy, pageable);
+        }
     }
-
 
 }

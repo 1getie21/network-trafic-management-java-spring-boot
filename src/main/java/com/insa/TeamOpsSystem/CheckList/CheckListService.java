@@ -64,15 +64,6 @@ public class CheckListService {
         checkListRepository.deleteById(id);
     }
 
-//    public Page<checkListRepository> findAllByCreatedAtBetween(LocalDate from, LocalDate to, Pageable pageable) {
-//        return checkListRepository.findAllByCreatedAtBetween(from.atStartOfDay(), to.plusDays(1).atStartOfDay());
-//    }
-
-    public Page<CheckList> findAllByCreatedAtBetween(LocalDate from, LocalDate to, Pageable pageable) {
-        return checkListRepository.findAllByCreatedAtBetween(
-                from.atStartOfDay(),
-                to.plusDays(1).atStartOfDay(),pageable);
-    }
 
 
     public Page<CheckList> findAllByCreatedAtBetween(LocalDate from, LocalDate to, UsernamePasswordAuthenticationToken token, Pageable pageable) {

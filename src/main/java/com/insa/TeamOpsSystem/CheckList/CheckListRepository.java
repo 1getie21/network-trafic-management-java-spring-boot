@@ -16,18 +16,15 @@ import java.util.List;
 public interface CheckListRepository extends JpaRepository<CheckList, Long>, JpaSpecificationExecutor<CheckList> {
 
     Page<CheckList> findAllBySitesDeletedIsFalse(Pageable Pageable);
-    List<CheckList> findAllBySitesDeletedIsFalse(   );
     Page<CheckList> findAllByCreatedByAndSitesDeletedIsFalseOrderByCreatedAtDesc(String username, Pageable pageable);
-
     Page<CheckList> findAllByCreatedAtBetween(LocalDateTime atStartOfDay, LocalDateTime atStartOfDay1, Pageable pageable);
-    List<CheckList> findAllByCreatedAtBetweenAndCreatedByAndSitesDeletedIsFalse(LocalDateTime from, LocalDateTime to, String username);
-   // List<CheckList> findAllByCreatedAtBetweenAndCreatedByAndSitesDeletedIsFalse(LocalDateTime atStartOfDay, LocalDateTime atStartOfDay1, String username);
-    List<CheckList> findAllByCreatedByAndSitesDeletedIsFalse(String createdBy);
-
-    List<CheckList> findAllByCreatedAtBetween(LocalDateTime atStartOfDay, LocalDateTime atStartOfDay1);
-
-
     Page<CheckList> findAllByCreatedAtBetweenAndSitesDeletedIsFalse(LocalDateTime atStartOfDay, LocalDateTime atStartOfDay1, Pageable pageable);
-
     Page<CheckList> findAllByCreatedAtBetweenAndSitesDeletedIsFalseAndCreatedBy(LocalDateTime atStartOfDay, LocalDateTime atStartOfDay1, String createdBy, Pageable pageable);
+
+    List<CheckList> findAllByCreatedAtBetweenAndCreatedByAndSitesDeletedIsFalse(LocalDateTime from, LocalDateTime to, String username);
+    List<CheckList> findAllByCreatedByAndSitesDeletedIsFalse(String createdBy);
+    List<CheckList> findAllByCreatedAtBetween(LocalDateTime atStartOfDay, LocalDateTime atStartOfDay1);
+    List<CheckList> findAllBySitesDeletedIsFalse(   );
+
+
 }

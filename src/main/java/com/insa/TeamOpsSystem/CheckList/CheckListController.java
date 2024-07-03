@@ -75,12 +75,13 @@ public class CheckListController {
     ResponseEntity<PagedModel<CheckListDtos>> findAllByCreatedAtBetween(
             @PathVariable("from")  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from
             , @PathVariable("to")  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to
+            ,UsernamePasswordAuthenticationToken token
             , Pageable pageable,
             PagedResourcesAssembler assembler,
             UriComponentsBuilder uriBuilder,
             final HttpServletResponse response) {
         eventPublisher.publishEvent(new PaginatedResultsRetrievedEvent<>(
-                CheckListDtos.class, uriBuilder, response, pageable.getPageNumber(), checkListService.findAllByCreatedAtBetween(from,to, pageable).getTotalPages(), pageable.getPageSize()));
-        return new ResponseEntity<PagedModel<CheckListDtos>>(assembler.toModel(checkListService.findAllByCreatedAtBetween(from,to, pageable).map(checkListMapper::toTrafficsDto)), HttpStatus.OK);
+                CheckListDtos.class, uriBuilder, response, pageable.getPageNumber(), checkListService.findAllByCreatedAtBetween(from,to,token, pageable).getTotalPages(), pageable.getPageSize()));
+        return new ResponseEntity<PagedModel<CheckListDtos>>(assembler.toModel(checkListService.findAllByCreatedAtBetween(from,to,token, pageable).map(checkListMapper::toTrafficsDto)), HttpStatus.OK);
     }
 }

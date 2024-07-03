@@ -54,7 +54,7 @@ public class SixMCListController {
     @GetMapping("/{from}/{to}")
     @ResponseStatus(HttpStatus.OK)
     ResponseEntity<PagedModel<SixMCListDtos>> findAllByCreatedAtBetween(
-            @PathVariable("from")  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from
+       @PathVariable("from")  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from
             , @PathVariable("to")  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to
             ,UsernamePasswordAuthenticationToken token
             , Pageable pageable,
@@ -62,8 +62,12 @@ public class SixMCListController {
             UriComponentsBuilder uriBuilder,
             final HttpServletResponse response) {
         eventPublisher.publishEvent(new PaginatedResultsRetrievedEvent<>(
-                SixMCListDtos.class, uriBuilder, response, pageable.getPageNumber(), sixmclistService.findAllByCreatedAtBetween(from,to,token, pageable).getTotalPages(), pageable.getPageSize()));
-        return new ResponseEntity<PagedModel<SixMCListDtos>>(assembler.toModel(sixmclistService.findAllByCreatedAtBetween(from,to,token, pageable).map(sixmclistMapper::toSixMCListDtos)), HttpStatus.OK);
+
+                SixMCListDtos.class, uriBuilder, response, pageable.getPageNumber(),
+                sixmclistService.findAllByCreatedAtBetween(from,to,token, pageable).getTotalPages(), pageable.getPageSize()));
+        return new ResponseEntity<PagedModel<SixMCListDtos>>(assembler.toModel(
+                sixmclistService.findAllByCreatedAtBetween(from,to,token, pageable).map(
+                        sixmclistMapper::toSixMCListDtos)), HttpStatus.OK);
     }
 }
 

@@ -1,4 +1,4 @@
-package com.insa.TeamOpsSystem.user.request;
+package com.insa.TeamOpsSystem.request;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,18 +13,17 @@ import java.util.List;
 @Repository
 @RepositoryRestResource
 public interface RequestRepository extends PagingAndSortingRepository<Request, Long>, JpaSpecificationExecutor<Request> {
-    Page<Request> findAllByOrderByCreatedAtDesc(Pageable pageable);
-
-    Page<Request> findAllByCreatedByOrderByCreatedAt(String username, Pageable pageable);
 
     Page<Request> findAllByCreatedAtBetween(LocalDateTime from, LocalDateTime to, Pageable pageable);
+    Page<Request> findAll(Pageable Pageable);
+    Page<Request> findAllByCreatedAtBetweenAndCreatedBy(LocalDateTime from, LocalDateTime to, String username, Pageable pageable);
 
     List<Request> findAllByCreatedAtBetween(LocalDateTime from, LocalDateTime to);
 
-    List<Request> findAllByCreatedAtBetweenAndCreatedBy(LocalDateTime from, LocalDateTime to, String username);
-
     List<Request> findAllByCreatedBy(String createdBy);
 
+    List<Request> findAllByCreatedAtBetweenAndCreatedBy(LocalDateTime atStartOfDay, LocalDateTime atStartOfDay1, String username);
 
-    // List<Request> findAll(String createdBy);
+    List<Request> findAll();
+
 }

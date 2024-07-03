@@ -1,4 +1,4 @@
-package com.insa.TeamOpsSystem.user.request;
+package com.insa.TeamOpsSystem.request;
 
 import org.mapstruct.Mapper;
 
