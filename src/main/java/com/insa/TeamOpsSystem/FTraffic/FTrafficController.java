@@ -1,19 +1,16 @@
 package com.insa.TeamOpsSystem.FTraffic;
 
 import com.insa.TeamOpsSystem.jwt.PaginatedResultsRetrievedEvent;
-import com.insa.TeamOpsSystem.traffics.TrafficController;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -21,9 +18,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.time.LocalDate;
-
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 @RequestMapping("/f-traffics")
@@ -70,43 +64,20 @@ public class FTrafficController {
         return new ResponseEntity<PagedModel<FTrafficDtos>>(assembler.toModel(fTrafficService.getAllTraffics(pageable, token).map(fTrafficMapper::toTrafficsDto)), HttpStatus.OK);
     }
 
-//    @GetMapping("/tr/{timeTraffic}")
-//    @ResponseStatus(HttpStatus.OK)
-//    ResponseEntity<PagedModel<FTrafficDtos>> getAllTrafficsByTrafficTime(@PathVariable("timeTraffic") String timeTraffic, Pageable pageable,
-//                                                                         PagedResourcesAssembler assembler,
-//                                                                         UriComponentsBuilder uriBuilder,
-//                                                                         final HttpServletResponse response,
-//                                                                     UsernamePasswordAuthenticationToken token) {
-//        eventPublisher.publishEvent(new PaginatedResultsRetrievedEvent<>(
-//                FTrafficDtos.class, uriBuilder, response, pageable.getPageNumber(), fTrafficService.getAllTrafficsByTrafficTime(timeTraffic, token, pageable).getTotalPages(), pageable.getPageSize()));
-//        return new ResponseEntity<PagedModel<FTrafficDtos>>(assembler.toModel(fTrafficService.getAllTrafficsByTrafficTime(timeTraffic, token, pageable).map(fTrafficMapper::toTrafficsDto)), HttpStatus.OK);
-//    }
-
     @GetMapping("/tr/{timeTraffic}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<PagedModel<EntityModel<FTrafficDtos>>> getAllTrafficsByTrafficTime(
-            @PathVariable("timeTraffic") String timeTraffic,
-            Pageable pageable,
-            PagedResourcesAssembler<FTrafficDtos> assembler,
-            UriComponentsBuilder uriBuilder,
-            UsernamePasswordAuthenticationToken token,
-            final HttpServletResponse response) {
-
-        UserDetails userDetails = (UserDetails) token.getPrincipal();
-        String createdBy = userDetails.getUsername();
-
-        Page<Ftraffics> page = fTrafficService.getAllTrafficsByTrafficTime(timeTraffic, token, pageable);
-
-        PagedModel<EntityModel<FTrafficDtos>> pagedModel = assembler.toModel(page.map(fTrafficMapper::toTrafficsDto),
-                linkTo(methodOn(TrafficController.class).getAllTrafficsByTrafficTime(timeTraffic, pageable, assembler, uriBuilder, response, token)).withSelfRel());
-
+    ResponseEntity<PagedModel<FTrafficDtos>> getAllTrafficsByTrafficTime(@PathVariable("timeTraffic") String timeTraffic, Pageable pageable,
+                                                                         PagedResourcesAssembler assembler,
+                                                                         UriComponentsBuilder uriBuilder,
+                                                                         final HttpServletResponse response,
+                                                                     UsernamePasswordAuthenticationToken token) {
         eventPublisher.publishEvent(new PaginatedResultsRetrievedEvent<>(
-                FTrafficDtos.class, uriBuilder, response, pageable.getPageNumber(), page.getTotalPages(), pageable.getPageSize()));
-
-        return ResponseEntity.ok(pagedModel);
+                FTrafficDtos.class, uriBuilder, response, pageable.getPageNumber(), fTrafficService.getAllTrafficsByTrafficTime(timeTraffic, token, pageable).getTotalPages(), pageable.getPageSize()));
+        return new ResponseEntity<PagedModel<FTrafficDtos>>(assembler.toModel(fTrafficService.getAllTrafficsByTrafficTime(timeTraffic, token, pageable).map(fTrafficMapper::toTrafficsDto)), HttpStatus.OK);
     }
 
-    @GetMapping("/{from}/{to}")
+//
+@GetMapping("/{from}/{to}")
     @ResponseStatus(HttpStatus.OK)
     ResponseEntity<PagedModel<FTrafficDtos>> findAllByCreatedAtBetween(
             @PathVariable("from")  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from

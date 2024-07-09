@@ -49,7 +49,6 @@ public class PdfController {
                 .body(new InputStreamResource(bis));
     }
 
-
     @GetMapping(value = "/{trafficTimeName}", produces = MediaType.APPLICATION_PDF_VALUE)
     public ResponseEntity<InputStreamResource> generatePdfReportByTrafficTimeName(
             @PathVariable("trafficTimeName") String trafficTimeName,
@@ -64,7 +63,6 @@ public class PdfController {
                 .contentType(MediaType.APPLICATION_PDF)
                 .body(new InputStreamResource(bis));
     }
-
 
     @GetMapping(value = "/request/{from}/{to}", produces = MediaType.APPLICATION_PDF_VALUE)
     public ResponseEntity<InputStreamResource> generatePdfRequestsByDateRange(
@@ -94,7 +92,6 @@ public class PdfController {
                 .body(new InputStreamResource(bis));
     }
 
-
     @GetMapping(value = "/check_list/{from}/{to}", produces = MediaType.APPLICATION_PDF_VALUE)
     public ResponseEntity<InputStreamResource> generatePdfChecklistByDateRange(
             @PathVariable("from") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
@@ -121,7 +118,6 @@ public class PdfController {
                 .contentType(MediaType.APPLICATION_PDF)
                 .body(new InputStreamResource(bis));
     }
-
 
     @GetMapping(value = "/failed-traffics/{from}/{to}", produces = MediaType.APPLICATION_PDF_VALUE)
     public ResponseEntity<InputStreamResource> generatePdfFailedTrafficByDateRange(
@@ -151,7 +147,6 @@ public class PdfController {
                 .body(new InputStreamResource(bis));
     }
 
-
     @GetMapping(value = "/sixmclist/{from}/{to}", produces = MediaType.APPLICATION_PDF_VALUE)
     public ResponseEntity<InputStreamResource> generatePdfSixCListByByDateRange(
             @PathVariable("from") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
@@ -180,8 +175,6 @@ public class PdfController {
                 .contentType(MediaType.APPLICATION_PDF)
                 .body(new InputStreamResource(bis));
     }
-
-
 
 }
 
