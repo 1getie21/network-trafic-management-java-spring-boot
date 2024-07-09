@@ -36,7 +36,6 @@ public class FTrafficService {
         return fTrafficRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(Ftraffics.class, "  Type with an id: " + id + " was not found!"));
     }
 
-
     public Page<Ftraffics> getAllTraffics(Pageable pageable, UsernamePasswordAuthenticationToken token) {
         UserDetailsImpl userDetails = (UserDetailsImpl) token.getPrincipal();
         if (userDetails.getAuthorities().stream().anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"))) {
@@ -46,8 +45,45 @@ public class FTrafficService {
         }
     }
 
-    public Page<Ftraffics> getAllTrafficsByTrafficTime(String trafficTime, Pageable pageable) {
-        return fTrafficRepository.findAllBySitesDeletedIsFalseAndTrafficTimeName(trafficTime, pageable);
+    public Ftraffics updateTrafficById(long id, Ftraffics fTraffics, UsernamePasswordAuthenticationToken token) throws IllegalAccessException {
+        var et = getTrafficById(id);
+
+        BeanUtils.copyProperties(fTraffics, et, getNullPropertyNames(fTraffics));
+        return fTrafficRepository.save(et);
+    }
+
+    public void deleteTrafficById(long id, UsernamePasswordAuthenticationToken token) {
+        fTrafficRepository.deleteById(id);
+    }
+
+//    public Page<Ftraffics> getAllTrafficsByTrafficTime(String trafficTime, Pageable pageable) {
+//        return fTrafficRepository.findAllBySitesDeletedIsFalseAndTrafficTimeName(trafficTime, pageable);
+//    }
+
+//    public Page<Ftraffics> getAllTrafficsByTrafficTime(String trafficTime, UsernamePasswordAuthenticationToken token, Pageable pageable) {
+//        UserDetails userDetails = (UserDetails) token.getPrincipal();
+//        String createdBy = userDetails.getUsername();
+//
+//        if (userDetails.getAuthorities().stream().anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"))) {
+//            return fTrafficRepository.findAllByCreatedAtBetweenAndSitesDeletedIsFalseAndTrafficTimeName(
+//                    LocalDate.now().atStartOfDay(), LocalDate.now().plusDays(1).atStartOfDay(), trafficTime, pageable);
+//        } else {
+//            return fTrafficRepository.findAllByCreatedAtBetweenAndSitesDeletedIsFalseAndCreatedByAndTrafficTimeName(
+//                    LocalDate.now().atStartOfDay(), LocalDate.now().plusDays(1).atStartOfDay(), createdBy, trafficTime, pageable);
+//        }
+//    }
+
+    public Page<Ftraffics> getAllTrafficsByTrafficTime(String trafficTime, UsernamePasswordAuthenticationToken token, Pageable pageable) {
+        UserDetails userDetails = (UserDetails) token.getPrincipal();
+        String createdBy = userDetails.getUsername();
+
+        if (userDetails.getAuthorities().stream().anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"))) {
+            // For ROLE_ADMIN, fetch all traffic records for the specified trafficTime
+            return fTrafficRepository.findAllByTrafficTimeNameAndSitesDeletedIsFalse(trafficTime, pageable);
+        } else {
+            // For other users, fetch traffic records created by the current user for the specified trafficTime
+            return fTrafficRepository.findAllByTrafficTimeNameAndCreatedByAndSitesDeletedIsFalse(trafficTime, createdBy, pageable);
+        }
     }
 
     public Page<Ftraffics> findAllByCreatedAtBetween(LocalDate from, LocalDate to, UsernamePasswordAuthenticationToken token, Pageable pageable) {
@@ -62,20 +98,7 @@ public class FTrafficService {
         }
     }
 
-    public Ftraffics updateTrafficById(long id, Ftraffics fTraffics, UsernamePasswordAuthenticationToken token) throws IllegalAccessException {
-        var et = getTrafficById(id);
+ }
 
 
-        BeanUtils.copyProperties(fTraffics, et, getNullPropertyNames(fTraffics));
 
-
-        return fTrafficRepository.save(et);
-    }
-
-
-    public void deleteTrafficById(long id, UsernamePasswordAuthenticationToken token) {
-        fTrafficRepository.deleteById(id);
-    }
-
-
-}

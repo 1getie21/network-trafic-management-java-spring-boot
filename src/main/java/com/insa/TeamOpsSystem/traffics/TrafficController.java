@@ -1,5 +1,6 @@
 package com.insa.TeamOpsSystem.traffics;
 
+import com.insa.TeamOpsSystem.FTraffic.FTrafficDtos;
 import com.insa.TeamOpsSystem.jwt.PaginatedResultsRetrievedEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
@@ -50,5 +51,9 @@ public class TrafficController implements TrafficApi {
         eventPublisher.publishEvent(new PaginatedResultsRetrievedEvent<>(
                 TrafficDtos.class, uriBuilder, response, pageable.getPageNumber(), trafficService.getAllTraffics(pageable,token).getTotalPages(), pageable.getPageSize()));
         return new ResponseEntity<PagedModel<TrafficDtos>>(assembler.toModel(trafficService.getAllTraffics(pageable,token).map(trafficMapper::toTrafficsDto)), HttpStatus.OK);
+    }
+
+    public Object getAllTrafficsByTrafficTime(String timeTraffic, Pageable pageable, PagedResourcesAssembler<FTrafficDtos> assembler, UriComponentsBuilder uriBuilder, HttpServletResponse response, UsernamePasswordAuthenticationToken token) {
+        return null;
     }
 }

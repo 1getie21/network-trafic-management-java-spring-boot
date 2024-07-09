@@ -273,7 +273,7 @@ public class PdfService {
 
         // Initialize document
         Document document = new Document(pdf);
-
+            document.setMargins(20, 20, 20, 20);
         // Add image
         String imagePath = "\\\\10.10.10.112\\home\\img3.png";
         Image img3 = new Image(ImageDataFactory.create(imagePath));
@@ -306,8 +306,9 @@ public class PdfService {
 
             List<Request> requestss;
             if (createdBy.equals("ROLE_ADMIN")) {
-                return (ByteArrayInputStream) requestRepository.findAll();
-            } else {
+                requestss = requestRepository.findAll();
+            }
+            else {
                 requestss = requestRepository.findAllByCreatedBy(createdBy);
             }
 

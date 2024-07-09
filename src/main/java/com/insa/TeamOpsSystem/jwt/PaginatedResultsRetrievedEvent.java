@@ -62,5 +62,5 @@ public final class PaginatedResultsRetrievedEvent<T extends Serializable> extend
     public final Class<T> getClazz() {
         return (Class<T>) getSource();
     }
-
 }
+

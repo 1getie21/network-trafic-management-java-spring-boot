@@ -21,12 +21,20 @@ public interface FTrafficRepository extends PagingAndSortingRepository<Ftraffics
 
     Page<Ftraffics> findAllBySitesDeletedIsFalse(Pageable pageable);
     List<Ftraffics> findAllBySitesDeletedIsFalse(   );
-    Page<Ftraffics> findAllBySitesDeletedIsFalseAndTrafficTimeName(String trafficTime,Pageable pageable);
 
     List<Ftraffics> findAllBySitesDeletedIsFalseAndCreatedBy(String createdBy);
     Page<Ftraffics> findAllByCreatedAtBetweenAndSitesDeletedIsFalse(LocalDateTime from, LocalDateTime to,Pageable pageable);
     List<Ftraffics> findAllByCreatedAtBetweenAndSitesDeletedIsFalse(LocalDateTime from, LocalDateTime to);
     List<Ftraffics> findAllByCreatedAtBetweenAndSitesDeletedIsFalseAndCreatedBy(LocalDateTime from, LocalDateTime to, String username);
 
+    Page<Ftraffics> findAllByTrafficTimeNameAndCreatedByAndSitesDeletedIsFalse(
+            String trafficTimeName,
+            String createdBy,
+            boolean sitesDeleted,
+            Pageable pageable);
     List<Ftraffics> findAllByTrafficTimeNameAndCreatedByAndSitesDeletedIsFalse(String trafficTimeName, String userName);
+
+    Page<Ftraffics> findAllByTrafficTimeNameAndSitesDeletedIsFalse(String trafficTime, Pageable pageable);
+
+    Page<Ftraffics> findAllByTrafficTimeNameAndCreatedByAndSitesDeletedIsFalse(String trafficTime, String createdBy, Pageable pageable);
 }
