@@ -60,19 +60,6 @@ public class FTrafficService {
 //        return fTrafficRepository.findAllBySitesDeletedIsFalseAndTrafficTimeName(trafficTime, pageable);
 //    }
 
-//    public Page<Ftraffics> getAllTrafficsByTrafficTime(String trafficTime, UsernamePasswordAuthenticationToken token, Pageable pageable) {
-//        UserDetails userDetails = (UserDetails) token.getPrincipal();
-//        String createdBy = userDetails.getUsername();
-//
-//        if (userDetails.getAuthorities().stream().anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"))) {
-//            return fTrafficRepository.findAllByCreatedAtBetweenAndSitesDeletedIsFalseAndTrafficTimeName(
-//                    LocalDate.now().atStartOfDay(), LocalDate.now().plusDays(1).atStartOfDay(), trafficTime, pageable);
-//        } else {
-//            return fTrafficRepository.findAllByCreatedAtBetweenAndSitesDeletedIsFalseAndCreatedByAndTrafficTimeName(
-//                    LocalDate.now().atStartOfDay(), LocalDate.now().plusDays(1).atStartOfDay(), createdBy, trafficTime, pageable);
-//        }
-//    }
-
     public Page<Ftraffics> getAllTrafficsByTrafficTime(String trafficTime, UsernamePasswordAuthenticationToken token, Pageable pageable) {
         UserDetails userDetails = (UserDetails) token.getPrincipal();
         String createdBy = userDetails.getUsername();

@@ -53,7 +53,7 @@ public class PdfService {
             Document document = new Document(pdf);
 
             // Add image
-            String imagePath = "\\\\10.10.10.112\\home\\img.png";
+            String imagePath = "\\\\172.21.22.244\\home\\img.png";
             Paragraph date = new Paragraph("Date: All")
                     .setTextAlignment(TextAlignment.RIGHT)
                     .setUnderline(1.5f, -1);
@@ -73,7 +73,7 @@ public class PdfService {
             table.addCell("CreatedBy");
             table.addCell("Remark");
 
-            // Fetch all traffic data (example data)
+            // Fetch all traffic data
 //            List<Ftraffics> ftraffics = trafficRepository.findAllBySitesDeletedIsFalseAndCreatedBy(userName);
 //            int index = 1;
 
@@ -123,7 +123,7 @@ public class PdfService {
             Document document = new Document(pdf);
 
             // Add image
-            String imagePath = "\\\\10.10.10.112\\home\\img.png";
+            String imagePath = "\\\\172.21.22.244\\home\\img.png";
 
             Image img = new Image(ImageDataFactory.create(imagePath));
             img.setHorizontalAlignment(HorizontalAlignment.CENTER);
@@ -172,7 +172,6 @@ public class PdfService {
                 trafficTable.addCell(traffics.getCreatedBy() != null ? traffics.getCreatedBy() : "");
                 trafficTable.addCell(traffics.getRemark() != null ? traffics.getRemark() : "");
             }
-
             // Add table to document
             Div tableDiv = new Div();
             tableDiv.setHorizontalAlignment(HorizontalAlignment.CENTER);
@@ -187,7 +186,6 @@ public class PdfService {
             throw new AlreadyExistException(e.getMessage());
         }
     }
-
     public ByteArrayInputStream generatePdfByTrafficTimeName(String trafficTimeName, String userName) {
         try {
             ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -201,7 +199,7 @@ public class PdfService {
             Document document = new Document(pdf);
 
             // Add image
-            String imagePath = "\\\\10.10.10.112\\home\\img.png";
+            String imagePath = "\\\\172.21.22.244\\home\\img.png";
 
             Image img = new Image(ImageDataFactory.create(imagePath));
             img.setHorizontalAlignment(HorizontalAlignment.CENTER);
@@ -247,7 +245,6 @@ public class PdfService {
                 trafficTable.addCell(traffics.getCreatedBy() != null ? traffics.getCreatedBy() : "");
                 trafficTable.addCell(traffics.getRemark() != null ? traffics.getRemark() : "");
             }
-
             // Add table to document
             Div tableDiv = new Div();
             tableDiv.setHorizontalAlignment(HorizontalAlignment.CENTER);
@@ -275,7 +272,7 @@ public class PdfService {
         Document document = new Document(pdf);
             document.setMargins(20, 20, 20, 20);
         // Add image
-        String imagePath = "\\\\10.10.10.112\\home\\img3.png";
+        String imagePath = "\\\\172.21.22.244\\home\\img3.png";
         Image img3 = new Image(ImageDataFactory.create(imagePath));
         img3.setHorizontalAlignment(HorizontalAlignment.CENTER);
         document.add(img3);
@@ -356,7 +353,7 @@ public class PdfService {
             Document document = new Document(pdf);
 
             // Add image
-            String imagePath = "\\\\10.10.10.112\\home\\img3.png";
+            String imagePath = "\\\\172.21.22.244\\home\\img3.png";
             Image img3 = new Image(ImageDataFactory.create(imagePath));
             img3.setHorizontalAlignment(HorizontalAlignment.CENTER);
             document.add(img3);
@@ -372,7 +369,6 @@ public class PdfService {
             requestTable.setHorizontalAlignment(HorizontalAlignment.CENTER);
 
             requestTable.addCell("No");
-           // requestTable.addCell("Created At");
             requestTable.addCell("Created By");
             requestTable.addCell("Phone");
             requestTable.addCell("Email");
@@ -381,15 +377,13 @@ public class PdfService {
             requestTable.addCell("Categories");
             requestTable.addCell("Contact");
             requestTable.addCell("Description");
-          //  requestTable.addCell("Priority");
-
 
 //            List<Request> requests = requestRepository.findAllByCreatedAtBetweenAndCreatedBy(from.atStartOfDay(), to.plusDays(1).atStartOfDay(), username);
 //            int index = 1; // Reset index counter
 
             List<Request> requests;
             if (username.equals("ROLE_ADMIN")) {
-                //please use this condition
+
                 requests = requestRepository.findAllByCreatedAtBetween(from.atStartOfDay(),
                         to.plusDays(1).atStartOfDay());
             } else {
@@ -400,7 +394,6 @@ public class PdfService {
 // Add request data rows
             for (Request request : requests) {
                 requestTable.addCell(String.valueOf(index++));
-               // requestTable.addCell(request.getCreatedAt() != null ? request.getCreatedAt().toString() : "");
                 requestTable.addCell(request.getCreatedBy() != null ? request.getCreatedBy() : "");
                 requestTable.addCell(request.getPhone() != null ? request.getPhone() : "");
                 requestTable.addCell(request.getEmail() != null ? request.getEmail() : "");
@@ -409,7 +402,6 @@ public class PdfService {
                 requestTable.addCell(request.getCategories() != null ? request.getCategories() : "");
                 requestTable.addCell(request.getContact() != null ? request.getContact() : "");
                 requestTable.addCell(request.getDescription() != null ? request.getDescription() : "");
-               // requestTable.addCell(request.getPriority() != null ? request.getPriority() : "");
             }
 
 
@@ -444,7 +436,7 @@ public class PdfService {
             Document document = new Document(pdf);
 
             // Add image
-            String imagePath = "\\\\10.10.10.112\\home\\img1.png";
+            String imagePath = "\\\\172.21.22.244\\home\\img1.png";
             Image img1 = new Image(ImageDataFactory.create(imagePath));
             img1.setHorizontalAlignment(HorizontalAlignment.CENTER);
             document.add(img1);
@@ -521,7 +513,7 @@ public class PdfService {
             Document document = new Document(pdf);
 
             // Add image
-            String imagePath = "\\\\10.10.10.112\\home\\img1.png";
+            String imagePath = "\\\\172.21.22.244\\home\\img1.png";
 
             Image img1 = new Image(ImageDataFactory.create(imagePath));
             img1.setHorizontalAlignment(HorizontalAlignment.CENTER);
@@ -604,7 +596,7 @@ public class PdfService {
             Document document = new Document(pdf);
 
             // Add image
-            String imagePath = "\\\\10.10.10.112\\home\\img.png";
+            String imagePath = "\\\\172.21.22.244\\home\\img.png";
 
             Image img = new Image(ImageDataFactory.create(imagePath));
             img.setHorizontalAlignment(HorizontalAlignment.CENTER);
@@ -687,7 +679,7 @@ public class PdfService {
             Document document = new Document(pdf);
 
             // Add image
-            String imagePath = "\\\\10.10.10.112\\home\\img.png";
+            String imagePath = "\\\\172.21.22.244\\home\\img.png";
 
             Image img = new Image(ImageDataFactory.create(imagePath));
             img.setHorizontalAlignment(HorizontalAlignment.CENTER);
@@ -771,7 +763,7 @@ public class PdfService {
             Document document = new Document(pdf);
 
             // Add image
-            String imagePath = "\\\\10.10.10.112\\home\\img2.png";
+            String imagePath = "\\\\172.21.22.244\\home\\img2.png";
             //System.out.println("Image Path: " + imagePath);
             Image img2 = new Image(ImageDataFactory.create(imagePath));
             img2.setHorizontalAlignment(HorizontalAlignment.CENTER);
@@ -859,7 +851,7 @@ public class PdfService {
             Document document = new Document(pdf);
 
             // Add image
-            String imagePath = "\\\\10.10.10.112\\home\\img2.png";
+            String imagePath = "\\\\172.21.22.244\\home\\img2.png";
 
             Image img2 = new Image(ImageDataFactory.create(imagePath));
             img2.setHorizontalAlignment(HorizontalAlignment.CENTER);

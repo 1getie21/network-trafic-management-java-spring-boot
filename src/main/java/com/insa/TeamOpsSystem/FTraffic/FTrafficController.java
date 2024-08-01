@@ -33,7 +33,6 @@ public class FTrafficController {
     public FTrafficDtos createTraffics(@RequestBody @Valid FTrafficDtos fTrafficDtos, UsernamePasswordAuthenticationToken token) throws IllegalAccessException {
         return fTrafficMapper.toTrafficsDto(fTrafficService.createTraffics(fTrafficMapper.toTraffics(fTrafficDtos), token));
     }
-
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public FTrafficDtos getTrafficById(@PathVariable("id") long id) {

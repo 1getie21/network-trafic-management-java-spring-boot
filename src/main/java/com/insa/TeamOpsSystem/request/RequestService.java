@@ -21,7 +21,6 @@ import static com.insa.TeamOpsSystem.jwt.until.Util.getNullPropertyNames;
 public class RequestService {
     private final RequestRepository requestRepository;
 
-
     public Request createTraffics(Request request, UsernamePasswordAuthenticationToken token) throws IllegalAccessException {
         UserDetails userDetails = (UserDetails) token.getPrincipal();
         request.setCreatedBy(userDetails.getUsername());
@@ -69,6 +68,7 @@ public class RequestService {
             throw new AlreadyExistException("Request is already accepted");
         }
     }
+
     public Page<Request> findAllByCreatedAtBetween(LocalDate from, LocalDate to, UsernamePasswordAuthenticationToken token, Pageable pageable) {
 
         UserDetails userDetails = (UserDetails) token.getPrincipal();
@@ -77,8 +77,19 @@ public class RequestService {
             return requestRepository.findAllByCreatedAtBetween(from.atStartOfDay(),
                     to.plusDays(1).atStartOfDay(), pageable);
         } else {
-            return (Page<Request>) requestRepository.findAllByCreatedAtBetweenAndCreatedBy(from.atStartOfDay(), to.plusDays(1).atStartOfDay(), createdBy, pageable);
+            return requestRepository.findAllByCreatedAtBetweenAndCreatedBy(from.atStartOfDay(), to.plusDays(1).atStartOfDay(), createdBy, pageable);
         }
     }
 
+//public Page<Request> findAllByCreatedAtBetween(LocalDate from, LocalDate to, UsernamePasswordAuthenticationToken token, Pageable pageable) {
+//    UserDetails userDetails = (UserDetails) token.getPrincipal();
+//    String createdBy = userDetails.getUsername();
+//
+//    LocalDateTime fromDate = from.atStartOfDay();
+//    LocalDateTime toDate = to.plusDays(1).atStartOfDay();
+//
+//    return requestRepository.findAllByCreatedAtBetweenAndCreatedBy(fromDate, toDate, createdBy, pageable);
+//}
 }
+
+

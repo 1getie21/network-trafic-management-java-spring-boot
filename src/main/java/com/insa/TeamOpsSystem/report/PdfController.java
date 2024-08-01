@@ -15,7 +15,7 @@ import java.time.LocalDate;
 @RequiredArgsConstructor
 
 @RequestMapping("/api/pdf")
-@CrossOrigin(origins = {"http://localhost:3000", "http://10.10.10.112:8088"})
+@CrossOrigin(origins = {"http://localhost:3000", "http://172.21.22.244:8088"})
 public class PdfController {
     private final PdfService pdfService;
 
