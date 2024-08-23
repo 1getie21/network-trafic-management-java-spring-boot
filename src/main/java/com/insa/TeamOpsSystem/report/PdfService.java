@@ -53,7 +53,7 @@ public class PdfService {
             Document document = new Document(pdf);
 
             // Add image
-            String imagePath = "\\\\172.21.22.244\\home\\img.png";
+            String imagePath = "\\\\10.10.10.204\\home\\img.png";
             Paragraph date = new Paragraph("Date: All")
                     .setTextAlignment(TextAlignment.RIGHT)
                     .setUnderline(1.5f, -1);
@@ -123,7 +123,7 @@ public class PdfService {
             Document document = new Document(pdf);
 
             // Add image
-            String imagePath = "\\\\172.21.22.244\\home\\img.png";
+            String imagePath = "\\\\10.10.10.204\\home\\img.png";
 
             Image img = new Image(ImageDataFactory.create(imagePath));
             img.setHorizontalAlignment(HorizontalAlignment.CENTER);
@@ -199,7 +199,7 @@ public class PdfService {
             Document document = new Document(pdf);
 
             // Add image
-            String imagePath = "\\\\172.21.22.244\\home\\img.png";
+            String imagePath = "\\\\10.10.10.204\\home\\img.png";
 
             Image img = new Image(ImageDataFactory.create(imagePath));
             img.setHorizontalAlignment(HorizontalAlignment.CENTER);
@@ -272,7 +272,7 @@ public class PdfService {
         Document document = new Document(pdf);
             document.setMargins(20, 20, 20, 20);
         // Add image
-        String imagePath = "\\\\172.21.22.244\\home\\img3.png";
+        String imagePath = "\\\\10.10.10.204\\home\\img3.png";
         Image img3 = new Image(ImageDataFactory.create(imagePath));
         img3.setHorizontalAlignment(HorizontalAlignment.CENTER);
         document.add(img3);
@@ -353,7 +353,7 @@ public class PdfService {
             Document document = new Document(pdf);
 
             // Add image
-            String imagePath = "\\\\172.21.22.244\\home\\img3.png";
+            String imagePath = "\\\\10.10.10.204\\home\\img3.png";
             Image img3 = new Image(ImageDataFactory.create(imagePath));
             img3.setHorizontalAlignment(HorizontalAlignment.CENTER);
             document.add(img3);
@@ -436,7 +436,7 @@ public class PdfService {
             Document document = new Document(pdf);
 
             // Add image
-            String imagePath = "\\\\172.21.22.244\\home\\img1.png";
+            String imagePath = "\\\\10.10.10.204\\home\\img1.png";
             Image img1 = new Image(ImageDataFactory.create(imagePath));
             img1.setHorizontalAlignment(HorizontalAlignment.CENTER);
             document.add(img1);
@@ -513,7 +513,7 @@ public class PdfService {
             Document document = new Document(pdf);
 
             // Add image
-            String imagePath = "\\\\172.21.22.244\\home\\img1.png";
+            String imagePath = "\\\\10.10.10.204\\home\\img1.png";
 
             Image img1 = new Image(ImageDataFactory.create(imagePath));
             img1.setHorizontalAlignment(HorizontalAlignment.CENTER);
@@ -596,7 +596,7 @@ public class PdfService {
             Document document = new Document(pdf);
 
             // Add image
-            String imagePath = "\\\\172.21.22.244\\home\\img.png";
+            String imagePath = "\\\\10.10.10.204\\home\\img.png";
 
             Image img = new Image(ImageDataFactory.create(imagePath));
             img.setHorizontalAlignment(HorizontalAlignment.CENTER);
@@ -679,7 +679,7 @@ public class PdfService {
             Document document = new Document(pdf);
 
             // Add image
-            String imagePath = "\\\\172.21.22.244\\home\\img.png";
+            String imagePath = "\\\\10.10.10.204\\home\\img.png";
 
             Image img = new Image(ImageDataFactory.create(imagePath));
             img.setHorizontalAlignment(HorizontalAlignment.CENTER);
@@ -763,7 +763,7 @@ public class PdfService {
             Document document = new Document(pdf);
 
             // Add image
-            String imagePath = "\\\\172.21.22.244\\home\\img2.png";
+            String imagePath = "\\\\10.10.10.204\\home\\img2.png";
             //System.out.println("Image Path: " + imagePath);
             Image img2 = new Image(ImageDataFactory.create(imagePath));
             img2.setHorizontalAlignment(HorizontalAlignment.CENTER);
@@ -851,7 +851,7 @@ public class PdfService {
             Document document = new Document(pdf);
 
             // Add image
-            String imagePath = "\\\\172.21.22.244\\home\\img2.png";
+            String imagePath = "\\\\10.10.10.204\\home\\img2.png";
 
             Image img2 = new Image(ImageDataFactory.create(imagePath));
             img2.setHorizontalAlignment(HorizontalAlignment.CENTER);
